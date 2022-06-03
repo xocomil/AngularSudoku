@@ -16,6 +16,7 @@ import {
 })
 export class CellComponent implements OnInit {
   @Input() hasError = false;
+  @Input() cellValue: number | undefined;
 
   #backgroundColor: string | undefined;
   @Input() get backgroundColor(): string {

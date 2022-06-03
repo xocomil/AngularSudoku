@@ -7,4 +7,19 @@
 .error {
   background-color: var(--error-background);
   color: var(--error-color);
+
+  > input {
+    border-color: var(--error-color);
+    color: var(--error-color);
+    outline-color: var(--error-color);
+  }
+}
+
+div {
+  padding: .5rem;
+}
+
+input {
+  border-radius: .25rem;
+  padding: .2rem;
 }
