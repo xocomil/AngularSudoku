@@ -1,10 +1,12 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  NgModule,
-} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  NgModule,
+  OnInit,
+} from '@angular/core';
 
 @Component({
   selector: 'sud-cell',
@@ -13,7 +15,22 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CellComponent implements OnInit {
-  constructor() {}
+  @Input() hasError = false;
+
+  #backgroundColor: string | undefined;
+  @Input() get backgroundColor(): string {
+    return this.#backgroundColor ?? '';
+  }
+  set backgroundColor(value: string | undefined) {
+    this.#backgroundColor = value;
+
+    this?._hostContainer.nativeElement.style.setProperty(
+      '--error-background',
+      value
+    );
+  }
+
+  constructor(private readonly _hostContainer: ElementRef) {}
 
   ngOnInit(): void {}
 }

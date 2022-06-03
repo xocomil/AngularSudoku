@@ -1,3 +1,10 @@
 :host {
+  --error-background: rgba(255, 0, 0, 0.5);
+  --error-color: rgba(255, 0, 0, 1);
   display: block;
+}
+
+.error {
+  background-color: var(--error-background);
+  color: var(--error-color);
 }
