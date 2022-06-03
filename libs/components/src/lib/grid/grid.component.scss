@@ -1,0 +1,6 @@
+:host {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: repeat(1fr, 9);
+  gap: .2rem;
+}

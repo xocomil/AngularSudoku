@@ -1,0 +1,3 @@
+<ng-container *ngFor="let row of grid; index as y;">
+  <div *ngFor="let col of row; index as x"><sud-cell [cellValue]="grid[y][x]"></sud-cell></div>
+</ng-container>
