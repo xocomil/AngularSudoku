@@ -6,11 +6,10 @@
 
 .error {
   background-color: var(--error-background);
-  color: var(--error-color);
 
   > input {
-    border-color: var(--error-color);
     color: var(--error-color);
+    border-color: var(--error-color);
     outline-color: var(--error-color);
   }
 }

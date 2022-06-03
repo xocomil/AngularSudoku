@@ -5,7 +5,8 @@ export default {
   title: 'Cell',
   component: CellComponent,
   argTypes: {
-    backgroundColor: { control: { type: 'color' } },
+    errorBackgroundColor: { control: { type: 'color' } },
+    errorColor: { control: { type: 'color' } },
   },
 } as Meta;
 
@@ -18,4 +19,8 @@ export const Primary = Template.bind({});
 
 export const HasError = Template.bind({});
 
-HasError.args = { hasError: true, backgroundColor: 'red' };
+HasError.args = {
+  hasError: true,
+  errorBackgroundColor: 'rgb(255, 0, 0, .5)',
+  errorColor: 'red',
+};

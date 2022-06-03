@@ -18,15 +18,28 @@ export class CellComponent implements OnInit {
   @Input() hasError = false;
   @Input() cellValue: number | undefined;
 
-  #backgroundColor: string | undefined;
-  @Input() get backgroundColor(): string {
-    return this.#backgroundColor ?? '';
+  #errorBackgroundColor: string | undefined;
+  @Input() get errorBackgroundColor(): string {
+    return this.#errorBackgroundColor ?? '';
   }
-  set backgroundColor(value: string | undefined) {
-    this.#backgroundColor = value;
+  set errorBackgroundColor(value: string | undefined) {
+    this.#errorBackgroundColor = value;
 
     this?._hostContainer.nativeElement.style.setProperty(
       '--error-background',
+      value
+    );
+  }
+
+  #errorColor: string | undefined;
+  @Input() get errorColor(): string {
+    return this.#errorColor ?? '';
+  }
+  set errorColor(value: string | undefined) {
+    this.#errorColor = value;
+
+    this?._hostContainer.nativeElement.style.setProperty(
+      '--error-color',
       value
     );
   }
