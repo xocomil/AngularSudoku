@@ -16,7 +16,6 @@ export default {
 } as Meta;
 
 const Template: Story<CellComponent> = (args: CellComponent) => ({
-  component: CellComponent,
   props: args,
 });
 
