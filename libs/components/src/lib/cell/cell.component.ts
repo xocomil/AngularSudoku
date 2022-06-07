@@ -7,6 +7,7 @@ import {
   NgModule,
   OnInit,
 } from '@angular/core';
+import { FormsModule } from "@angular/forms";
 
 @Component({
   selector: 'sud-cell',
@@ -50,7 +51,7 @@ export class CellComponent implements OnInit {
 }
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   declarations: [CellComponent],
   exports: [CellComponent],
 })
