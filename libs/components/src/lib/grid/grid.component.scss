@@ -1,6 +1,50 @@
 :host {
+  --cell-size: 2.5rem;
+  --grid-size: calc(9 * var(--cell-size));
+  --border-width: 1px;
+  --border-color: rgba(0,0,0,.2);
+  --border-style: solid var(--border-width) var(--border-color);
+  --outer-border-width: 3px;
+  --outer-border-color: rgba(0,0,0,.4);
+  --outer-border-style: solid var(--outer-border-width) var(--outer-border-color);
+
+
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: repeat(1fr, 9);
-  gap: .2rem;
+  grid-template-columns: repeat(9, var(--cell-size));
+  grid-template-rows: repeat(9, var(--cell-size));
+  height: var(--grid-size);
+  width: var(--grid-size);
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+.sudoku-cell {
+  border-right: var(--border-style);
+  border-bottom: var(--border-style);
+}
+
+.row-0 {
+  &.sudoku-cell {
+    border-top: var(--outer-border-style);
+  }
+}
+
+.row-2, .row-5, .row-8 {
+  &.sudoku-cell {
+    border-bottom: var(--outer-border-style);
+  }
+}
+
+.col-0 {
+  &.sudoku-cell {
+    border-left: var(--outer-border-style);
+  }
+}
+
+.col-2, .col-5, .col-8 {
+  &.sudoku-cell {
+    border-right: var(--outer-border-style);
+  }
 }

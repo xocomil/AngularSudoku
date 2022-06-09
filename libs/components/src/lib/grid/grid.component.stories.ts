@@ -7,7 +7,6 @@ export default {
 } as Meta;
 
 const Template: Story<GridComponent> = (args: GridComponent) => ({
-  component: GridComponent,
   props: args,
 });
 

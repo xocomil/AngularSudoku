@@ -30,6 +30,13 @@ export class GridComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  calcGridClass(x: number, y: number): string {
+    const gridX = Math.trunc(x / 3);
+    const gridY = Math.trunc(y / 3);
+
+    return `grid-${gridY}-${gridX}`;
+  }
 }
 
 @NgModule({

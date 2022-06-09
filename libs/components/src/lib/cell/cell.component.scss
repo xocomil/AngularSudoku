@@ -2,6 +2,10 @@
   --error-background: rgba(255, 0, 0, 0.5);
   --error-color: rgba(255, 0, 0, 1);
   display: block;
+
+  * {
+    box-sizing: border-box;
+  }
 }
 
 .error {
@@ -21,4 +25,5 @@ div {
 input {
   border-radius: .25rem;
   padding: .2rem;
+  width: 100%;
 }
