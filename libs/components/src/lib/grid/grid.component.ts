@@ -40,6 +40,8 @@ export class GridComponent {
   }
 
   gridCellFocused(x: number, y: number): void {
+    console.log('gridCellFocused', x, y);
+
     this.selectedX = x;
     this.selectedY = y;
   }
