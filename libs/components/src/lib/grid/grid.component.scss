@@ -2,11 +2,12 @@
   --cell-size: 2.5rem;
   --grid-size: calc(9 * var(--cell-size));
   --border-width: 1px;
-  --border-color: rgba(0,0,0,.2);
+  --border-color: rgba(0, 0, 0, .2);
   --border-style: solid var(--border-width) var(--border-color);
   --outer-border-width: 3px;
-  --outer-border-color: rgba(0,0,0,.4);
+  --outer-border-color: rgba(0, 0, 0, .4);
   --outer-border-style: solid var(--outer-border-width) var(--outer-border-color);
+  --row-color: transparent;
 
 
   display: grid;
@@ -17,6 +18,14 @@
 
   * {
     box-sizing: border-box;
+  }
+}
+
+[class|='row-'] {
+  background-color: var(--row-color);
+
+  &.row-selected {
+    background-color: rgba(0, 255, 0, 0.5);
   }
 }
 
