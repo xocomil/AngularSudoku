@@ -21,26 +21,6 @@
   }
 }
 
-sud-cell {
-  --row-highlight-color: rgba(0, 255, 0, 0.3);
-  --column-hightlight-color: rgb(0, 0, 255, 0.4);
-  --checkerboard-color: rgb(0, 72, 125, 0.15);
-
-  &.row-selected {
-    background-color: var(--row-highlight-color);
-    --checkerboard-color: rgba(0, 255, 0, 0.6);
-  }
-
-  &.col-selected {
-    background-color: var(--column-hightlight-color);
-    --checkerboard-color: rgb(0, 0, 255, 0.6);
-  }
-
-  &:nth-child(even) {
-    background-color: var(--checkerboard-color);
-  }
-}
-
 .sudoku-cell {
   border-right: var(--border-style);
   border-bottom: var(--border-style);

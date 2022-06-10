@@ -47,12 +47,9 @@ export class CellComponent {
   }
 
   @Output() cellFocusReceived = new EventEmitter<void>();
+  @Output() cellBlurReceived = new EventEmitter<void>();
 
   constructor(private readonly _hostContainer: ElementRef) {}
-
-  cellFocused(): void {
-    this.cellFocusReceived.emit();
-  }
 }
 
 @NgModule({
