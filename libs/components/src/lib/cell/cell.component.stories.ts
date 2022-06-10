@@ -1,4 +1,10 @@
-import { componentWrapperDecorator, Meta, Story } from '@storybook/angular';
+import { FormsModule } from '@angular/forms';
+import {
+  componentWrapperDecorator,
+  Meta,
+  moduleMetadata,
+  Story,
+} from '@storybook/angular';
 import { CellComponent } from './cell.component';
 
 export default {
@@ -12,6 +18,9 @@ export default {
     componentWrapperDecorator(
       (story) => `<div style="height: 2.5rem; width: 2.5rem">${story}</div>`
     ),
+    moduleMetadata({
+      imports: [FormsModule],
+    }),
   ],
 } as Meta;
 
