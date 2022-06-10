@@ -1,5 +1,11 @@
-<ng-container *ngFor="let row of grid; index as y;">
-  <div class="sudoku-cell row-{{y}} col-{{x}}" [ngClass]="calcGridClass(x, y)" [attr.data-selected]="selectedXY(x, y)" *ngFor="let col of row; index as x">
-    <sud-cell [cellValue]="grid[y][x]" (cellFocusReceived)="gridCellFocused(x, y)"></sud-cell>
-  </div>
+<ng-container *ngFor="let row of grid; index as y">
+  <ng-container *ngFor="let col of row; index as x">
+    <sud-cell
+      [cellValue]="grid[y][x]"
+      [col]="x"
+      [row]="y"
+      [selected]="selected"
+      (cellFocusReceived)="selected = [x, y]"
+    ></sud-cell>
+  </ng-container>
 </ng-container>

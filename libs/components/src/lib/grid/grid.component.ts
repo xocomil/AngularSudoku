@@ -27,26 +27,9 @@ export class GridComponent {
     [1, 2, 3, 4, 5, 6, 7, 8, 9],
   ];
 
-  selectedY?: number = undefined;
-  selectedX?: number = undefined;
+  selected: [number, number] = [-1, -1];
 
   constructor(private readonly _hostElement: ElementRef<GridComponent>) {}
-
-  calcGridClass(x: number, y: number): string {
-    const gridX = Math.trunc(x / 3);
-    const gridY = Math.trunc(y / 3);
-
-    return `grid-${gridY}-${gridX}`;
-  }
-
-  gridCellFocused(x: number, y: number): void {
-    this.selectedX = x;
-    this.selectedY = y;
-  }
-
-  selectedXY(x: number, y: number): string {
-    return `${x}|${y}`;
-  }
 }
 
 @NgModule({

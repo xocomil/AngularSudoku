@@ -20,6 +20,18 @@
 
 div {
   padding: .5rem;
+
+  &[data-selected="row"] {
+    background-color: tomato;
+  }
+
+  &[data-selected="col"] {
+    background-color: blue;
+  }
+
+  &[data-selected="both"] {
+    background-color: green;
+  }
 }
 
 input {

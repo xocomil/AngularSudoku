@@ -1,3 +1,3 @@
-<div [class.error]="hasError">
+<div [attr.data-selected]="selectedString" [class.error]="hasError">
   <input [(ngModel)]="cellValue" (focus)="cellFocused()">
 </div>
