@@ -3,7 +3,7 @@
   --error-color: rgba(255, 0, 0, 1);
   --row-highlight-color: rgba(0, 255, 0, 0.3);
   --column-hightlight-color: rgb(0, 0, 255, 0.4);
-  --cell-highlight-color: rgba(231, 77, 204, 0.5);
+  --cell-highlight-color: rgb(231, 77, 204, 0.5);
   --checkerboard-color: rgb(0, 72, 125, 0.15);
 
   display: block;
@@ -12,24 +12,24 @@
     box-sizing: border-box;
   }
 
-  &[data-selected='row'] {
+  &[data-focused-state='row'] {
     --checkerboard-color: rgba(0, 255, 0, 0.6);
     div {
       background-color: var(--row-highlight-color);
     }
   }
 
-  &[data-selected='col'] {
+  &[data-focused-state='col'] {
     --checkerboard-color: rgb(0, 0, 255, 0.6);
     div {
       background-color: var(--column-hightlight-color);
     }
   }
 
-  &[data-selected='both'] {
+  &[data-focused-state='both'] {
     --checkerboard-color: rgb(255, 0, 0, 0.6);
     div {
-      background-color: var(--cell-hightlight-color);
+      background-color: var(--cell-highlight-color);
     }
   }
 

@@ -4,7 +4,7 @@
     class="sudoku-cell row-{{ y }} col-{{ x }}"
     [class]="['row-' + y, 'col-' + x, calcGridClass(x, y)]"
     [cellValue]="grid[y][x]"
-    [attr.data-selected]="selected | gridCellSelect:x:y"
+    [focusState]="selected | gridCellSelect:x:y"
     (cellFocusReceived)="selected = [y, x]"
     (cellBlurReceived)="selected = [-1, -1]"
   >
