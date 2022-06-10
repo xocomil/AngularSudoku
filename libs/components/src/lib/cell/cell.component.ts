@@ -3,11 +3,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   NgModule,
-  OnInit,
+  Output,
 } from '@angular/core';
-import { FormsModule } from "@angular/forms";
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'sud-cell',
@@ -15,7 +16,7 @@ import { FormsModule } from "@angular/forms";
   styleUrls: ['./cell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CellComponent implements OnInit {
+export class CellComponent {
   @Input() hasError = false;
   @Input() cellValue: number | undefined;
 
@@ -45,9 +46,13 @@ export class CellComponent implements OnInit {
     );
   }
 
+  @Output() cellFocusReceived = new EventEmitter<void>();
+
   constructor(private readonly _hostContainer: ElementRef) {}
 
-  ngOnInit(): void {}
+  cellFocused(): void {
+    this.cellFocusReceived.emit();
+  }
 }
 
 @NgModule({
