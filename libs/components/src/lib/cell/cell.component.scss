@@ -1,9 +1,7 @@
 :host {
   --error-background: rgba(255, 0, 0, 0.5);
   --error-color: rgba(255, 0, 0, 1);
-  --row-highlight-color: rgba(0, 255, 0, 0.3);
-  --column-hightlight-color: rgb(0, 0, 255, 0.4);
-  --cell-highlight-color: rgb(231, 77, 204, 0.5);
+  --cell-highlight-color: rgb(255, 255, 255);
   --checkerboard-color: rgb(0, 72, 125, 0.15);
 
   display: block;
@@ -12,25 +10,21 @@
     box-sizing: border-box;
   }
 
+  background-color: var(--cell-highlight-color);
+
   &[data-focused-state='row'] {
+    --cell-highlight-color: rgb(0, 255, 0, 0.3);
     --checkerboard-color: rgba(0, 255, 0, 0.6);
-    div {
-      background-color: var(--row-highlight-color);
-    }
   }
 
   &[data-focused-state='col'] {
     --checkerboard-color: rgb(0, 0, 255, 0.6);
-    div {
-      background-color: var(--column-hightlight-color);
-    }
+    --cell-highlight-color: rgb(0, 0, 255, 0.4);
   }
 
   &[data-focused-state='both'] {
     --checkerboard-color: rgb(255, 0, 0, 0.6);
-    div {
-      background-color: var(--cell-highlight-color);
-    }
+    --cell-highlight-color: rgb(231, 77, 204, 0.5);
   }
 
   &:nth-child(even) {
@@ -49,11 +43,11 @@
 }
 
 div {
-  padding: .5rem;
+  padding: 0.5rem;
 }
 
 input {
-  border-radius: .25rem;
-  padding: .2rem;
+  border-radius: 0.25rem;
+  padding: 0.2rem;
   width: 100%;
 }
