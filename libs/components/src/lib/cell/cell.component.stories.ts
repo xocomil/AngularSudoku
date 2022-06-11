@@ -64,5 +64,5 @@ export const Focused = Template.bind({});
 
 Focused.args = {
   cellValue: 5,
-  focusState: 'both',
+  focusState: 'self',
 };

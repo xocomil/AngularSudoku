@@ -22,7 +22,7 @@
     --cell-highlight-color: rgb(0, 0, 255, 0.4);
   }
 
-  &[data-focused-state='both'] {
+  &[data-focused-state='self'] {
     --checkerboard-color: rgb(255, 0, 0, 0.6);
     --cell-highlight-color: rgb(231, 77, 204, 0.5);
   }
