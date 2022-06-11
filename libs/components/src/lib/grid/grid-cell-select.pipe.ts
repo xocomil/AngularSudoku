@@ -1,19 +1,23 @@
-import {NgModule, Pipe, PipeTransform} from "@angular/core";
+import { NgModule, Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'gridCellSelect'
+  name: 'gridCellSelect',
 })
 export class GridCellSelectPipe implements PipeTransform {
-  transform([row, col]: [number, number], cellCol: number, cellRow: number): string {
+  transform(
+    [row, col]: [number, number],
+    cellCol: number,
+    cellRow: number
+  ): string {
     if (cellCol === col && cellRow === row) return 'both';
     if (cellCol === col) return 'col';
     if (cellRow === row) return 'row';
-    return ''
+    return '';
   }
 }
 
 @NgModule({
   declarations: [GridCellSelectPipe],
-  exports: [GridCellSelectPipe]
+  exports: [GridCellSelectPipe],
 })
 export class GridCellSelectPipeModule {}

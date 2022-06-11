@@ -1,7 +1,12 @@
-import {CommonModule} from '@angular/common';
-import {ChangeDetectionStrategy, Component, Input, NgModule,} from '@angular/core';
-import {CellComponentModule} from '../cell/cell.component';
-import {GridCellSelectPipeModule} from "./grid-cell-select.pipe";
+import { CommonModule } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  NgModule,
+} from '@angular/core';
+import { CellComponentModule } from '../cell/cell.component';
+import { GridCellSelectPipeModule } from './grid-cell-select.pipe';
 
 @Component({
   selector: 'sud-grid',
