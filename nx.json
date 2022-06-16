@@ -5,7 +5,6 @@
     "defaultBase": "master"
   },
   "cli": {
-    "defaultCollection": "@nrwl/angular",
     "packageManager": "npm"
   },
   "implicitDependencies": {
@@ -19,23 +18,10 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "e2e"
-        ],
+        "cacheableOperations": ["build", "lint", "test", "e2e"],
         "accessToken": "MTllMTMyYTctMjNjNi00ZWM5LWIzZWYtZGRkMjhhYmU1NzJifHJlYWQtd3JpdGU="
       }
     }
-  },
-  "targetDependencies": {
-    "build": [
-      {
-        "target": "build",
-        "projects": "dependencies"
-      }
-    ]
   },
   "generators": {
     "@nrwl/angular:application": {
@@ -52,5 +38,10 @@
       "style": "scss"
     }
   },
-  "defaultProject": "angular-sudoku"
+  "defaultProject": "angular-sudoku",
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"]
+    }
+  }
 }
