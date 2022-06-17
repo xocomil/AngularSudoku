@@ -30,6 +30,17 @@
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nrwl/nx/javascript"],
       "rules": {}
+    },
+    {
+      "files": ["*.spec.ts", "*.spec.tsx"],
+      "plugins": ["jest"],
+      "extends": ["plugin:jest/recommended"],
+      "rules": {
+        "jest/prefer-expect-assertions": [
+          "warn",
+          { "onlyFunctionsWithAsyncKeyword": true }
+        ]
+      }
     }
   ]
 }

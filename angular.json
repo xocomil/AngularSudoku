@@ -5,6 +5,8 @@
     "angular-sudoku": "apps/angular-sudoku",
     "angular-sudoku-e2e": "apps/angular-sudoku-e2e",
     "components": "libs/components",
-    "components-e2e": "apps/components-e2e"
+    "components-e2e": "apps/components-e2e",
+    "domain": "libs/domain",
+    "grid-analyzers": "libs/grid-analyzers"
   }
 }
