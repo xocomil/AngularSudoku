@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@sud/components": ["libs/components/src/index.ts"],
+      "@sud/domain": ["libs/domain/src/index.ts"],
       "@sud/grid-analyzers": ["libs/grid-analyzers/src/index.ts"]
     }
   },
