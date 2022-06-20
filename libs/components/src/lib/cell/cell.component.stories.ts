@@ -16,7 +16,12 @@ export default {
   },
   decorators: [
     componentWrapperDecorator(
-      (story) => `<div style="height: 2.5rem; width: 2.5rem">${story}</div>`
+      (story) => `
+<div style="height: 2.5rem; width: 2.5rem">
+    ${'Odd: ' + story}
+    ${'Even: ' + story}
+</div>
+`
     ),
     moduleMetadata({
       imports: [FormsModule],
@@ -39,4 +44,25 @@ HasError.args = {
   errorBackgroundColor: 'rgb(255, 0, 0, .5)',
   errorColor: 'red',
   cellValue: 5,
+};
+
+export const PartOfFocusedRow = Template.bind({});
+
+PartOfFocusedRow.args = {
+  cellValue: 5,
+  focusState: 'row',
+};
+
+export const PartOfFocusedColumn = Template.bind({});
+
+PartOfFocusedColumn.args = {
+  cellValue: 5,
+  focusState: 'col',
+};
+
+export const Focused = Template.bind({});
+
+Focused.args = {
+  cellValue: 5,
+  focusState: 'self',
 };

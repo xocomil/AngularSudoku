@@ -1,3 +1,7 @@
 <div [class.error]="hasError">
-  <input [(ngModel)]="cellValue" (focus)="cellFocused()">
+  <input
+    [(ngModel)]="cellValue"
+    (focus)="cellFocusReceived.emit()"
+    (blur)="cellBlurReceived.emit()"
+  />
 </div>

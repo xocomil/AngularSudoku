@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   EventEmitter,
+  HostBinding,
   Input,
   NgModule,
   Output,
@@ -20,39 +20,20 @@ export class CellComponent {
   @Input() hasError = false;
   @Input() cellValue: number | undefined;
 
-  #errorBackgroundColor: string | undefined;
-  @Input() get errorBackgroundColor(): string {
-    return this.#errorBackgroundColor ?? '';
-  }
-  set errorBackgroundColor(value: string | undefined) {
-    this.#errorBackgroundColor = value;
+  @HostBinding('style.--error-background')
+  @Input()
+  errorBackgroundColor = '';
 
-    this?._hostContainer.nativeElement.style.setProperty(
-      '--error-background',
-      value
-    );
-  }
+  @HostBinding('style.--error-color')
+  @Input()
+  errorColor = '';
 
-  #errorColor: string | undefined;
-  @Input() get errorColor(): string {
-    return this.#errorColor ?? '';
-  }
-  set errorColor(value: string | undefined) {
-    this.#errorColor = value;
-
-    this?._hostContainer.nativeElement.style.setProperty(
-      '--error-color',
-      value
-    );
-  }
+  @HostBinding('attr.data-focused-state')
+  @Input()
+  focusState = '';
 
   @Output() cellFocusReceived = new EventEmitter<void>();
-
-  constructor(private readonly _hostContainer: ElementRef) {}
-
-  cellFocused(): void {
-    this.cellFocusReceived.emit();
-  }
+  @Output() cellBlurReceived = new EventEmitter<void>();
 }
 
 @NgModule({
