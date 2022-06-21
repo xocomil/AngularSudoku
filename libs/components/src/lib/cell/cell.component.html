@@ -1,6 +1,6 @@
-<div [class.error]="hasError">
+<div [class.error]="!cellState.valid">
   <input
-    [(ngModel)]="cellValue"
+    [(ngModel)]="cellState.value"
     (focus)="cellFocusReceived.emit()"
     (blur)="cellBlurReceived.emit()"
   />
