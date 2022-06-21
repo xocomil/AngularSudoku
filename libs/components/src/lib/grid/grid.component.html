@@ -1,10 +1,9 @@
 <ng-container *ngFor="let row of grid; index as y">
   <sud-cell
     *ngFor="let col of row; index as x"
-    class="sudoku-cell row-{{ y }} col-{{ x }}"
-    [class]="['row-' + y, 'col-' + x, calcGridClass(x, y)]"
+    [class]="['row-' + y, 'col-' + x, calcGridClass(x, y), 'sudoku-cell']"
     [cellValue]="grid[y][x]"
-    [focusState]="selected | gridCellSelect:x:y"
+    [focusState]="selected | gridCellSelect: x:y"
     (cellFocusReceived)="selected = [y, x]"
     (cellBlurReceived)="selected = [-1, -1]"
   >
