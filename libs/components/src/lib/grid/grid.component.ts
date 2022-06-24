@@ -21,9 +21,7 @@ export class GridComponent {
   selected: [number, number, [number, number]] = [-1, -1, [-1, -1]];
 
   calcRegion(x: number, y: number): [number, number] {
-    const gridX = Math.trunc(x / 3);
-    const gridY = Math.trunc(y / 3);
-    return [gridX, gridY];
+    return calcGridRegion(x, y);
   }
 }
 
@@ -34,10 +32,21 @@ export class GridComponent {
 })
 export class GridComponentModule {}
 
+const calcGridRegion = (x: number, y: number): [number, number] => {
+  const gridX = Math.trunc(x / 3);
+  const gridY = Math.trunc(y / 3);
+  return [gridX, gridY];
+};
+
 const createGridState = (): CellState[][] => {
-  return Array.from({ length: 9 }, () =>
+  return Array.from({ length: 9 }, (_, row) =>
     Array.from({ length: 9 }, (_, value) =>
-      createCellState({ value: value + 1 })
+      createCellState({
+        row,
+        column: value,
+        region: calcGridRegion(value, row),
+        value: value + 1,
+      })
     )
   );
 };

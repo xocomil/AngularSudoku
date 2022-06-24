@@ -6,7 +6,7 @@
     [cellState]="grid[y][x]"
     [focusState]="selected | gridCellSelect: cell.cellState"
     (cellFocusReceived)="selected = [y, x, calcRegion(x, y)]"
-    (cellBlurReceived)="selected = [-1, -1]"
+    (cellBlurReceived)="selected = [-1, -1, [-1, -1]]"
   >
   </sud-cell>
 </ng-container>

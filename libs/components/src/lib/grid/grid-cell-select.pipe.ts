@@ -7,11 +7,29 @@ import { FocusStates } from './models/focus-state';
 })
 export class GridCellSelectPipe implements PipeTransform {
   transform(
-    [row, col, region]: [number, number, [number, number]],
+    [row, col, [compareRegionX, compareRegionY]]: [
+      number,
+      number,
+      [number, number]
+    ],
     cellState: CellState
   ): FocusStates {
     if (cellState.column === col && cellState.row === row) return 'self';
-    if (cellState.region === region) {
+
+    const [regionX, regionY] = cellState.region;
+
+    if (regionX === compareRegionX && regionY === compareRegionY) {
+      console.log(
+        'matched log region compare',
+        regionX,
+        regionY,
+        compareRegionX,
+        compareRegionY,
+        cellState,
+        row,
+        col
+      );
+
       if (cellState.row === row) return 'region-row';
       if (cellState.column === col) return 'region-col';
 
