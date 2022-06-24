@@ -5,6 +5,7 @@ import {
   moduleMetadata,
   Story,
 } from '@storybook/angular';
+import { createCellState } from '@sud/domain';
 import { CellComponent } from './cell.component';
 
 export default {
@@ -35,34 +36,39 @@ const Template: Story<CellComponent> = (args: CellComponent) => ({
 
 export const Primary = Template.bind({});
 
-Primary.args = { cellValue: 4 };
+const row = -1;
+const column = -1;
+const region: [number, number] = [-1, -1];
+
+Primary.args = {
+  cellState: createCellState({ row, column, region, value: 4 }),
+};
 
 export const HasError = Template.bind({});
 
 HasError.args = {
-  hasError: true,
   errorBackgroundColor: 'rgb(255, 0, 0, .5)',
   errorColor: 'red',
-  cellValue: 5,
+  cellState: createCellState({ row, column, region, valid: false, value: 5 }),
 };
 
 export const PartOfFocusedRow = Template.bind({});
 
 PartOfFocusedRow.args = {
-  cellValue: 5,
+  cellState: createCellState({ row, column, region, value: 4 }),
   focusState: 'row',
 };
 
 export const PartOfFocusedColumn = Template.bind({});
 
 PartOfFocusedColumn.args = {
-  cellValue: 5,
+  cellState: createCellState({ row, column, region, value: 4 }),
   focusState: 'col',
 };
 
 export const Focused = Template.bind({});
 
 Focused.args = {
-  cellValue: 5,
+  cellState: createCellState({ row, column, region, value: 4 }),
   focusState: 'self',
 };

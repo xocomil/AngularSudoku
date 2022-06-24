@@ -1,8 +1,9 @@
 :host {
-  --error-background: rgba(255, 0, 0, 0.5);
-  --error-color: rgba(255, 0, 0, 1);
-  --cell-highlight-color: rgb(255, 255, 255);
-  --checkerboard-color: rgb(0, 72, 125, 0.15);
+  --region-brown: 100 100 0;
+  --error-background: rgb(255 0 0 / 50%);
+  --error-color: rgb(255 0 0 / 100%);
+  --cell-highlight-color: rgb(255 255 255);
+  --checkerboard-color: rgb(0 72 125 / 15%);
 
   display: block;
 
@@ -13,18 +14,33 @@
   background-color: var(--cell-highlight-color);
 
   &[data-focused-state='row'] {
-    --cell-highlight-color: rgb(0, 255, 0, 0.3);
-    --checkerboard-color: rgba(0, 255, 0, 0.6);
+    --cell-highlight-color: rgb(0 255 0 / 30%);
+    --checkerboard-color: rgb(0 255 0 / 60%);
   }
 
   &[data-focused-state='col'] {
-    --checkerboard-color: rgb(0, 0, 255, 0.6);
-    --cell-highlight-color: rgb(0, 0, 255, 0.4);
+    --checkerboard-color: rgb(0 0 255 / 60%);
+    --cell-highlight-color: rgb(0 0 255 / 40%);
   }
 
   &[data-focused-state='self'] {
-    --checkerboard-color: rgb(255, 0, 0, 0.6);
-    --cell-highlight-color: rgb(231, 77, 204, 0.5);
+    --checkerboard-color: rgb(255 0 0 / 60%);
+    --cell-highlight-color: rgb(231 77 204 / 50%);
+  }
+
+  &[data-focused-state='region'] {
+    --checkerboard-color: rgb(var(--region-brown) / 80%);
+    --cell-highlight-color: rgb(var(--region-brown) / 50%);
+  }
+
+  &[data-focused-state='region-row'] {
+    --checkerboard-color: rgb(100 255 0/80%);
+    --cell-highlight-color: rgb(100 255 0 / 50%);
+  }
+
+  &[data-focused-state='region-col'] {
+    --checkerboard-color: rgb(100 100 255 / 80%);
+    --cell-highlight-color: rgb(100 100 255 / 50%);
   }
 
   &:nth-child(even) {

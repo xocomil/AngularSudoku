@@ -5,6 +5,7 @@ import {
   Input,
   NgModule,
 } from '@angular/core';
+import { CellState, createCellState } from '@sud/domain';
 import { CellComponentModule } from '../cell/cell.component';
 import { GridCellSelectPipeModule } from './grid-cell-select.pipe';
 
@@ -15,24 +16,12 @@ import { GridCellSelectPipeModule } from './grid-cell-select.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GridComponent {
-  @Input() grid: number[][] = [
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  ];
+  @Input() grid: CellState[][] = createGridState();
 
-  selected: [number, number] = [-1, -1];
+  selected: [number, number, [number, number]] = [-1, -1, [-1, -1]];
 
-  calcGridClass(x: number, y: number): string {
-    const gridX = Math.trunc(x / 3);
-    const gridY = Math.trunc(y / 3);
-    return `grid-${gridY}-${gridX}`;
+  calcRegion(x: number, y: number): [number, number] {
+    return calcGridRegion(x, y);
   }
 }
 
@@ -42,3 +31,22 @@ export class GridComponent {
   exports: [GridComponent],
 })
 export class GridComponentModule {}
+
+const calcGridRegion = (x: number, y: number): [number, number] => {
+  const gridX = Math.trunc(x / 3);
+  const gridY = Math.trunc(y / 3);
+  return [gridX, gridY];
+};
+
+const createGridState = (): CellState[][] => {
+  return Array.from({ length: 9 }, (_, row) =>
+    Array.from({ length: 9 }, (_, value) =>
+      createCellState({
+        row,
+        column: value,
+        region: calcGridRegion(value, row),
+        value: value + 1,
+      })
+    )
+  );
+};

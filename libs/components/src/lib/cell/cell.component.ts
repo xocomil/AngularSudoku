@@ -9,6 +9,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CellState, createCellState } from '@sud/domain';
 
 @Component({
   selector: 'sud-cell',
@@ -17,8 +18,11 @@ import { FormsModule } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CellComponent {
-  @Input() hasError = false;
-  @Input() cellValue: number | undefined;
+  @Input() cellState: CellState = createCellState({
+    row: -1,
+    column: -1,
+    region: [-1, -1],
+  });
 
   @HostBinding('style.--error-background')
   @Input()

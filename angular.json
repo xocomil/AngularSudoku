@@ -7,6 +7,7 @@
     "components": "libs/components",
     "components-e2e": "apps/components-e2e",
     "domain": "libs/domain",
+    "fast-analyzers": "libs/fast-analyzers",
     "grid-analyzers": "libs/grid-analyzers"
   }
 }

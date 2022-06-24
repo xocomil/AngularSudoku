@@ -8,12 +8,15 @@ describe('CellState', () => {
   describe('createCellState', () => {
     test('should create a default CellState', () => {
       const expected: CellState = {
+        row: 0,
+        column: 0,
+        region: [0, 0],
         value: undefined,
         readonly: false,
         valid: true,
       };
 
-      const result = createCellState();
+      const result = createCellState({ row: 0, column: 0, region: [0, 0] });
 
       expect(result).toEqual(expected);
     });
