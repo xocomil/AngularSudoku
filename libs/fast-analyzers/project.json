@@ -1,0 +1,25 @@
+{
+  "projectType": "library",
+  "sourceRoot": "libs/fast-analyzers/src",
+  "prefix": "sud",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/fast-analyzers"],
+      "options": {
+        "jestConfig": "libs/fast-analyzers/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/fast-analyzers/**/*.ts",
+          "libs/fast-analyzers/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}
