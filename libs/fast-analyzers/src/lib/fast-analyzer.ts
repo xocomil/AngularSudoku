@@ -1,6 +1,7 @@
 import { CellState } from '@sud/domain';
+import { RegionCoordinate } from '../../../domain/src/lib/region-coordinate';
 
-export const errorAnalyzer = (cells: CellState[]): [number, number][] => {
+export const errorAnalyzer = (cells: CellState[]): RegionCoordinate[] => {
   const valueMap = new Map<number, CellState[]>();
 
   cells.forEach((currentCell) => {
@@ -21,5 +22,5 @@ export const errorAnalyzer = (cells: CellState[]): [number, number][] => {
   return [...valueMap.values()]
     .filter((cellsWithValue) => cellsWithValue.length > 1)
     .flat()
-    .map((cell) => [cell.column, cell.row]);
+    .map((cell) => ({ column: cell.column, row: cell.row }));
 };
