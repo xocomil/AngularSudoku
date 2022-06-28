@@ -21,7 +21,7 @@ export class CellComponent {
   @Input() cellState: CellState = createCellState({
     row: -1,
     column: -1,
-    region: [-1, -1],
+    region: { column: -1, row: -1 },
   });
 
   @HostBinding('style.--error-background')

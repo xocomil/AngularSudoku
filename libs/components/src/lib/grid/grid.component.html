@@ -1,12 +1,12 @@
-<ng-container *ngFor="let row of grid; index as y">
+<ng-container *ngFor="let row of grid; index as rowIndex">
   <sud-cell
     #cell
-    *ngFor="let col of row; index as x"
-    [class]="['row-' + y, 'col-' + x, 'sudoku-cell']"
-    [cellState]="grid[y][x]"
+    *ngFor="let col of row; index as columnIndex"
+    [class]="['row-' + rowIndex, 'col-' + columnIndex, 'sudoku-cell']"
+    [cellState]="grid[rowIndex][columnIndex]"
     [focusState]="selected | gridCellSelect: cell.cellState"
-    (cellFocusReceived)="selected = [y, x, calcRegion(x, y)]"
-    (cellBlurReceived)="selected = [-1, -1, [-1, -1]]"
+    (cellFocusReceived)="cellFocused(cell.cellState)"
+    (cellBlurReceived)="selected = [-1, -1, { row: -1, column: -1 }]"
   >
   </sud-cell>
 </ng-container>
