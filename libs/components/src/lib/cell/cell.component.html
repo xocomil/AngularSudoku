@@ -3,5 +3,6 @@
     [(ngModel)]="cellState.value"
     (focus)="cellFocusReceived.emit()"
     (blur)="cellBlurReceived.emit()"
+    (ngModelChange)="cellValueChanged.emit()"
   />
 </div>
