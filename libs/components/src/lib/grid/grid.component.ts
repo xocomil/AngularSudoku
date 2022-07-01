@@ -29,21 +29,22 @@ export class GridComponent {
 
   cellFocused(cellState: CellState): void {
     this.selected = [cellState.row, cellState.column, cellState.region];
-
-    this.#analyzeErrors(cellState);
   }
 
   #analyzeErrors(cellState: CellState): void {
-    const rowErrors = errorAnalyzer(this.#getRowToAnalyze(cellState.row));
-    const columnErrors = errorAnalyzer(
-      this.#getColumnToAnalyze(cellState.column)
-    );
-    const regionErrors = errorAnalyzer(
-      this.#getRegionToAnalyze(cellState.region)
-    );
+    const errorCoordinates = this.#getErrors();
 
-    console.log('errors', rowErrors, columnErrors, regionErrors);
+    // Reset cell state
+    rowCells.forEach((cellState) => (cellState.valid = true));
+    columnCells.forEach((cellState) => (cellState.valid = true));
+    regionCells.forEach((cellState) => (cellState.valid = true));
 
+    // Getting errors
+    const rowErrors = errorAnalyzer(rowCells);
+    const columnErrors = errorAnalyzer(columnCells);
+    const regionErrors = errorAnalyzer(regionCells);
+
+    // Setting the error state of the cells
     rowErrors.forEach((gridCoordinate) => this.#setErrorState(gridCoordinate));
     columnErrors.forEach((gridCoordinate) =>
       this.#setErrorState(gridCoordinate)
@@ -51,6 +52,28 @@ export class GridComponent {
     regionErrors.forEach((gridCoordinate) =>
       this.#setErrorState(gridCoordinate)
     );
+  }
+
+  #getErrors(): RegionCoordinate[] {
+    const rowErrors = this.#getRowErrors();
+  }
+
+  #getRowErrors(): RegionCoordinate[] {
+    const errors = Array.from({ length: 9 }, (_, index) =>
+      errorAnalyzer(this.#getRowToAnalyze(index))
+    );
+
+    return errors.flat();
+  }
+
+  #getCellsToAnalyze(
+    cellState: CellState
+  ): Record<'rowCells' | 'columnCells' | 'regionCells', CellState[]> {
+    const rowCells = this.#getRowToAnalyze(cellState.row);
+    const columnCells = this.#getColumnToAnalyze(cellState.column);
+    const regionCells = this.#getRegionToAnalyze(cellState.region);
+
+    return { rowCells, columnCells, regionCells };
   }
 
   #setErrorState(coordinates: RegionCoordinate): void {
@@ -75,6 +98,10 @@ export class GridComponent {
       .map((row) => row.slice(columnStart, columnStart + ITEMS_TO_TAKE))
       .flat();
   }
+
+  cellValueChanged(cellState: CellState): void {
+    this.#analyzeErrors(cellState);
+  }
 }
 
 @NgModule({
@@ -97,7 +124,6 @@ const createGridState = (): CellState[][] => {
         row,
         column: value,
         region: calcGridRegion(value, row),
-        value: value + 1,
       })
     )
   );

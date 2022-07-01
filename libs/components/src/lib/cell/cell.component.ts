@@ -38,6 +38,7 @@ export class CellComponent {
 
   @Output() cellFocusReceived = new EventEmitter<void>();
   @Output() cellBlurReceived = new EventEmitter<void>();
+  @Output() cellValueChanged = new EventEmitter<void>();
 }
 
 @NgModule({
