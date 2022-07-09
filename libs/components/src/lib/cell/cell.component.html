@@ -1,4 +1,9 @@
 <div [class.error]="!cellState.valid">
+  <!--  <div class="debug">-->
+  <!--    row: {{ cellState.row }}<br />-->
+  <!--    col: {{ cellState.column }}<br />-->
+  <!--    reg: {{ cellState.region }}-->
+  <!--  </div>-->
   <input
     [(ngModel)]="cellState.value"
     (focus)="cellFocusReceived.emit()"
