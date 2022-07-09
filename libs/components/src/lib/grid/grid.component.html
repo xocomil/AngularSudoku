@@ -7,7 +7,7 @@
     [focusState]="selected | gridCellSelect: cell.cellState"
     (cellFocusReceived)="cellFocused(cell.cellState)"
     (cellBlurReceived)="selected = [-1, -1, -1]"
-    (cellValueChanged)="cellValueChanged(cell.cellState)"
+    (cellValueChanged)="cellValueChanged($event)"
   >
   </sud-cell>
 </ng-container>

@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CellState, createCellState } from '@sud/domain';
+import produce from 'immer';
 
 @Component({
   selector: 'sud-cell',
@@ -38,7 +39,15 @@ export class CellComponent {
 
   @Output() cellFocusReceived = new EventEmitter<void>();
   @Output() cellBlurReceived = new EventEmitter<void>();
-  @Output() cellValueChanged = new EventEmitter<void>();
+  @Output() cellValueChanged = new EventEmitter<CellState>();
+
+  inputValueChanged(newValue: number): void {
+    this.cellState = produce(this.cellState, (draft) => {
+      draft.value = newValue;
+    });
+
+    this.cellValueChanged.emit(this.cellState);
+  }
 }
 
 @NgModule({
