@@ -102,6 +102,10 @@ export class GridComponent {
 
     this.#analyzeErrors();
   }
+
+  cellNavigated(keyboardEvent: KeyboardEvent): void {
+    console.log('grid cellNavigated', keyboardEvent);
+  }
 }
 
 @NgModule({
