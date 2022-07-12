@@ -6,6 +6,7 @@
   --checkerboard-color: rgb(0 72 125 / 15%);
 
   display: block;
+  position: relative;
 
   * {
     box-sizing: border-box;
@@ -48,6 +49,18 @@
   }
 }
 
+div {
+  padding: 0.5rem;
+}
+
+input {
+  border-radius: 0.25rem;
+  padding: 0.2rem;
+  width: 100%;
+  outline: none;
+  border: none;
+}
+
 .error {
   background-color: var(--error-background);
 
@@ -58,12 +71,13 @@
   }
 }
 
-div {
-  padding: 0.5rem;
-}
-
-input {
-  border-radius: 0.25rem;
-  padding: 0.2rem;
-  width: 100%;
+.debug {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 0.3rem;
+  outline: 1px solid blue;
+  color: blue;
+  background-color: rgb(0 0 255 /25%);
+  padding: 0;
 }

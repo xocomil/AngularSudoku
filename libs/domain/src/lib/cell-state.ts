@@ -1,12 +1,10 @@
-import { RegionCoordinate } from './region-coordinate';
-
 export interface CellState {
   value?: number;
   valid: boolean;
   readonly: boolean;
   row: number;
   column: number;
-  region: RegionCoordinate;
+  region: number;
 }
 
 export const createCellState = ({

@@ -1,5 +1,5 @@
 import { NgModule, Pipe, PipeTransform } from '@angular/core';
-import { CellState, RegionCoordinate } from '@sud/domain';
+import { CellState } from '@sud/domain';
 import { FocusStates } from './models/focus-state';
 
 @Pipe({
@@ -7,14 +7,12 @@ import { FocusStates } from './models/focus-state';
 })
 export class GridCellSelectPipe implements PipeTransform {
   transform(
-    [row, col, region]: [number, number, RegionCoordinate],
+    [row, col, region]: [number, number, number],
     cellState: CellState
   ): FocusStates {
     if (cellState.column === col && cellState.row === row) return 'self';
 
-    const { column: regionColumn, row: regionRow } = cellState.region;
-
-    if (regionColumn === region.column && regionRow === region.row) {
+    if (cellState.region === region) {
       if (cellState.row === row) return 'region-row';
       if (cellState.column === col) return 'region-col';
 

@@ -5,8 +5,9 @@ import {
   Input,
   NgModule,
 } from '@angular/core';
-import { CellState, createCellState, RegionCoordinate } from '@sud/domain';
+import { CellState, createCellState } from '@sud/domain';
 import { errorAnalyzer } from '@sud/fast-analayzers';
+import produce from 'immer';
 import { CellComponentModule } from '../cell/cell.component';
 import { GridCellSelectPipeModule } from './grid-cell-select.pipe';
 
@@ -21,86 +22,85 @@ const ITEMS_TO_TAKE = 3 as const;
 export class GridComponent {
   @Input() grid: CellState[][] = createGridState();
 
-  selected: [number, number, RegionCoordinate] = [
-    -1,
-    -1,
-    { row: -1, column: -1 },
-  ];
+  selected: [number, number, number] = [-1, -1, -1];
 
   cellFocused(cellState: CellState): void {
     this.selected = [cellState.row, cellState.column, cellState.region];
   }
 
-  #analyzeErrors(cellState: CellState): void {
-    const errorCoordinates = this.#getErrors();
+  #analyzeErrors(): void {
+    this.#resetCellErrors();
 
-    // Reset cell state
-    rowCells.forEach((cellState) => (cellState.valid = true));
-    columnCells.forEach((cellState) => (cellState.valid = true));
-    regionCells.forEach((cellState) => (cellState.valid = true));
+    for (let i = 0; i < 9; i++) {
+      this.#checkRowForErrors(i);
+      this.#checkColumnForErrors(i);
+      this.#checkRegionForErrors(i);
+    }
+  }
 
-    // Getting errors
-    const rowErrors = errorAnalyzer(rowCells);
-    const columnErrors = errorAnalyzer(columnCells);
-    const regionErrors = errorAnalyzer(regionCells);
-
-    // Setting the error state of the cells
-    rowErrors.forEach((gridCoordinate) => this.#setErrorState(gridCoordinate));
-    columnErrors.forEach((gridCoordinate) =>
-      this.#setErrorState(gridCoordinate)
+  #resetCellErrors(): void {
+    this.grid.forEach((row) =>
+      row.forEach((cellState) => {
+        this.grid[cellState.row][cellState.column] = produce(
+          cellState,
+          (draft) => {
+            draft.valid = true;
+          }
+        );
+      })
     );
-    regionErrors.forEach((gridCoordinate) =>
-      this.#setErrorState(gridCoordinate)
-    );
   }
 
-  #getErrors(): RegionCoordinate[] {
-    const rowErrors = this.#getRowErrors();
-  }
-
-  #getRowErrors(): RegionCoordinate[] {
-    const errors = Array.from({ length: 9 }, (_, index) =>
-      errorAnalyzer(this.#getRowToAnalyze(index))
-    );
-
-    return errors.flat();
-  }
-
-  #getCellsToAnalyze(
-    cellState: CellState
-  ): Record<'rowCells' | 'columnCells' | 'regionCells', CellState[]> {
-    const rowCells = this.#getRowToAnalyze(cellState.row);
-    const columnCells = this.#getColumnToAnalyze(cellState.column);
-    const regionCells = this.#getRegionToAnalyze(cellState.region);
-
-    return { rowCells, columnCells, regionCells };
-  }
-
-  #setErrorState(coordinates: RegionCoordinate): void {
-    this.grid[coordinates.row][coordinates.column].valid = false;
+  #checkRowForErrors(row: number): void {
+    this.#markCellsWithErrors(this.#getRowToAnalyze(row));
   }
 
   #getRowToAnalyze(row: number): CellState[] {
     return this.grid[row];
   }
 
+  #checkColumnForErrors(column: number): void {
+    this.#markCellsWithErrors(this.#getColumnToAnalyze(column));
+  }
+
   #getColumnToAnalyze(column: number): CellState[] {
     return this.grid.map((row) => row[column]);
   }
 
-  #getRegionToAnalyze(coordinates: RegionCoordinate): CellState[] {
-    const rowStart = coordinates.row * ITEMS_TO_TAKE;
-    const columnStart = coordinates.column * ITEMS_TO_TAKE;
+  #checkRegionForErrors(region: number): void {
+    this.#markCellsWithErrors(this.#getRegionToAnalyze(region));
+  }
 
-    const rows = this.grid.slice(rowStart, rowStart + ITEMS_TO_TAKE);
+  #getRegionToAnalyze(region: number): CellState[] {
+    const column = (region % 3) * 3;
+    const row = region - (region % 3);
 
-    return rows
-      .map((row) => row.slice(columnStart, columnStart + ITEMS_TO_TAKE))
-      .flat();
+    const regionCells = [];
+
+    for (let columnIndex = 0; columnIndex < ITEMS_TO_TAKE; columnIndex++) {
+      for (let rowIndex = 0; rowIndex < ITEMS_TO_TAKE; rowIndex++) {
+        regionCells.push(this.grid[row + rowIndex][column + columnIndex]);
+      }
+    }
+
+    return regionCells;
+  }
+
+  #markCellsWithErrors(cells: CellState[]): void {
+    errorAnalyzer(cells).forEach((cellState) => {
+      this.grid[cellState.row][cellState.column] = produce(
+        cellState,
+        (draft) => {
+          draft.valid = false;
+        }
+      );
+    });
   }
 
   cellValueChanged(cellState: CellState): void {
-    this.#analyzeErrors(cellState);
+    this.grid[cellState.row][cellState.column] = cellState;
+
+    this.#analyzeErrors();
   }
 }
 
@@ -111,10 +111,10 @@ export class GridComponent {
 })
 export class GridComponentModule {}
 
-const calcGridRegion = (col: number, row: number): RegionCoordinate => {
+const calcGridRegion = (col: number, row: number): number => {
   const gridColumn = Math.trunc(col / 3);
-  const gridRow = Math.trunc(row / 3);
-  return { column: gridColumn, row: gridRow };
+  const gridRow = row - (row % 3);
+  return gridColumn + gridRow;
 };
 
 const createGridState = (): CellState[][] => {

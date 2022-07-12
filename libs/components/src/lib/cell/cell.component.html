@@ -1,8 +1,14 @@
 <div [class.error]="!cellState.valid">
+  <!--  <div class="debug">-->
+  <!--    row: {{ cellState.row }}<br />-->
+  <!--    col: {{ cellState.column }}<br />-->
+  <!--    reg: {{ cellState.region }}<br />-->
+  <!--    valid: {{ cellState.valid }}-->
+  <!--  </div>-->
   <input
-    [(ngModel)]="cellState.value"
+    [ngModel]="cellState.value"
     (focus)="cellFocusReceived.emit()"
     (blur)="cellBlurReceived.emit()"
-    (ngModelChange)="cellValueChanged.emit()"
+    (ngModelChange)="inputValueChanged($event)"
   />
 </div>
