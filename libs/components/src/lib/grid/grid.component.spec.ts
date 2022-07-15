@@ -1,6 +1,6 @@
 import { createComponentFactory } from '@ngneat/spectator';
-import { CellComponentModule } from '@sud/components';
 import { MockModule } from 'ng-mocks';
+import { CellComponentModule } from '../cell/cell.component';
 import { GridCellSelectPipeModule } from './grid-cell-select.pipe';
 import { GridComponent } from './grid.component';
 
