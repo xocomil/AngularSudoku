@@ -15,7 +15,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { CellState, createCellState } from '@sud/domain';
 import produce from 'immer';
-import { filter, fromEvent, Subject, Subscription, tap } from 'rxjs';
+import { filter, fromEvent, map, Subject, Subscription, tap } from 'rxjs';
 
 @Component({
   selector: 'sud-cell',
@@ -27,7 +27,7 @@ export class CellComponent implements OnInit, OnDestroy {
   readonly #allowedValues = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
   readonly #navigationValues = ['w', 'a', 's', 'd'];
   readonly #subs = new Subscription();
-  readonly #navigationKey$ = new Subject<KeyboardEvent>();
+  readonly #navigationKey$ = new Subject<string>();
 
   @ViewChild('cellInput', { static: true })
   cellInput?: ElementRef<HTMLInputElement>;
@@ -62,7 +62,10 @@ export class CellComponent implements OnInit, OnDestroy {
         fromEvent<KeyboardEvent>(this.cellInput.nativeElement, 'keypress')
           .pipe(
             tap((event) => this.handleKeyEvent(event)),
-            filter((event) => this.#navigationValues.includes(event.key))
+            filter((event) =>
+              this.#navigationValues.includes(event.key.toLowerCase())
+            ),
+            map((event) => event.key.toLowerCase())
           )
           .subscribe(this.#navigationKey$)
       );
@@ -84,7 +87,6 @@ export class CellComponent implements OnInit, OnDestroy {
   }
 
   protected handleKeyEvent(event: KeyboardEvent) {
-    console.log('event', event);
     event.preventDefault();
 
     if (this.#allowedValues.includes(event.key)) {

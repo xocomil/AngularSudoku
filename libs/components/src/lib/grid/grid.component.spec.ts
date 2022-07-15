@@ -1,24 +1,21 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { createComponentFactory } from '@ngneat/spectator';
+import { MockModule } from 'ng-mocks';
+import { CellComponentModule } from '../cell/cell.component';
+import { GridCellSelectPipeModule } from './grid-cell-select.pipe';
 import { GridComponent } from './grid.component';
 
 describe('GridComponent', () => {
-  let component: GridComponent;
-  let fixture: ComponentFixture<GridComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [GridComponent],
-    }).compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(GridComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  const createComponent = createComponentFactory({
+    component: GridComponent,
+    imports: [
+      MockModule(CellComponentModule),
+      MockModule(GridCellSelectPipeModule),
+    ],
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    const spectator = createComponent();
+
+    expect(spectator).toBeTruthy();
   });
 });

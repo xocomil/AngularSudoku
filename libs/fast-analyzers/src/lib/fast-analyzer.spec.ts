@@ -9,7 +9,7 @@ describe('errorAnalyzer', () => {
       createCellState({
         row,
         column: value,
-        region: [0, 0],
+        region: 0,
         value: value + 1,
       })
     );
@@ -26,7 +26,7 @@ describe('errorAnalyzer', () => {
       createCellState({
         row,
         column: value,
-        region: [0, 0],
+        region: 0,
         value: value + 1,
       })
     );
@@ -35,9 +35,6 @@ describe('errorAnalyzer', () => {
 
     const result = errorAnalyzer(testArray);
 
-    expect(result).toEqual([
-      [0, 2],
-      [8, 2],
-    ]);
+    expect(result).toEqual([testArray[0], testArray[8]]);
   });
 });

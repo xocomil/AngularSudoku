@@ -1,24 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { FormsModule } from '@angular/forms';
+import { createComponentFactory } from '@ngneat/spectator';
 import { CellComponent } from './cell.component';
 
 describe('CellComponent', () => {
-  let component: CellComponent;
-  let fixture: ComponentFixture<CellComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [CellComponent],
-    }).compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CellComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  const createComponent = createComponentFactory({
+    component: CellComponent,
+    imports: [FormsModule],
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    const spectator = createComponent();
+
+    expect(spectator).toBeTruthy();
   });
 });
