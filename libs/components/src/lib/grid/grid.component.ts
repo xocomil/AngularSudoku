@@ -8,7 +8,7 @@ import {
 import { CellState, createCellState } from '@sud/domain';
 import { errorAnalyzer } from '@sud/fast-analayzers';
 import produce from 'immer';
-import { CellComponentModule } from '../cell/cell.component';
+import { CellComponent, CellComponentModule } from '../cell/cell.component';
 import { GridCellSelectPipeModule } from './grid-cell-select.pipe';
 
 const ITEMS_TO_TAKE = 3 as const;
@@ -103,8 +103,43 @@ export class GridComponent {
     this.#analyzeErrors();
   }
 
-  cellNavigated(keyboardEvent: KeyboardEvent): void {
-    console.log('grid cellNavigated', keyboardEvent);
+  cellNavigated(keyCode: string, cell: CellComponent): void {
+    console.log('grid cellNavigated', keyCode);
+
+    switch (keyCode) {
+      case 'w':
+        if (cell.cellState.row > 0) {
+          console.log('move up');
+
+          this.#navigateToCell(cell.cellState.column, cell.cellState.row - 1);
+        }
+        break;
+      case 'a':
+        if (cell.cellState.column > 0) {
+          console.log('move left');
+        }
+        break;
+      case 's':
+        if (cell.cellState.row < 8) {
+          console.log('move down');
+        }
+        break;
+      case 'd':
+        if (cell.cellState.column < 8) {
+          console.log('move right');
+        }
+        break;
+    }
+  }
+
+  #navigateToCell(column: number, row: number) {}
+
+  rowTrackByFunction(_index: number, row: CellState[]): number {
+    return row[0].row;
+  }
+
+  columnTrackByFunction(_index: number, cellState: CellState): number {
+    return cellState.row * 10 + cellState.column;
   }
 }
 
