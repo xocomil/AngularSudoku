@@ -13,7 +13,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CellState, createCellState } from '@sud/domain';
+import {
+  CellState,
+  createCellState,
+  gridDirectionFromKeyboard,
+} from '@sud/domain';
+import { logObservable } from '@sud/rxjs-operators';
 import produce from 'immer';
 import { filter, fromEvent, map, Subject, Subscription, tap } from 'rxjs';
 
@@ -58,14 +63,22 @@ export class CellComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.cellInput) {
+      const keydown$ = fromEvent<KeyboardEvent>(
+        this.cellInput.nativeElement,
+        'keydown'
+      ).pipe(
+        logObservable('keydown$'),
+        tap((event) => this.handleKeyEvent(event)),
+        filter((event) =>
+          this.#navigationValues.includes(event.key.toLowerCase())
+        )
+      );
+
       this.#subs.add(
-        fromEvent<KeyboardEvent>(this.cellInput.nativeElement, 'keypress')
+        keydown$
           .pipe(
-            tap((event) => this.handleKeyEvent(event)),
-            filter((event) =>
-              this.#navigationValues.includes(event.key.toLowerCase())
-            ),
-            map((event) => event.key.toLowerCase())
+            logObservable('merged'),
+            map((event) => gridDirectionFromKeyboard(event.key))
           )
           .subscribe(this.#navigationKey$)
       );

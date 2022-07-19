@@ -1,0 +1,25 @@
+{
+  "projectType": "library",
+  "sourceRoot": "libs/rxjs-operators/src",
+  "prefix": "sud",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/rxjs-operators"],
+      "options": {
+        "jestConfig": "libs/rxjs-operators/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/rxjs-operators/**/*.ts",
+          "libs/rxjs-operators/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}
