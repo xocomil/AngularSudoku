@@ -16,11 +16,12 @@ import { FormsModule } from '@angular/forms';
 import {
   CellState,
   createCellState,
+  GridDirection,
   gridDirectionFromKeyboard,
 } from '@sud/domain';
-import { logObservable } from '@sud/rxjs-operators';
 import produce from 'immer';
 import { filter, fromEvent, map, Subject, Subscription, tap } from 'rxjs';
+import { CellInputFocusDirectiveModule } from './cell-input-focus.directive';
 
 @Component({
   selector: 'sud-cell',
@@ -41,7 +42,7 @@ export class CellComponent implements OnInit, OnDestroy {
     'arrowdown',
   ];
   readonly #subs = new Subscription();
-  readonly #navigationKey$ = new Subject<string>();
+  readonly #navigationKey$ = new Subject<GridDirection>();
 
   @ViewChild('cellInput', { static: true })
   cellInput?: ElementRef<HTMLInputElement>;
@@ -76,7 +77,6 @@ export class CellComponent implements OnInit, OnDestroy {
         this.cellInput.nativeElement,
         'keydown'
       ).pipe(
-        logObservable('keydown$'),
         tap((event) => this.handleKeyEvent(event)),
         filter((event) =>
           this.#navigationValues.includes(event.key.toLowerCase())
@@ -85,10 +85,7 @@ export class CellComponent implements OnInit, OnDestroy {
 
       this.#subs.add(
         keydown$
-          .pipe(
-            logObservable('merged'),
-            map((event) => gridDirectionFromKeyboard(event.key))
-          )
+          .pipe(map((event) => gridDirectionFromKeyboard(event.key)))
           .subscribe(this.#navigationKey$)
       );
     }
@@ -126,7 +123,7 @@ export class CellComponent implements OnInit, OnDestroy {
 }
 
 @NgModule({
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CellInputFocusDirectiveModule],
   declarations: [CellComponent],
   exports: [CellComponent],
 })

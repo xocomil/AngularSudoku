@@ -5,13 +5,21 @@ import {
   Input,
   NgModule,
 } from '@angular/core';
-import { CellState, createCellState } from '@sud/domain';
+import { CellState, createCellState, GridDirection } from '@sud/domain';
 import { errorAnalyzer } from '@sud/fast-analayzers';
 import produce from 'immer';
 import { CellComponent, CellComponentModule } from '../cell/cell.component';
 import { GridCellSelectPipeModule } from './grid-cell-select.pipe';
 
 const ITEMS_TO_TAKE = 3 as const;
+
+export function write<S>(updater: (state: S) => void): (state: S) => S {
+  return function (state) {
+    return produce(state, (draft) => {
+      updater(draft as S);
+    });
+  };
+}
 
 @Component({
   selector: 'sud-grid',
@@ -39,14 +47,14 @@ export class GridComponent {
   }
 
   #resetCellErrors(): void {
+    const makeCellValidTrue = write((draft: CellState) => {
+      draft.valid = true;
+    });
+
     this.grid.forEach((row) =>
       row.forEach((cellState) => {
-        this.grid[cellState.row][cellState.column] = produce(
-          cellState,
-          (draft) => {
-            draft.valid = true;
-          }
-        );
+        this.grid[cellState.row][cellState.column] =
+          makeCellValidTrue(cellState);
       })
     );
   }
@@ -87,13 +95,13 @@ export class GridComponent {
   }
 
   #markCellsWithErrors(cells: CellState[]): void {
+    const makeCellValidFalse = write((draft: CellState) => {
+      draft.valid = false;
+    });
+
     errorAnalyzer(cells).forEach((cellState) => {
-      this.grid[cellState.row][cellState.column] = produce(
-        cellState,
-        (draft) => {
-          draft.valid = false;
-        }
-      );
+      this.grid[cellState.row][cellState.column] =
+        makeCellValidFalse(cellState);
     });
   }
 
@@ -103,36 +111,48 @@ export class GridComponent {
     this.#analyzeErrors();
   }
 
-  cellNavigated(keyCode: string, cell: CellComponent): void {
+  cellNavigated(keyCode: GridDirection, cell: CellComponent): void {
     console.log('grid cellNavigated', keyCode);
 
     switch (keyCode) {
-      case 'w':
+      case GridDirection.Up:
         if (cell.cellState.row > 0) {
           console.log('move up');
 
           this.#navigateToCell(cell.cellState.column, cell.cellState.row - 1);
         }
         break;
-      case 'a':
+      case GridDirection.Left:
         if (cell.cellState.column > 0) {
           console.log('move left');
+
+          this.#navigateToCell(cell.cellState.column - 1, cell.cellState.row);
         }
         break;
-      case 's':
+      case GridDirection.Down:
         if (cell.cellState.row < 8) {
           console.log('move down');
+
+          this.#navigateToCell(cell.cellState.column, cell.cellState.row + 1);
         }
         break;
-      case 'd':
+      case GridDirection.Right:
         if (cell.cellState.column < 8) {
           console.log('move right');
+
+          this.#navigateToCell(cell.cellState.column + 1, cell.cellState.row);
         }
         break;
     }
   }
 
-  #navigateToCell(column: number, row: number) {}
+  #navigateToCell(column: number, row: number) {
+    console.log('navigating to', column, row);
+
+    this.grid[row][column] = write((draft: CellState) => {
+      draft.focusOnInput = true;
+    })(this.grid[row][column]);
+  }
 
   rowTrackByFunction(_index: number, row: CellState[]): number {
     return row[0].row;
