@@ -60,7 +60,7 @@
     "eslint-plugin-jest": "^26.6.0",
     "jest": "27.5.1",
     "jest-preset-angular": "11.1.2",
-    "nx": "14.4.2",
+    "nx": "14.4.3",
     "prettier": "2.7.1",
     "stylelint": "^14.9.1",
     "stylelint-config-prettier": "^9.0.3",
