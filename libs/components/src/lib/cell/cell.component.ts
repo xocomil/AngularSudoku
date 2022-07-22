@@ -30,7 +30,16 @@ import { filter, fromEvent, map, Subject, Subscription, tap } from 'rxjs';
 })
 export class CellComponent implements OnInit, OnDestroy {
   readonly #allowedValues = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
-  readonly #navigationValues = ['w', 'a', 's', 'd'];
+  readonly #navigationValues = [
+    'w',
+    'a',
+    's',
+    'd',
+    'arrowleft',
+    'arrowright',
+    'arrowup',
+    'arrowdown',
+  ];
   readonly #subs = new Subscription();
   readonly #navigationKey$ = new Subject<string>();
 

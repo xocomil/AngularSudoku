@@ -12,6 +12,10 @@ const directionMap = new Map<string, GridDirection>([
   ['a', GridDirection.Left],
   ['s', GridDirection.Down],
   ['d', GridDirection.Right],
+  ['arrowup', GridDirection.Up],
+  ['arrowdown', GridDirection.Down],
+  ['arrowleft', GridDirection.Left],
+  ['arrowright', GridDirection.Right],
 ]);
 
 export const gridDirectionFromKeyboard = (
