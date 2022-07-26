@@ -5,7 +5,6 @@ export interface CellState {
   row: number;
   column: number;
   region: number;
-  focusOnInput?: boolean;
 }
 
 export const createCellState = ({

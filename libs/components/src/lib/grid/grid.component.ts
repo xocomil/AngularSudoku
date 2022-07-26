@@ -31,12 +31,11 @@ export class GridComponent {
   @Input() grid: CellState[][] = createGridState();
 
   selected: [number, number, number] = [-1, -1, -1];
+  nextToFocus: [number, number, number] = [-1, -1, -1];
 
   cellFocused(cellState: CellState): void {
     this.selected = [cellState.row, cellState.column, cellState.region];
-
-    this.grid[cellState.row][cellState.column] =
-      makeCellFocusOnInputFalse(cellState);
+    this.nextToFocus = [-1, -1, -1];
   }
 
   #analyzeErrors(): void {
@@ -142,9 +141,13 @@ export class GridComponent {
   }
 
   #navigateToCell(column: number, row: number) {
-    this.grid[row][column] = write((draft: CellState) => {
-      draft.focusOnInput = true;
-    })(this.grid[row][column]);
+    const nextToFocus = this.grid[row][column];
+
+    this.nextToFocus = [
+      nextToFocus.row,
+      nextToFocus.column,
+      nextToFocus.region,
+    ];
   }
 
   rowTrackByFunction(_index: number, row: CellState[]): number {
@@ -184,7 +187,3 @@ const createGridState = (): CellState[][] => {
     )
   );
 };
-
-const makeCellFocusOnInputFalse = write((draft: CellState) => {
-  draft.focusOnInput = false;
-});

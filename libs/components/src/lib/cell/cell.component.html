@@ -1,5 +1,6 @@
 <div [class.error]="!cellState.valid">
   <!--  <div class="debug">-->
+  <!--    nextFocusState: {{ nextFocusState }} <br />-->
   <!--    focusOnInput: {{ cellState.focusOnInput }}<br />-->
   <!--      coords: ({{ cellState.column }},-->
   <!--    row: {{ cellState.row }}<br />-->
@@ -10,9 +11,9 @@
   <!--  </div>-->
   <input
     #cellInput
-    [sudCellInputFocus]="cellState.focusOnInput"
     [ngModel]="cellState.value"
     (focus)="cellFocusReceived.emit()"
     (blur)="cellBlurReceived.emit()"
+    autocomplete="none"
   />
 </div>

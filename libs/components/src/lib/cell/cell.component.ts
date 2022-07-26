@@ -65,6 +65,21 @@ export class CellComponent implements OnInit, OnDestroy {
   @Input()
   focusState = '';
 
+  #nextFocusState = '';
+
+  @Input()
+  get nextFocusState(): string {
+    return this.#nextFocusState;
+  }
+
+  set nextFocusState(value: string) {
+    this.#nextFocusState = value;
+
+    if (this.#nextFocusState === 'self' && this.cellInput) {
+      this.cellInput.nativeElement.focus();
+    }
+  }
+
   @Output() cellFocusReceived = new EventEmitter<void>();
   @Output() cellBlurReceived = new EventEmitter<void>();
   @Output() cellValueChanged = new EventEmitter<number>();

@@ -10,6 +10,7 @@
     "
     [class]="['row-' + rowIndex, 'col-' + columnIndex, 'sudoku-cell']"
     [cellState]="grid[rowIndex][columnIndex]"
+    [nextFocusState]="nextToFocus | gridCellSelect: cell.cellState"
     [focusState]="selected | gridCellSelect: cell.cellState"
     (cellFocusReceived)="cellFocused(cell.cellState)"
     (cellBlurReceived)="cellBlurred()"
