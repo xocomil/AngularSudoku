@@ -12,8 +12,8 @@
     [cellState]="grid[rowIndex][columnIndex]"
     [focusState]="selected | gridCellSelect: cell.cellState"
     (cellFocusReceived)="cellFocused(cell.cellState)"
-    (cellBlurReceived)="selected = [-1, -1, -1]"
-    (cellValueChanged)="cellValueChanged($event)"
+    (cellBlurReceived)="cellBlurred()"
+    (cellValueChanged)="cellValueChanged($event, cell.cellState)"
     (cellNavigated)="cellNavigated($event, cell)"
   >
   </sud-cell>

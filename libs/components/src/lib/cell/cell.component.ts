@@ -19,7 +19,6 @@ import {
   GridDirection,
   gridDirectionFromKeyboard,
 } from '@sud/domain';
-import produce from 'immer';
 import { filter, fromEvent, map, Subject, Subscription, tap } from 'rxjs';
 import { CellInputFocusDirectiveModule } from './cell-input-focus.directive';
 
@@ -68,7 +67,7 @@ export class CellComponent implements OnInit, OnDestroy {
 
   @Output() cellFocusReceived = new EventEmitter<void>();
   @Output() cellBlurReceived = new EventEmitter<void>();
-  @Output() cellValueChanged = new EventEmitter<CellState>();
+  @Output() cellValueChanged = new EventEmitter<number>();
   @Output() cellNavigated = this.#navigationKey$;
 
   ngOnInit(): void {
@@ -114,11 +113,7 @@ export class CellComponent implements OnInit, OnDestroy {
   }
 
   #inputValueChanged(newValue: string): void {
-    this.cellState = produce(this.cellState, (draft) => {
-      draft.value = this.#getNumericValue(newValue);
-    });
-
-    this.cellValueChanged.emit(this.cellState);
+    this.cellValueChanged.emit(this.#getNumericValue(newValue));
   }
 }
 

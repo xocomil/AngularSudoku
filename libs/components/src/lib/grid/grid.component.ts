@@ -34,6 +34,9 @@ export class GridComponent {
 
   cellFocused(cellState: CellState): void {
     this.selected = [cellState.row, cellState.column, cellState.region];
+
+    this.grid[cellState.row][cellState.column] =
+      makeCellFocusOnInputFalse(cellState);
   }
 
   #analyzeErrors(): void {
@@ -105,41 +108,33 @@ export class GridComponent {
     });
   }
 
-  cellValueChanged(cellState: CellState): void {
-    this.grid[cellState.row][cellState.column] = cellState;
+  cellValueChanged(newValue: number, cellState: CellState): void {
+    this.grid[cellState.row][cellState.column] = produce(cellState, (draft) => {
+      draft.value = newValue;
+    });
 
     this.#analyzeErrors();
   }
 
   cellNavigated(keyCode: GridDirection, cell: CellComponent): void {
-    console.log('grid cellNavigated', keyCode);
-
     switch (keyCode) {
       case GridDirection.Up:
         if (cell.cellState.row > 0) {
-          console.log('move up');
-
           this.#navigateToCell(cell.cellState.column, cell.cellState.row - 1);
         }
         break;
       case GridDirection.Left:
         if (cell.cellState.column > 0) {
-          console.log('move left');
-
           this.#navigateToCell(cell.cellState.column - 1, cell.cellState.row);
         }
         break;
       case GridDirection.Down:
         if (cell.cellState.row < 8) {
-          console.log('move down');
-
           this.#navigateToCell(cell.cellState.column, cell.cellState.row + 1);
         }
         break;
       case GridDirection.Right:
         if (cell.cellState.column < 8) {
-          console.log('move right');
-
           this.#navigateToCell(cell.cellState.column + 1, cell.cellState.row);
         }
         break;
@@ -147,8 +142,6 @@ export class GridComponent {
   }
 
   #navigateToCell(column: number, row: number) {
-    console.log('navigating to', column, row);
-
     this.grid[row][column] = write((draft: CellState) => {
       draft.focusOnInput = true;
     })(this.grid[row][column]);
@@ -160,6 +153,10 @@ export class GridComponent {
 
   columnTrackByFunction(_index: number, cellState: CellState): number {
     return cellState.row * 10 + cellState.column;
+  }
+
+  cellBlurred(): void {
+    this.selected = [-1, -1, -1];
   }
 }
 
@@ -187,3 +184,7 @@ const createGridState = (): CellState[][] => {
     )
   );
 };
+
+const makeCellFocusOnInputFalse = write((draft: CellState) => {
+  draft.focusOnInput = false;
+});
