@@ -20,7 +20,6 @@ import {
   gridDirectionFromKeyboard,
 } from '@sud/domain';
 import { filter, fromEvent, map, Subject, Subscription, tap } from 'rxjs';
-import { CellInputFocusDirectiveModule } from './cell-input-focus.directive';
 
 @Component({
   selector: 'sud-cell',
@@ -133,7 +132,7 @@ export class CellComponent implements OnInit, OnDestroy {
 }
 
 @NgModule({
-  imports: [CommonModule, FormsModule, CellInputFocusDirectiveModule],
+  imports: [CommonModule, FormsModule],
   declarations: [CellComponent],
   exports: [CellComponent],
 })
