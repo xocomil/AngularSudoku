@@ -1,15 +1,12 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  NgModule,
-} from '@angular/core';
-import { CellState, createCellState, GridDirection } from '@sud/domain';
+import { ChangeDetectionStrategy, Component, NgModule } from '@angular/core';
+import { PushModule } from '@ngrx/component';
+import { CellState, GridDirection } from '@sud/domain';
 import { errorAnalyzer } from '@sud/fast-analayzers';
 import produce from 'immer';
 import { CellComponent, CellComponentModule } from '../cell/cell.component';
 import { GridCellSelectPipeModule } from './grid-cell-select.pipe';
+import { GridStore } from './store/grid.store';
 
 const ITEMS_TO_TAKE = 3 as const;
 
@@ -28,10 +25,12 @@ export function write<S>(updater: (state: S) => void): (state: S) => S {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GridComponent {
-  @Input() grid: CellState[][] = createGridState();
+  readonly grid$ = this._gridStore.grid$;
 
   selected: [number, number, number] = [-1, -1, -1];
   nextToFocus: [number, number, number] = [-1, -1, -1];
+
+  constructor(private readonly _gridStore: GridStore) {}
 
   cellFocused(cellState: CellState): void {
     this.selected = [cellState.row, cellState.column, cellState.region];
@@ -164,26 +163,13 @@ export class GridComponent {
 }
 
 @NgModule({
-  imports: [CommonModule, CellComponentModule, GridCellSelectPipeModule],
+  imports: [
+    CommonModule,
+    CellComponentModule,
+    GridCellSelectPipeModule,
+    PushModule,
+  ],
   declarations: [GridComponent],
   exports: [GridComponent],
 })
 export class GridComponentModule {}
-
-const calcGridRegion = (col: number, row: number): number => {
-  const gridColumn = Math.trunc(col / 3);
-  const gridRow = row - (row % 3);
-  return gridColumn + gridRow;
-};
-
-const createGridState = (): CellState[][] => {
-  return Array.from({ length: 9 }, (_, row) =>
-    Array.from({ length: 9 }, (_, value) =>
-      createCellState({
-        row,
-        column: value,
-        region: calcGridRegion(value, row),
-      })
-    )
-  );
-};

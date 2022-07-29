@@ -1,5 +1,9 @@
 <ng-container
-  *ngFor="let row of grid; index as rowIndex; trackBy: rowTrackByFunction"
+  *ngFor="
+    let row of grid$ | ngrxPush;
+    index as rowIndex;
+    trackBy: rowTrackByFunction
+  "
 >
   <sud-cell
     #cell
@@ -9,12 +13,12 @@
       trackBy: columnTrackByFunction
     "
     [class]="['row-' + rowIndex, 'col-' + columnIndex, 'sudoku-cell']"
-    [cellState]="grid[rowIndex][columnIndex]"
-    [nextFocusState]="nextToFocus | gridCellSelect: cell.cellState"
-    [focusState]="selected | gridCellSelect: cell.cellState"
-    (cellFocusReceived)="cellFocused(cell.cellState)"
+    [cellState]="col"
+    [nextFocusState]="nextToFocus | gridCellSelect: col"
+    [focusState]="selected | gridCellSelect: col"
+    (cellFocusReceived)="cellFocused(col)"
     (cellBlurReceived)="cellBlurred()"
-    (cellValueChanged)="cellValueChanged($event, cell.cellState)"
+    (cellValueChanged)="cellValueChanged($event, col)"
     (cellNavigated)="cellNavigated($event, cell)"
   >
   </sud-cell>
