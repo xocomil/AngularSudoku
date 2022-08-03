@@ -64,18 +64,22 @@ export class CellComponent implements OnInit, OnDestroy {
   @Input()
   focusState = '';
 
-  #nextFocusState = '';
+  #nextToFocus?: readonly [number, number];
 
   @Input()
-  get nextFocusState(): string {
-    return this.#nextFocusState;
+  get nextToFocus(): readonly [number, number] | undefined {
+    return this.#nextToFocus;
   }
 
-  set nextFocusState(value: string) {
-    this.#nextFocusState = value;
+  set nextToFocus(value: readonly [number, number] | undefined) {
+    this.#nextToFocus = value;
 
-    if (this.#nextFocusState === 'self' && this.cellInput) {
-      this.cellInput.nativeElement.focus();
+    if (this.#nextToFocus) {
+      const [row, column] = this.#nextToFocus;
+
+      if (row === this.cellState.row && column === this.cellState.column) {
+        this.cellInput?.nativeElement.focus();
+      }
     }
   }
 

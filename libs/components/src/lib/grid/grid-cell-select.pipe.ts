@@ -7,19 +7,23 @@ import { FocusStates } from './models/focus-state';
 })
 export class GridCellSelectPipe implements PipeTransform {
   transform(
-    [row, col, region]: [number, number, number],
+    selected: readonly [number, number, number] | undefined,
     cellState: CellState
   ): FocusStates {
-    if (cellState.column === col && cellState.row === row) return 'self';
+    if (selected) {
+      const [row, col, region] = selected;
 
-    if (cellState.region === region) {
-      if (cellState.row === row) return 'region-row';
-      if (cellState.column === col) return 'region-col';
+      if (cellState.column === col && cellState.row === row) return 'self';
 
-      return 'region';
+      if (cellState.region === region) {
+        if (cellState.row === row) return 'region-row';
+        if (cellState.column === col) return 'region-col';
+
+        return 'region';
+      }
+      if (cellState.column === col) return 'col';
+      if (cellState.row === row) return 'row';
     }
-    if (cellState.column === col) return 'col';
-    if (cellState.row === row) return 'row';
 
     return '';
   }
