@@ -1,16 +1,13 @@
-import { TestBed } from '@angular/core/testing';
+import { createServiceFactory } from '@ngneat/spectator';
 
 import { GridStore } from './grid.store';
 
-describe('GridState.StoreService', () => {
-  let service: GridStore;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(GridStore);
-  });
+describe('GridStore', () => {
+  const createService = createServiceFactory({ service: GridStore });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    const spectator = createService();
+
+    expect(spectator).toBeTruthy();
   });
 });
