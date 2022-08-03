@@ -1,4 +1,5 @@
 import { createComponentFactory } from '@ngneat/spectator';
+import { PushModule } from '@ngrx/component';
 import { MockModule } from 'ng-mocks';
 import { CellComponentModule } from '../cell/cell.component';
 import { GridCellSelectPipeModule } from './grid-cell-select.pipe';
@@ -10,6 +11,7 @@ describe('GridComponent', () => {
     imports: [
       MockModule(CellComponentModule),
       MockModule(GridCellSelectPipeModule),
+      PushModule,
     ],
   });
 
