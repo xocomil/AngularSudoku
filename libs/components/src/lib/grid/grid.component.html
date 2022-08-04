@@ -1,21 +1,25 @@
 <ng-container
-  *ngFor="let row of grid; index as rowIndex; trackBy: rowTrackByFunction"
+  *ngFor="
+    let row of grid$ | ngrxPush;
+    index as rowIndex;
+    trackBy: rowTrackByFunction
+  "
 >
   <sud-cell
     #cell
     *ngFor="
-      let col of row;
+      let cellState of row;
       index as columnIndex;
       trackBy: columnTrackByFunction
     "
     [class]="['row-' + rowIndex, 'col-' + columnIndex, 'sudoku-cell']"
-    [cellState]="grid[rowIndex][columnIndex]"
-    [nextFocusState]="nextToFocus | gridCellSelect: cell.cellState"
-    [focusState]="selected | gridCellSelect: cell.cellState"
-    (cellFocusReceived)="cellFocused(cell.cellState)"
+    [cellState]="cellState"
+    [focusState]="selected$ | ngrxPush | gridCellSelect: cellState"
+    [nextToFocus]="nextToFocus$ | ngrxPush"
+    (cellFocusReceived)="cellFocused(cellState)"
     (cellBlurReceived)="cellBlurred()"
-    (cellValueChanged)="cellValueChanged($event, cell.cellState)"
-    (cellNavigated)="cellNavigated($event, cell)"
+    (cellValueChanged)="cellValueChanged($event, cellState)"
+    (cellNavigated)="cellNavigated($event, cellState)"
   >
   </sud-cell>
 </ng-container>
