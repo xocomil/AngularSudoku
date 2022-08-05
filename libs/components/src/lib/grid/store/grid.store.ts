@@ -199,8 +199,8 @@ const analyzeErrors = (grid: CellState[][]): boolean[][] => {
 
   for (let i = 0; i < 9; i++) {
     checkRowForErrors(i, grid, errors);
-    // this.#checkColumnForErrors(i);
-    // this.#checkRegionForErrors(i);
+    checkColumnForErrors(i, grid, errors);
+    checkRegionForErrors(i, grid, errors);
   }
 
   return errors;
@@ -215,51 +215,50 @@ const checkRowForErrors = (
 };
 
 const markCellsWithErrors = (cells: CellState[], errors: boolean[][]): void => {
-  // const makeCellValidFalse = write((draft: CellState) => {
-  //   draft.valid = false;
-  // });
-
   errorAnalyzer(cells).forEach((cellState) => {
     errors[cellState.row][cellState.column] = true;
   });
 };
 
-/*
+const checkColumnForErrors = (
+  column: number,
+  grid: CellState[][],
+  errors: boolean[][]
+): void => {
+  markCellsWithErrors(getColumnToAnalyze(column, grid), errors);
+};
 
+const getColumnToAnalyze = (
+  column: number,
+  grid: CellState[][]
+): CellState[] => {
+  return grid.map((row) => row[column]);
+};
 
+const checkRegionForErrors = (
+  region: number,
+  grid: CellState[][],
+  errors: boolean[][]
+): void => {
+  markCellsWithErrors(getRegionToAnalyze(region, grid), errors);
+};
 
-#getRowToAnalyze(row: number): CellState[] {
-  return [];
-  // return this.grid[row];
-}
+const ITEMS_TO_TAKE = 3 as const;
 
-#checkColumnForErrors(column: number): void {
-  this.#markCellsWithErrors(this.#getColumnToAnalyze(column));
-}
+const getRegionToAnalyze = (
+  region: number,
+  grid: CellState[][]
+): CellState[] => {
+  const column = (region % 3) * 3;
+  const row = region - (region % 3);
 
-#getColumnToAnalyze(column: number): CellState[] {
-  return [];
-  // return this.grid.map((row) => row[column]);
-}
+  const regionCells = [];
 
-#checkRegionForErrors(region: number): void {
-  this.#markCellsWithErrors(this.#getRegionToAnalyze(region));
-}
+  for (let columnIndex = 0; columnIndex < ITEMS_TO_TAKE; columnIndex++) {
+    for (let rowIndex = 0; rowIndex < ITEMS_TO_TAKE; rowIndex++) {
+      regionCells.push(grid[row + rowIndex][column + columnIndex]);
+    }
+  }
 
-#getRegionToAnalyze(region: number): CellState[] {
-  return [];
-  // const column = (region % 3) * 3;
-  // const row = region - (region % 3);
-  //
-  // const regionCells = [];
-  //
-  // for (let columnIndex = 0; columnIndex < ITEMS_TO_TAKE; columnIndex++) {
-  //   for (let rowIndex = 0; rowIndex < ITEMS_TO_TAKE; rowIndex++) {
-  //     regionCells.push(this.grid[row + rowIndex][column + columnIndex]);
-  //   }
-  // }
-  //
-  // return regionCells;
-}
-
- */
+  return regionCells;
+};

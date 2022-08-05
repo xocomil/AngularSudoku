@@ -6,8 +6,6 @@ import { CellComponentModule } from '../cell/cell.component';
 import { GridCellSelectPipeModule } from './grid-cell-select.pipe';
 import { GridStore } from './store/grid.store';
 
-const ITEMS_TO_TAKE = 3 as const;
-
 @Component({
   selector: 'sud-grid',
   templateUrl: './grid.component.html',
@@ -26,23 +24,8 @@ export class GridComponent {
     this._gridStore.updateSelected(cellState);
   }
 
-  #resetCellErrors(): void {
-    // const makeCellValidTrue = write((draft: CellState) => {
-    //   draft.valid = true;
-    // });
-    //
-    // this.grid.forEach((row) =>
-    //   row.forEach((cellState) => {
-    //     this.grid[cellState.row][cellState.column] =
-    //       makeCellValidTrue(cellState);
-    //   })
-    // );
-  }
-
   cellValueChanged(newValue: number | undefined, cellState: CellState): void {
     this._gridStore.cellValueChanged({ value: newValue, cellState });
-
-    // this.#analyzeErrors();
   }
 
   cellNavigated(direction: GridDirection, cellState: CellState): void {
