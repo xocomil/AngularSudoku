@@ -26,16 +26,6 @@ export class GridComponent {
     this._gridStore.updateSelected(cellState);
   }
 
-  #analyzeErrors(): void {
-    this.#resetCellErrors();
-
-    for (let i = 0; i < 9; i++) {
-      this.#checkRowForErrors(i);
-      this.#checkColumnForErrors(i);
-      this.#checkRegionForErrors(i);
-    }
-  }
-
   #resetCellErrors(): void {
     // const makeCellValidTrue = write((draft: CellState) => {
     //   draft.valid = true;
@@ -49,57 +39,8 @@ export class GridComponent {
     // );
   }
 
-  #checkRowForErrors(row: number): void {
-    this.#markCellsWithErrors(this.#getRowToAnalyze(row));
-  }
-
-  #getRowToAnalyze(row: number): CellState[] {
-    return [];
-    // return this.grid[row];
-  }
-
-  #checkColumnForErrors(column: number): void {
-    this.#markCellsWithErrors(this.#getColumnToAnalyze(column));
-  }
-
-  #getColumnToAnalyze(column: number): CellState[] {
-    return [];
-    // return this.grid.map((row) => row[column]);
-  }
-
-  #checkRegionForErrors(region: number): void {
-    this.#markCellsWithErrors(this.#getRegionToAnalyze(region));
-  }
-
-  #getRegionToAnalyze(region: number): CellState[] {
-    return [];
-    // const column = (region % 3) * 3;
-    // const row = region - (region % 3);
-    //
-    // const regionCells = [];
-    //
-    // for (let columnIndex = 0; columnIndex < ITEMS_TO_TAKE; columnIndex++) {
-    //   for (let rowIndex = 0; rowIndex < ITEMS_TO_TAKE; rowIndex++) {
-    //     regionCells.push(this.grid[row + rowIndex][column + columnIndex]);
-    //   }
-    // }
-    //
-    // return regionCells;
-  }
-
-  #markCellsWithErrors(cells: CellState[]): void {
-    // const makeCellValidFalse = write((draft: CellState) => {
-    //   draft.valid = false;
-    // });
-    //
-    // errorAnalyzer(cells).forEach((cellState) => {
-    //   this.grid[cellState.row][cellState.column] =
-    //     makeCellValidFalse(cellState);
-    // });
-  }
-
-  cellValueChanged(newValue: number, cellState: CellState): void {
-    this._gridStore.updateCellValue({ value: newValue, cellState });
+  cellValueChanged(newValue: number | undefined, cellState: CellState): void {
+    this._gridStore.cellValueChanged({ value: newValue, cellState });
 
     // this.#analyzeErrors();
   }

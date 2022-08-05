@@ -39,6 +39,7 @@ export class CellComponent implements OnInit, OnDestroy {
     'arrowup',
     'arrowdown',
   ];
+  readonly #deleteKeys = ['delete', 'backspace'];
   readonly #subs = new Subscription();
   readonly #navigationKey$ = new Subject<GridDirection>();
 
@@ -85,7 +86,7 @@ export class CellComponent implements OnInit, OnDestroy {
 
   @Output() cellFocusReceived = new EventEmitter<void>();
   @Output() cellBlurReceived = new EventEmitter<void>();
-  @Output() cellValueChanged = new EventEmitter<number>();
+  @Output() cellValueChanged = new EventEmitter<number | undefined>();
   @Output() cellNavigated = this.#navigationKey$;
 
   ngOnInit(): void {
@@ -112,26 +113,19 @@ export class CellComponent implements OnInit, OnDestroy {
     this.#subs.unsubscribe();
   }
 
-  #getNumericValue(newValue: string): number | undefined {
-    const numericValue = parseInt(newValue, 10);
-
-    if (isNaN(numericValue)) {
-      return undefined;
-    }
-
-    return numericValue;
-  }
-
   protected handleKeyEvent(event: KeyboardEvent) {
     event.preventDefault();
 
     if (this.#allowedValues.includes(event.key)) {
       this.#inputValueChanged(event.key);
     }
+    if (this.#deleteKeys.includes(event.key.toLowerCase())) {
+      this.#inputValueChanged('');
+    }
   }
 
   #inputValueChanged(newValue: string): void {
-    this.cellValueChanged.emit(this.#getNumericValue(newValue));
+    this.cellValueChanged.emit(getNumericValue(newValue));
   }
 }
 
@@ -141,3 +135,13 @@ export class CellComponent implements OnInit, OnDestroy {
   exports: [CellComponent],
 })
 export class CellComponentModule {}
+
+const getNumericValue = (newValue: string): number | undefined => {
+  const numericValue = parseInt(newValue, 10);
+
+  if (isNaN(numericValue)) {
+    return undefined;
+  }
+
+  return numericValue;
+};
