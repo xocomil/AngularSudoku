@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { CellState, GridDirection } from '@sud/domain';
+import { errorAnalyzer } from '@sud/fast-analayzers';
 import produce from 'immer';
-import { Observable, of, withLatestFrom } from 'rxjs';
+import { Observable, of, tap, withLatestFrom } from 'rxjs';
 import { createGridState } from './grid.store.helpers';
 
 export interface GridState {
@@ -17,6 +18,8 @@ const initialState: GridState = {
 
 const updateSelected = (cellState: CellState) =>
   write((state: GridState) => {
+    state.nextToFocus = undefined;
+
     state.selected = {
       row: cellState.row,
       column: cellState.column,
@@ -24,7 +27,7 @@ const updateSelected = (cellState: CellState) =>
     };
   });
 
-const updateCellValue = (value: number, cellState: CellState) =>
+const updateCellValue = (value: number | undefined, cellState: CellState) =>
   write((state: GridState) => {
     state.grid[cellState.row][cellState.column].value = value;
   });
@@ -78,10 +81,41 @@ export class GridStore extends ComponentStore<GridState> {
 
   resetSelected = this.updater((state) => resetSelected(state));
 
-  updateCellValue = this.updater(
+  cellValueChanged = this.effect(
+    (cellValue$: Observable<{ value?: number; cellState: CellState }>) =>
+      cellValue$.pipe(
+        tap((cellValue) => {
+          this.#updateCellValue(cellValue);
+          this.#checkGridForErrors();
+        })
+      )
+  );
+
+  #checkGridForErrors = this.effect((check$: Observable<void>) =>
+    check$.pipe(
+      withLatestFrom(this.grid$),
+      tap(([_, grid]) => {
+        const errors = analyzeErrors(grid);
+
+        this.#updateCellValid(errors);
+      })
+    )
+  );
+
+  #updateCellValid = this.updater((state: GridState, errors: boolean[][]) => {
+    return produce(state, (draft) => {
+      for (let row = 0; row < draft.grid.length; row++) {
+        for (let col = 0; col < draft.grid[row].length; col++) {
+          draft.grid[row][col].valid = !errors[row][col];
+        }
+      }
+    });
+  });
+
+  #updateCellValue = this.updater(
     (
       state: GridState,
-      { value, cellState }: { value: number; cellState: CellState }
+      { value, cellState }: { value?: number; cellState: CellState }
     ) => {
       const updater = updateCellValue(value, cellState);
 
@@ -159,3 +193,72 @@ export function write<S>(updater: (state: S) => void): (state: S) => S {
     });
   };
 }
+
+const analyzeErrors = (grid: CellState[][]): boolean[][] => {
+  const errors = Array<boolean[]>.from({ length: 9 }, () => [] as boolean[]);
+
+  for (let i = 0; i < 9; i++) {
+    checkRowForErrors(i, grid, errors);
+    checkColumnForErrors(i, grid, errors);
+    checkRegionForErrors(i, grid, errors);
+  }
+
+  return errors;
+};
+
+const checkRowForErrors = (
+  row: number,
+  grid: CellState[][],
+  errors: boolean[][]
+): void => {
+  markCellsWithErrors(grid[row], errors);
+};
+
+const markCellsWithErrors = (cells: CellState[], errors: boolean[][]): void => {
+  errorAnalyzer(cells).forEach((cellState) => {
+    errors[cellState.row][cellState.column] = true;
+  });
+};
+
+const checkColumnForErrors = (
+  column: number,
+  grid: CellState[][],
+  errors: boolean[][]
+): void => {
+  markCellsWithErrors(getColumnToAnalyze(column, grid), errors);
+};
+
+const getColumnToAnalyze = (
+  column: number,
+  grid: CellState[][]
+): CellState[] => {
+  return grid.map((row) => row[column]);
+};
+
+const checkRegionForErrors = (
+  region: number,
+  grid: CellState[][],
+  errors: boolean[][]
+): void => {
+  markCellsWithErrors(getRegionToAnalyze(region, grid), errors);
+};
+
+const ITEMS_TO_TAKE = 3 as const;
+
+const getRegionToAnalyze = (
+  region: number,
+  grid: CellState[][]
+): CellState[] => {
+  const column = (region % 3) * 3;
+  const row = region - (region % 3);
+
+  const regionCells = [];
+
+  for (let columnIndex = 0; columnIndex < ITEMS_TO_TAKE; columnIndex++) {
+    for (let rowIndex = 0; rowIndex < ITEMS_TO_TAKE; rowIndex++) {
+      regionCells.push(grid[row + rowIndex][column + columnIndex]);
+    }
+  }
+
+  return regionCells;
+};
