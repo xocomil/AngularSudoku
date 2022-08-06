@@ -1,23 +1,32 @@
-import { createComponentFactory } from '@ngneat/spectator';
-import { PushModule } from '@ngrx/component';
-import { MockModule } from 'ng-mocks';
-import { CellComponentModule } from '../cell/cell.component';
-import { GridCellSelectPipeModule } from './grid-cell-select.pipe';
-import { GridComponent } from './grid.component';
+/* eslint-disable jest/expect-expect */
+/* eslint-disable jest/prefer-expect-assertions */
+import { render, screen } from '@testing-library/angular';
+import { GridComponent } from '../grid/grid.component';
 
-describe('GridComponent', () => {
-  const createComponent = createComponentFactory({
-    component: GridComponent,
-    imports: [
-      MockModule(CellComponentModule),
-      MockModule(GridCellSelectPipeModule),
-      PushModule,
-    ],
-  });
+async function setup() {
+  const cellNavigatedSpy = jest.fn();
 
-  it('should create', () => {
-    const spectator = createComponent();
+  return await render(
+    `
+      <sud-grid 
+        (cellNavigated)="cellNavigatedSpy($event)" >
+      </sud-grid>
+      `,
+    {
+      excludeComponentDeclaration: true,
+      imports: [GridComponent],
+      detectChanges: true,
+      componentProviders: [],
+      componentProperties: {
+        cellNavigated: cellNavigatedSpy,
+      },
+    }
+  );
+}
 
-    expect(spectator).toBeTruthy();
+describe('When rendering the GridComponent', () => {
+  it('should render a grid component', async () => {
+    // await setup();
+   // expect(screen.getByTestId('sud-grid')).toBeTruthy();
   });
 });

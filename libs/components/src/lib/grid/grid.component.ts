@@ -1,14 +1,48 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, NgModule } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PushModule } from '@ngrx/component';
 import { CellState, GridDirection } from '@sud/domain';
-import { CellComponentModule } from '../cell/cell.component';
-import { GridCellSelectPipeModule } from './grid-cell-select.pipe';
+import { CellComponent } from '../cell/cell.component';
+import { GridCellSelectPipe } from '../grid/grid-cell-select.pipe';
 import { GridStore } from './store/grid.store';
 
 @Component({
   selector: 'sud-grid',
-  templateUrl: './grid.component.html',
+  standalone: true,
+  imports: [
+    CommonModule,
+    GridComponent,
+    CellComponent,
+    GridCellSelectPipe,
+    PushModule,
+  ],
+  template: `
+    <ng-container
+      *ngFor="
+        let row of grid$ | ngrxPush;
+        index as rowIndex;
+        trackBy: rowTrackByFunction
+      "
+    >
+      <sud-cell
+        #cell
+        *ngFor="
+          let cellState of row;
+          index as columnIndex;
+          trackBy: columnTrackByFunction
+        "
+        [class]="['row-' + rowIndex, 'col-' + columnIndex, 'sudoku-cell']"
+        [cellState]="cellState"
+        [focusState]="selected$ | ngrxPush | gridCellSelect: cellState"
+        [nextToFocus]="nextToFocus$ | ngrxPush"
+        (cellFocusReceived)="cellFocused(cellState)"
+        (cellBlurReceived)="cellBlurred()"
+        (cellValueChanged)="cellValueChanged($event, cellState)"
+        (cellNavigated)="cellNavigated($event, cellState)"
+      >
+      </sud-cell>
+    </ng-container>
+  `,
   styleUrls: ['./grid.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [GridStore],
@@ -44,15 +78,3 @@ export class GridComponent {
     this._gridStore.resetSelected();
   }
 }
-
-@NgModule({
-  imports: [
-    CommonModule,
-    CellComponentModule,
-    GridCellSelectPipeModule,
-    PushModule,
-  ],
-  declarations: [GridComponent],
-  exports: [GridComponent],
-})
-export class GridComponentModule {}
