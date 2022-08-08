@@ -34,6 +34,7 @@ specifiers:
   '@storybook/builder-webpack5': 6.5.9
   '@storybook/core-server': 6.5.9
   '@storybook/manager-webpack5': 6.5.9
+  '@testing-library/angular': ^12.1.1
   '@types/jest': 27.4.1
   '@types/node': 18.6.4
   '@typescript-eslint/eslint-plugin': 5.32.0
@@ -74,6 +75,7 @@ dependencies:
   '@ngrx/component': 14.0.2_x3knty6l2kepgbyfk5hnwhgj3i
   '@ngrx/component-store': 14.0.2_qtidce3aeekerv27wsssxbcnna
   '@nrwl/angular': 14.4.3_wonsku4xwqxkwyf2sqa656a2ly
+  '@testing-library/angular': 12.1.1_nhy57ozkcxa3ajaekq2jtsxs54
   immer: 9.0.15
   ng-mocks: 14.1.1_dmzfeda7wpu3ggw4hie6i64gyu
   rxjs: 7.5.6
@@ -7127,6 +7129,24 @@ packages:
       resolve-from: 5.0.0
     dev: true
 
+  /@testing-library/angular/12.1.1_nhy57ozkcxa3ajaekq2jtsxs54:
+    resolution: {integrity: sha512-WPzOLx3il3bIC9hIej32BEdJZqOoViAuONbaSq3HIAm6fMUyTGoHTbT5geEAiU2koOWXlwjwuvy2HFb9dX+/hA==}
+    peerDependencies:
+      '@angular/common': '>= 14.0.0'
+      '@angular/core': '>= 14.0.0'
+      '@angular/platform-browser': '>= 14.0.0'
+      '@angular/router': '>= 14.0.0'
+      rxjs: '>= 7.4.0'
+    dependencies:
+      '@angular/common': 14.0.6_qtidce3aeekerv27wsssxbcnna
+      '@angular/core': 14.0.6_rxjs@7.5.6+zone.js@0.11.7
+      '@angular/platform-browser': 14.0.6_spn3at637jkuvsqjt7uncfwzje
+      '@angular/router': 14.0.6_v4xkvekty4uhy7tfslqoygdzku
+      '@testing-library/dom': 8.16.1
+      rxjs: 7.5.6
+      tslib: 2.4.0
+    dev: false
+
   /@testing-library/dom/8.16.1:
     resolution: {integrity: sha512-XEV2mBxgv6DKjL3+U3WEUzBgT2CjYksoXGlLrrJXYP8OvRfGkBonvelkorazpFlp8tkEecO06r43vN4DIEyegQ==}
     engines: {node: '>=12'}
@@ -7139,7 +7159,6 @@ packages:
       dom-accessibility-api: 0.5.14
       lz-string: 1.4.4
       pretty-format: 27.5.1
-    dev: true
 
   /@tootallnate/once/1.1.2:
     resolution: {integrity: sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==}
@@ -7169,7 +7188,6 @@ packages:
 
   /@types/aria-query/4.2.2:
     resolution: {integrity: sha512-HnYpAE1Y6kRyKM/XkEuiRQhTHvkzMBurTHnpFLYLBGPIylZNPs9jJcuOOYWxPLJCSEtmZT0Y8rHDokKN7rRTig==}
-    dev: true
 
   /@types/babel__core/7.1.19:
     resolution: {integrity: sha512-WEOTgRsbYkvA/KCsDwVEGkd7WAr1e3g31VHQ8zy5gul/V1qKullU/BU5I68X5v7V3GnB9eotmom4v5a5gjxorw==}
@@ -8301,7 +8319,6 @@ packages:
   /aria-query/5.0.0:
     resolution: {integrity: sha512-V+SM7AbUwJ+EBnB8+DXs0hPZHO0W6pqBcc0dW90OwtVG02PswOu/teuARoLQjdDOH+t9pJgGnW5/Qmouf3gPJg==}
     engines: {node: '>=6.0'}
-    dev: true
 
   /arr-diff/4.0.0:
     resolution: {integrity: sha512-YVIQ82gZPGBebQV/a8dar4AitzCQs0jjXwMPZllpXMaGjXPYVUawSxQrRsjhjupyVxEvbHgUmIhKVlND+j02kA==}
@@ -10522,7 +10539,6 @@ packages:
 
   /dom-accessibility-api/0.5.14:
     resolution: {integrity: sha512-NMt+m9zFMPZe0JcY9gN224Qvk6qLIdqex29clBvc/y75ZBX9YA9wNK3frsYvu2DI1xcCIwxwnX+TlsJ2DSOADg==}
-    dev: true
 
   /dom-converter/0.2.0:
     resolution: {integrity: sha512-gd3ypIPfOMr9h5jIKq8E3sHOTCjeirnl0WK5ZdS1AW0Odt0b1PaWaHdJ4Qk4klv+YB9aJBS7mESXjFoDQPu6DA==}
@@ -14694,7 +14710,6 @@ packages:
   /lz-string/1.4.4:
     resolution: {integrity: sha512-0ckx7ZHRPqb0oUm8zNr+90mtf9DQB60H1wMCjBtfi62Kl3a7JbHob6gA2bC+xRvZoOL+1hzUK8jeuEIQE8svEQ==}
     hasBin: true
-    dev: true
 
   /magic-string/0.25.9:
     resolution: {integrity: sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==}
