@@ -48,7 +48,7 @@
     "@nrwl/workspace": "14.5.4",
     "@storybook/addon-essentials": "6.5.10",
     "@storybook/angular": "6.5.10",
-    "@storybook/builder-webpack5": "6.5.9",
+    "@storybook/builder-webpack5": "6.5.10",
     "@storybook/core-server": "6.5.9",
     "@storybook/manager-webpack5": "6.5.9",
     "@types/jest": "27.4.1",
