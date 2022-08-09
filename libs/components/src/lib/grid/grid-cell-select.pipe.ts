@@ -1,9 +1,10 @@
-import { NgModule, Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 import { CellState } from '@sud/domain';
 import { FocusStates } from './models/focus-state';
 
 @Pipe({
   name: 'gridCellSelect',
+  standalone: true,
 })
 export class GridCellSelectPipe implements PipeTransform {
   transform(
@@ -28,9 +29,3 @@ export class GridCellSelectPipe implements PipeTransform {
     return '';
   }
 }
-
-@NgModule({
-  declarations: [GridCellSelectPipe],
-  exports: [GridCellSelectPipe],
-})
-export class GridCellSelectPipeModule {}

@@ -1,6 +1,6 @@
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
-import { CellComponentModule } from '../cell/cell.component';
-import { GridCellSelectPipeModule } from './grid-cell-select.pipe';
+import { CellComponent } from '../cell/cell.component';
+import { GridCellSelectPipe } from './grid-cell-select.pipe';
 import { GridComponent } from './grid.component';
 
 export default {
@@ -8,7 +8,7 @@ export default {
   component: GridComponent,
   decorators: [
     moduleMetadata({
-      imports: [CellComponentModule, GridCellSelectPipeModule],
+      imports: [CellComponent, GridCellSelectPipe],
     }),
   ],
 } as Meta;
