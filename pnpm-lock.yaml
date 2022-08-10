@@ -16,10 +16,10 @@ specifiers:
   '@angular/platform-browser': 14.1.1
   '@angular/platform-browser-dynamic': 14.1.1
   '@angular/router': 14.1.1
-  '@faker-js/faker': ^7.3.0
-  '@ngneat/spectator': ^11.1.0
-  '@ngrx/component': ^14.1.0
-  '@ngrx/component-store': ^14.1.0
+  '@faker-js/faker': 7.4.0
+  '@ngneat/spectator': 11.1.3
+  '@ngrx/component': 14.1.0
+  '@ngrx/component-store': 14.1.0
   '@nrwl/angular': 14.5.4
   '@nrwl/cli': 14.5.4
   '@nrwl/cypress': 14.5.4
@@ -34,7 +34,7 @@ specifiers:
   '@storybook/builder-webpack5': 6.5.10
   '@storybook/core-server': 6.5.10
   '@storybook/manager-webpack5': 6.5.10
-  '@testing-library/angular': ^12.1.1
+  '@testing-library/angular': 12.1.1
   '@types/jest': 27.4.1
   '@types/node': 18.6.5
   '@typescript-eslint/eslint-plugin': 5.33.0
@@ -44,13 +44,13 @@ specifiers:
   eslint-config-prettier: 8.5.0
   eslint-plugin-cypress: 2.12.1
   eslint-plugin-jest: 26.8.2
-  immer: ^9.0.15
+  immer: 9.0.15
   jest: 27.5.1
   jest-preset-angular: 11.1.2
-  ng-mocks: ^14.1.3
+  ng-mocks: 14.1.3
   nx: 14.5.4
   prettier: 2.7.1
-  rxjs: ~7.5.6
+  rxjs: 7.5.6
   stylelint: 14.9.1
   stylelint-config-prettier: 9.0.3
   stylelint-config-prettier-scss: 0.0.1
@@ -58,10 +58,10 @@ specifiers:
   stylelint-config-standard-scss: 5.0.0
   ts-jest: 27.1.4
   ts-node: 10.9.1
-  tslib: ^2.0.0
+  tslib: 2.4.0
   typescript: 4.7.4
   webpack: 5.74.0
-  zone.js: ~0.11.7
+  zone.js: 0.11.7
 
 dependencies:
   '@angular/animations': 14.1.1_@angular+core@14.1.1
@@ -8818,6 +8818,7 @@ packages:
 
   /bindings/1.5.0:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
+    requiresBuild: true
     dependencies:
       file-uri-to-path: 1.0.0
     dev: true
@@ -11630,6 +11631,7 @@ packages:
 
   /file-uri-to-path/1.0.0:
     resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -15114,6 +15116,7 @@ packages:
 
   /nan/2.16.0:
     resolution: {integrity: sha512-UdAqHyFngu7TfQKsCBgAA6pWDkT8MAO7d0jyOecVhN5354xbLqdn8mV9Tat9gepAupm0bt2DbeaSC8vS52MuFA==}
+    requiresBuild: true
     dev: true
     optional: true
 
