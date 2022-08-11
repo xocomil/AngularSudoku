@@ -65,7 +65,7 @@
     "jest-preset-angular": "11.1.2",
     "nx": "14.5.4",
     "prettier": "2.7.1",
-    "stylelint": "14.9.1",
+    "stylelint": "14.10.0",
     "stylelint-config-prettier": "9.0.3",
     "stylelint-config-prettier-scss": "0.0.1",
     "stylelint-config-standard": "26.0.0",
