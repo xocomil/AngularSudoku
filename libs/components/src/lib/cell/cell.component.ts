@@ -6,7 +6,6 @@ import {
   EventEmitter,
   HostBinding,
   Input,
-  NgModule,
   OnDestroy,
   OnInit,
   Output,
@@ -19,15 +18,38 @@ import {
   GridDirection,
   gridDirectionFromKeyboard,
 } from '@sud/domain';
-import { filter, fromEvent, map, Subject, Subscription, tap } from 'rxjs';
+import { filter, fromEvent, map, of, Subject, Subscription, tap } from 'rxjs';
 
 @Component({
   selector: 'sud-cell',
-  templateUrl: './cell.component.html',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  template: `
+    <div [class.error]="!cellState.valid">
+      <div class="debug" *ngIf="debug$ | async">
+        focusState: {{ focusState }} <br />
+        coords: ({{ cellState.column }}, row: {{ cellState.row }}<br />
+        col: {{ cellState.column }}<br />
+        reg: {{ cellState.region }}<br />
+        valid: {{ cellState.valid }}<br />
+        value: {{ cellState.value + '' }}
+      </div>
+      <input
+     
+        #cellInput
+        [ngModel]="cellState.value"
+        (focus)="cellFocusReceived.emit()"
+        (blur)="cellBlurReceived.emit()"
+        autocomplete="none"
+      />
+    </div>
+  `,
   styleUrls: ['./cell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CellComponent implements OnInit, OnDestroy {
+  debug$ = of(false);
+
   readonly #allowedValues = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
   readonly #navigationValues = [
     'w',
@@ -128,13 +150,6 @@ export class CellComponent implements OnInit, OnDestroy {
     this.cellValueChanged.emit(getNumericValue(newValue));
   }
 }
-
-@NgModule({
-  imports: [CommonModule, FormsModule],
-  declarations: [CellComponent],
-  exports: [CellComponent],
-})
-export class CellComponentModule {}
 
 const getNumericValue = (newValue: string): number | undefined => {
   const numericValue = parseInt(newValue, 10);

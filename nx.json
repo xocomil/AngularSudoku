@@ -5,7 +5,7 @@
     "defaultBase": "main"
   },
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "pnpm"
   },
   "implicitDependencies": {
     "package.json": {
@@ -18,7 +18,12 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"],
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e"
+        ],
         "accessToken": "MTllMTMyYTctMjNjNi00ZWM5LWIzZWYtZGRkMjhhYmU1NzJifHJlYWQtd3JpdGU="
       }
     }
@@ -41,7 +46,9 @@
   "defaultProject": "angular-sudoku",
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build"]
+      "dependsOn": [
+        "^build"
+      ]
     }
   }
 }
