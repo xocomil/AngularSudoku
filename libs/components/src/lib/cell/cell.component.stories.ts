@@ -38,7 +38,7 @@ export const Primary = Template.bind({});
 
 const row = -1;
 const column = -1;
-const region: [number, number] = [-1, -1];
+const region = -1;
 
 Primary.args = {
   cellState: createCellState({ row, column, region, value: 4 }),
