@@ -1,6 +1,9 @@
 import { FormsModule } from '@angular/forms';
 import { faker } from '@faker-js/faker/locale/en';
 import { createComponentFactory } from '@ngneat/spectator/jest';
+import { createCellState } from '@sud/domain';
+import { fireEvent, render, screen } from '@testing-library/angular';
+import userEvent from '@testing-library/user-event';
 import { CellComponent } from './cell.component';
 
 describe('CellComponent', () => {
@@ -64,7 +67,63 @@ describe('CellComponent', () => {
         expect(spectator.component.nextToFocus).toEqual(testValue);
       });
     });
+
+    it('should focus on the input if row and column match', async () => {
+      await render(CellComponent, {
+        componentProperties: {
+          cellState: createCellState({
+            row: 1,
+            column: 1,
+            region: 1,
+          }),
+          nextToFocus: [1, 1],
+        },
+      });
+
+      expect(screen.getByTestId('cellInput')).toBeFocused();
+    });
+
+    it('should ont focus on the input if row and column do not match', async () => {
+      await render(CellComponent, {
+        componentProperties: {
+          cellState: createCellState({
+            row: 1,
+            column: 1,
+            region: 1,
+          }),
+          nextToFocus: [5, 5],
+        },
+      });
+
+      expect(screen.getByTestId('cellInput')).not.toBeFocused();
+    });
   });
 
-  describe('ngOninit', () => {});
+  describe('handleKeyEvent', () => {
+    it('should only allow the values 1-9 to be entered', async () => {
+      // This should emit on cellValueChanged.... it doesn't change the input...
+      await render(CellComponent);
+
+      screen.getByTestId('cellInput').focus();
+
+      // fireEvent.keyDown(screen.getByTestId('cellInput'), { key: '0' });
+
+      expect(screen.getByTestId('cellInput')).toHaveValue('');
+
+      for (let i = 1; i <= 9; i++) {
+        // fireEvent.keyDown(screen.getByTestId('cellInput'), { key: `${i}` });
+
+        screen.getByTestId('cellInput').focus();
+        await userEvent.keyboard(String(i));
+
+        expect(screen.getByTestId('cellInput')).toHaveValue(`${i}`);
+      }
+
+      ['a', 'B', 'c', 'D'].forEach((letter) => {
+        fireEvent.keyDown(screen.getByTestId('cellInput'), { key: letter });
+
+        expect(screen.getByTestId('cellInput')).toHaveValue('');
+      });
+    });
+  });
 });

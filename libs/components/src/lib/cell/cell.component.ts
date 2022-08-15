@@ -35,7 +35,7 @@ import { filter, fromEvent, map, of, Subject, Subscription, tap } from 'rxjs';
         value: {{ cellState.value + '' }}
       </div>
       <input
-     
+        data-testid="cellInput"
         #cellInput
         [ngModel]="cellState.value"
         (focus)="cellFocusReceived.emit()"
