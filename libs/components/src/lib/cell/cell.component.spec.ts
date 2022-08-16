@@ -1,9 +1,12 @@
+import { EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { faker } from '@faker-js/faker/locale/en';
+import { subscribeSpyTo } from '@hirez_io/observer-spy';
 import { createComponentFactory } from '@ngneat/spectator/jest';
-import { createCellState } from '@sud/domain';
-import { fireEvent, render, screen } from '@testing-library/angular';
+import { createCellState, directionMap } from '@sud/domain';
+import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
+import { MockService } from 'ng-mocks';
 import { CellComponent } from './cell.component';
 
 describe('CellComponent', () => {
@@ -101,29 +104,52 @@ describe('CellComponent', () => {
 
   describe('handleKeyEvent', () => {
     it('should only allow the values 1-9 to be entered', async () => {
-      // This should emit on cellValueChanged.... it doesn't change the input...
-      await render(CellComponent);
+      const cellValueChanged = jest.fn();
+
+      await render(CellComponent, {
+        componentProperties: {
+          cellValueChanged: MockService(EventEmitter, {
+            emit: cellValueChanged,
+          }),
+        },
+      });
 
       screen.getByTestId('cellInput').focus();
 
-      // fireEvent.keyDown(screen.getByTestId('cellInput'), { key: '0' });
-
-      expect(screen.getByTestId('cellInput')).toHaveValue('');
-
       for (let i = 1; i <= 9; i++) {
-        // fireEvent.keyDown(screen.getByTestId('cellInput'), { key: `${i}` });
-
         screen.getByTestId('cellInput').focus();
         await userEvent.keyboard(String(i));
 
-        expect(screen.getByTestId('cellInput')).toHaveValue(`${i}`);
+        expect(cellValueChanged).toHaveBeenCalledTimes(1);
+        expect(cellValueChanged).toHaveBeenCalledWith(i);
+        cellValueChanged.mockReset();
       }
 
-      ['a', 'B', 'c', 'D'].forEach((letter) => {
-        fireEvent.keyDown(screen.getByTestId('cellInput'), { key: letter });
+      for (const letter of ['a', 'B', 'c', 'D']) {
+        screen.getByTestId('cellInput').focus();
+        await userEvent.keyboard(letter);
 
-        expect(screen.getByTestId('cellInput')).toHaveValue('');
-      });
+        expect(cellValueChanged).not.toHaveBeenCalled();
+      }
+    });
+  });
+
+  describe('navigationKey$', () => {
+    it('send navigationEvents', async () => {
+      const { fixture } = await render(CellComponent);
+
+      const keySpy = subscribeSpyTo(fixture.componentInstance.cellNavigated);
+
+      screen.getByTestId('cellInput').focus();
+
+      for (const input of ['a', 's', 'd', 'w']) {
+        screen.getByTestId('cellInput').focus();
+        await userEvent.keyboard(input);
+
+        expect(keySpy.getLastValue()).toEqual(directionMap.get(input));
+      }
+
+      keySpy.unsubscribe();
     });
   });
 });
