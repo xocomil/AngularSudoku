@@ -41,8 +41,8 @@ const updateNextToFocus = (cellState: CellState) =>
     state.nextToFocus = { row: cellState.row, column: cellState.column };
   });
 
-const noCellSelected = Object.freeze([-1, -1, -1] as const);
-const noCellToFocus = Object.freeze([-1, -1] as const);
+export const noCellSelected = Object.freeze([-1, -1, -1] as const);
+export const noCellToFocus = Object.freeze([-1, -1] as const);
 
 @Injectable()
 export class GridStore extends ComponentStore<GridState> {
@@ -123,6 +123,7 @@ export class GridStore extends ComponentStore<GridState> {
     }
   );
 
+  // TODO: finish testing this effect
   navigateToCell = this.effect(
     (
       navigation$: Observable<{
