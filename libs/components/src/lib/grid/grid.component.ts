@@ -9,13 +9,7 @@ import { GridStore } from './store/grid.store';
 @Component({
   selector: 'sud-grid',
   standalone: true,
-  imports: [
-    CommonModule,
-    GridComponent,
-    CellComponent,
-    GridCellSelectPipe,
-    PushModule,
-  ],
+  imports: [CommonModule, CellComponent, GridCellSelectPipe, PushModule],
   template: `
     <ng-container
       *ngFor="
