@@ -7,7 +7,7 @@ export const GridDirection = Object.freeze({
 
 export type GridDirection = typeof GridDirection[keyof typeof GridDirection];
 
-const directionMap = new Map<string, GridDirection>([
+export const directionMap = new Map<string, GridDirection>([
   ['w', GridDirection.Up],
   ['a', GridDirection.Left],
   ['s', GridDirection.Down],

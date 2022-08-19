@@ -1,18 +1,16 @@
+import { createComponentFactory } from '@ngneat/spectator/jest';
+import { GridComponent } from '@sud/components';
+import { AppComponent } from './app.component';
+
 describe('AppComponent', () => {
-  it('should create the app', () => {
-    expect(true).toEqual(true);
+  const createComponent = createComponentFactory({
+    component: AppComponent,
+    imports: [GridComponent],
   });
 
-  // TODO: This is causing a stack overflow error
+  it('should create the app', () => {
+    const spectator = createComponent();
 
-  // const createComponent = createComponentFactory({
-  //   component: AppComponent,
-  //   imports: [GridComponent],
-  // });
-
-  // it('should create the app', () => {
-  //   const spectator = createComponent();
-
-  //   expect(spectator).toBeTruthy();
-  // });
+    expect(spectator).toBeTruthy();
+  });
 });
