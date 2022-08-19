@@ -123,7 +123,6 @@ export class GridStore extends ComponentStore<GridState> {
     }
   );
 
-  // TODO: finish testing this effect
   navigateToCell = this.effect(
     (
       navigation$: Observable<{
