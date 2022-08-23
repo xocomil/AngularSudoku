@@ -19,8 +19,8 @@ specifiers:
   '@faker-js/faker': 7.4.0
   '@hirez_io/observer-spy': ^2.2.0
   '@ngneat/spectator': 11.1.3
-  '@ngrx/component': 14.1.0
-  '@ngrx/component-store': 14.1.0
+  '@ngrx/component': 14.2.0
+  '@ngrx/component-store': 14.2.0
   '@nrwl/angular': 14.5.6
   '@nrwl/cli': 14.5.6
   '@nrwl/cypress': 14.5.6
@@ -76,8 +76,8 @@ dependencies:
   '@angular/platform-browser': 14.1.1_dusuq6hcudnbixadvxsdwhkk7i
   '@angular/platform-browser-dynamic': 14.1.1_lnensrfox2wowsihtp7kwlgdve
   '@angular/router': 14.1.1_7za74gf63bgb4umkx3jzbhs5mu
-  '@ngrx/component': 14.1.0_wngjongetf3lezhs6qsm7jkvnq
-  '@ngrx/component-store': 14.1.0_ia63l6cpgth7luu3npj7srux4q
+  '@ngrx/component': 14.2.0_wngjongetf3lezhs6qsm7jkvnq
+  '@ngrx/component-store': 14.2.0_ia63l6cpgth7luu3npj7srux4q
   '@nrwl/angular': 14.5.6_qgim6fqlx22ueuan36msgubvxm
   '@testing-library/angular': 12.1.1_b2lceumpwwjhd743wwponbkif4
   '@testing-library/dom': 8.17.1
@@ -4285,8 +4285,8 @@ packages:
       tslib: 2.4.0
     dev: true
 
-  /@ngrx/component-store/14.1.0_ia63l6cpgth7luu3npj7srux4q:
-    resolution: {integrity: sha512-X77lnjShxmsiIXhW/to7cXdvyO7OIxQFrEl2JHRz5K7yiNOcfpF3fvDEExiLKB0sXig8js1vKjatV+4H/WjDEQ==}
+  /@ngrx/component-store/14.2.0_ia63l6cpgth7luu3npj7srux4q:
+    resolution: {integrity: sha512-6Tt1TwYSnEAv/ZoPHSQM61IIh+qnwB9iQ4RTS3N4NUhQF77ltMbAIAxp8NcQ2lEUEFa6pKdSWs/rQfd4wKwXfg==}
     peerDependencies:
       '@angular/core': ^14.0.0
       rxjs: ^6.5.3 || ^7.5.0
@@ -4296,8 +4296,8 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /@ngrx/component/14.1.0_wngjongetf3lezhs6qsm7jkvnq:
-    resolution: {integrity: sha512-huncJwPyCdQ1obxMqC6I6RBsFnN/zJ0wbonvUi56kXt+PqcKJRtUEaLcuX9NanNqHZTdrdBPtWkcxQ6X0MiCIQ==}
+  /@ngrx/component/14.2.0_wngjongetf3lezhs6qsm7jkvnq:
+    resolution: {integrity: sha512-bARzjzChZHuBkwx4G4RDizaChwP8TJhhcCZJFm5jNQwNxUp+fnkVABYoJrem60YcF4bnUX+r1STfsSUo7t48Ww==}
     peerDependencies:
       '@angular/common': ^14.0.0
       '@angular/core': ^14.0.0
@@ -19493,6 +19493,7 @@ packages:
   /unified/9.2.0:
     resolution: {integrity: sha512-vx2Z0vY+a3YoTj8+pttM3tiJHCwY5UFbYdiWrwBEbHmK8pvsPj2rtAX2BFfgXen8T39CJWblWRDT4L5WGXtDdg==}
     dependencies:
+      '@types/unist': 2.0.6
       bail: 1.0.5
       extend: 3.0.2
       is-buffer: 2.0.5
