@@ -10,10 +10,14 @@ export interface GridState {
   grid: CellState[][];
   selected?: { row: number; column: number; region: number };
   nextToFocus?: { row: number; column: number };
+  gameWon: boolean;
+  hasError: boolean;
 }
 
 const initialState: GridState = {
   grid: createGridState(),
+  gameWon: false,
+  hasError: false,
 };
 
 const updateSelected = (cellState: CellState) =>
@@ -27,9 +31,13 @@ const updateSelected = (cellState: CellState) =>
     };
   });
 
-const updateCellValue = (value: number | undefined, cellState: CellState) =>
+const updateCellValue = (
+  value: number | undefined,
+  row: number,
+  column: number
+) =>
   write((state: GridState) => {
-    state.grid[cellState.row][cellState.column].value = value;
+    state.grid[row][column].value = value;
   });
 
 const resetSelected = write((state: GridState) => {
@@ -44,9 +52,23 @@ const updateNextToFocus = (cellState: CellState) =>
 export const noCellSelected = Object.freeze([-1, -1, -1] as const);
 export const noCellToFocus = Object.freeze([-1, -1] as const);
 
+function checkGridCompleted(grid: CellState[][]): boolean {
+  for (const row of grid) {
+    for (const cellState of row) {
+      if (!cellState.value) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
 @Injectable()
 export class GridStore extends ComponentStore<GridState> {
   readonly grid$ = this.select((state) => state.grid);
+  readonly gameWon$ = this.select((state: GridState) => state.gameWon);
+  readonly hasError$ = this.select((state) => state.hasError);
   readonly selected$: Observable<readonly [number, number, number]> =
     this.select((state) => {
       if (state.selected) {
@@ -82,19 +104,36 @@ export class GridStore extends ComponentStore<GridState> {
   resetSelected = this.updater((state) => resetSelected(state));
 
   cellValueChanged = this.effect(
-    (cellValue$: Observable<{ value?: number; cellState: CellState }>) =>
+    (cellValue$: Observable<{ value?: number; row: number; column: number }>) =>
       cellValue$.pipe(
         tap((cellValue) => {
           this.#updateCellValue(cellValue);
           this.#checkGridForErrors();
+          this.#checkGridForWin();
         })
       )
   );
+
+  #checkGridForWin = this.effect((check$: Observable<void>) =>
+    check$.pipe(
+      withLatestFrom(this.grid$, this.hasError$),
+      tap(([, grid, hasError]) => {
+        this.#updateGameWon(!hasError && checkGridCompleted(grid));
+      })
+    )
+  );
+
+  #updateGameWon = this.updater((state: GridState, gameWon: boolean) => {
+    return produce(state, (draft) => {
+      draft.gameWon = gameWon;
+    });
+  });
 
   #checkGridForErrors = this.effect((check$: Observable<void>) =>
     check$.pipe(
       withLatestFrom(this.grid$),
       tap(([_, grid]) => {
+        this.#updateHasError(false);
         const errors = analyzeErrors(grid);
 
         this.#updateCellValid(errors);
@@ -102,11 +141,21 @@ export class GridStore extends ComponentStore<GridState> {
     )
   );
 
+  #updateHasError = this.updater((state: GridState, hasError: boolean) =>
+    produce(state, (draft) => {
+      draft.hasError = hasError;
+    })
+  );
+
   #updateCellValid = this.updater((state: GridState, errors: boolean[][]) => {
     return produce(state, (draft) => {
       for (let row = 0; row < draft.grid.length; row++) {
         for (let col = 0; col < draft.grid[row].length; col++) {
           draft.grid[row][col].valid = !errors[row][col];
+
+          if (errors[row][col]) {
+            draft.hasError = true;
+          }
         }
       }
     });
@@ -115,9 +164,9 @@ export class GridStore extends ComponentStore<GridState> {
   #updateCellValue = this.updater(
     (
       state: GridState,
-      { value, cellState }: { value?: number; cellState: CellState }
+      { value, row, column }: { value?: number; row: number; column: number }
     ) => {
-      const updater = updateCellValue(value, cellState);
+      const updater = updateCellValue(value, row, column);
 
       return updater(state);
     }
@@ -148,6 +197,12 @@ export class GridStore extends ComponentStore<GridState> {
 
     return updater(state);
   });
+
+  readonly setGrid = this.updater((state: GridState, grid: CellState[][]) =>
+    produce(state, (draft) => {
+      draft.grid = grid;
+    })
+  );
 
   #updateSelectedFromNavigation(
     direction: GridDirection,

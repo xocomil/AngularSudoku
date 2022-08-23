@@ -8,11 +8,11 @@ export const calcGridRegion = (col: number, row: number): number => {
 
 export const createGridState = (): CellState[][] => {
   return Array.from({ length: 9 }, (_, row) =>
-    Array.from({ length: 9 }, (_, value) =>
+    Array.from({ length: 9 }, (_, column) =>
       createCellState({
         row,
-        column: value,
-        region: calcGridRegion(value, row),
+        column,
+        region: calcGridRegion(column, row),
       })
     )
   );

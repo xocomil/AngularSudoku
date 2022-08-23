@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Output } from '@angular/core';
 import { PushModule } from '@ngrx/component';
 import { CellState, GridDirection } from '@sud/domain';
+import { logObservable } from '@sud/rxjs-operators';
 import { CellComponent } from '../cell/cell.component';
 import { GridCellSelectPipe } from '../grid/grid-cell-select.pipe';
 import { GridStore } from './store/grid.store';
@@ -45,15 +46,34 @@ export class GridComponent {
   readonly grid$ = this._gridStore.grid$;
   readonly selected$ = this._gridStore.selected$;
   readonly nextToFocus$ = this._gridStore.nextToFocus$;
+  @Output() gameWon = this._gridStore.gameWon$.pipe(
+    logObservable<boolean>('game won:')
+  );
 
   constructor(private readonly _gridStore: GridStore) {}
+
+  setGridValues(values: number[][]) {
+    values.forEach((row, rowIndex) => {
+      row.forEach((value, columnIndex) => {
+        this._gridStore.cellValueChanged({
+          value,
+          row: rowIndex,
+          column: columnIndex,
+        });
+      });
+    });
+  }
 
   cellFocused(cellState: CellState): void {
     this._gridStore.updateSelected(cellState);
   }
 
   cellValueChanged(newValue: number | undefined, cellState: CellState): void {
-    this._gridStore.cellValueChanged({ value: newValue, cellState });
+    this._gridStore.cellValueChanged({
+      value: newValue,
+      row: cellState.row,
+      column: cellState.column,
+    });
   }
 
   cellNavigated(direction: GridDirection, cellState: CellState): void {
