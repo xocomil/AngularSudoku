@@ -35,7 +35,7 @@ specifiers:
   '@storybook/builder-webpack5': 6.5.10
   '@storybook/core-server': 6.5.10
   '@storybook/manager-webpack5': 6.5.10
-  '@testing-library/angular': 12.1.1
+  '@testing-library/angular': 12.1.2
   '@testing-library/dom': 8.17.1
   '@testing-library/user-event': 14.4.3
   '@types/jest': 27.4.1
@@ -79,7 +79,7 @@ dependencies:
   '@ngrx/component': 14.2.0_d77qvktmbhkpvcy7bojwgd7gsu
   '@ngrx/component-store': 14.2.0_kbj7owtekphem6sjpo3wfhcyru
   '@nrwl/angular': 14.5.10_56477qpuiuvnbltkteboonrag4
-  '@testing-library/angular': 12.1.1_jjuts7gwau2hcszxlbgi3fwn3e
+  '@testing-library/angular': 12.1.2_jjuts7gwau2hcszxlbgi3fwn3e
   '@testing-library/dom': 8.17.1
   '@testing-library/user-event': 14.4.3_wl4iynrlixafokvgqnhzlvigei
   immer: 9.0.15
@@ -6949,8 +6949,8 @@ packages:
       resolve-from: 5.0.0
     dev: true
 
-  /@testing-library/angular/12.1.1_jjuts7gwau2hcszxlbgi3fwn3e:
-    resolution: {integrity: sha512-WPzOLx3il3bIC9hIej32BEdJZqOoViAuONbaSq3HIAm6fMUyTGoHTbT5geEAiU2koOWXlwjwuvy2HFb9dX+/hA==}
+  /@testing-library/angular/12.1.2_jjuts7gwau2hcszxlbgi3fwn3e:
+    resolution: {integrity: sha512-xRE5YzxL1yUXE4zzY2TowwmYCvmjEyaXn5bRhgPBC8NiP6ys+zT1b3ZvQTrP3SGpanNj9YM02rEikuu0SQVerw==}
     peerDependencies:
       '@angular/common': '>= 14.0.0'
       '@angular/core': '>= 14.0.0'
