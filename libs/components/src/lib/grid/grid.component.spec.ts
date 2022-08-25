@@ -2,13 +2,11 @@ import { CommonModule } from '@angular/common';
 import { faker } from '@faker-js/faker/locale/en';
 import { createComponentFactory, mockProvider } from '@ngneat/spectator/jest';
 import { PushModule } from '@ngrx/component';
-import {
-  CellComponent,
-  GridCellSelectPipe,
-  GridComponent,
-} from '@sud/components';
 import { CellState, createCellState, GridDirection } from '@sud/domain';
-import { Subject } from 'rxjs';
+import { NEVER, Subject } from 'rxjs';
+import { CellComponent } from '../cell/cell.component';
+import { GridCellSelectPipe } from './grid-cell-select.pipe';
+import { GridComponent } from './grid.component';
 import { GridStore } from './store/grid.store';
 
 describe('GridComponent', () => {
@@ -16,6 +14,7 @@ describe('GridComponent', () => {
 
   const gridStoreStub: Partial<GridStore> = {
     grid$,
+    gameWon$: NEVER,
     updateSelected: jest.fn(),
     cellValueChanged: jest.fn(),
     navigateToCell: jest.fn(),
@@ -69,7 +68,8 @@ describe('GridComponent', () => {
 
       expect(store.cellValueChanged).toHaveBeenCalledWith({
         value: testValue,
-        cellState: testCellState,
+        row: testCellState.row,
+        column: testCellState.column,
       });
     });
 
@@ -83,7 +83,8 @@ describe('GridComponent', () => {
 
       expect(store.cellValueChanged).toHaveBeenCalledWith({
         value: undefined,
-        cellState: testCellState,
+        row: testCellState.row,
+        column: testCellState.column,
       });
     });
   });
