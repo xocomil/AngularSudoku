@@ -124,18 +124,14 @@ describe('GridStore', () => {
       const gridSpy = subscribeSpyTo(spectator.service.grid$);
 
       const row = 1,
-        column = 2,
-        region = 3;
+        column = 2;
 
       const testValue = 9;
 
       spectator.service.cellValueChanged({
         value: testValue,
-        cellState: createCellState({
-          row,
-          column,
-          region,
-        }),
+        row,
+        column,
       });
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -153,27 +149,20 @@ describe('GridStore', () => {
 
         const row = 1,
           column = 2,
-          column2 = 3,
-          region = 3;
+          column2 = 3;
 
         const testValue = 9;
 
         spectator.service.cellValueChanged({
           value: testValue,
-          cellState: createCellState({
-            row,
-            column,
-            region,
-          }),
+          row,
+          column,
         });
 
         spectator.service.cellValueChanged({
           value: testValue,
-          cellState: createCellState({
-            row,
-            column: column2,
-            region,
-          }),
+          row,
+          column: column2,
         });
 
         const resultCell1 = gridSpy.getLastValue()![row][column];
