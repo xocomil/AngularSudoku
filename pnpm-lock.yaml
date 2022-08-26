@@ -19,8 +19,8 @@ specifiers:
   '@faker-js/faker': 7.4.0
   '@hirez_io/observer-spy': 2.2.0
   '@ngneat/spectator': 11.1.3
-  '@ngrx/component': 14.2.0
-  '@ngrx/component-store': 14.2.0
+  '@ngrx/component': 14.3.0
+  '@ngrx/component-store': 14.3.0
   '@nrwl/angular': 14.5.10
   '@nrwl/cli': 14.5.10
   '@nrwl/cypress': 14.5.10
@@ -76,8 +76,8 @@ dependencies:
   '@angular/platform-browser': 14.1.3_o5te6wrnhvakv4ov4ar255pcsi
   '@angular/platform-browser-dynamic': 14.1.3_pfueecypdzafpquildxokoe23y
   '@angular/router': 14.1.3_iwkqqt2nupzuzcint76ec7avme
-  '@ngrx/component': 14.2.0_d77qvktmbhkpvcy7bojwgd7gsu
-  '@ngrx/component-store': 14.2.0_kbj7owtekphem6sjpo3wfhcyru
+  '@ngrx/component': 14.3.0_d77qvktmbhkpvcy7bojwgd7gsu
+  '@ngrx/component-store': 14.3.0_kbj7owtekphem6sjpo3wfhcyru
   '@nrwl/angular': 14.5.10_dvcwxhld54w5jgi22zkhqunfla
   '@testing-library/angular': 12.1.2_jjuts7gwau2hcszxlbgi3fwn3e
   '@testing-library/dom': 8.17.1
@@ -4285,8 +4285,8 @@ packages:
       tslib: 2.4.0
     dev: true
 
-  /@ngrx/component-store/14.2.0_kbj7owtekphem6sjpo3wfhcyru:
-    resolution: {integrity: sha512-6Tt1TwYSnEAv/ZoPHSQM61IIh+qnwB9iQ4RTS3N4NUhQF77ltMbAIAxp8NcQ2lEUEFa6pKdSWs/rQfd4wKwXfg==}
+  /@ngrx/component-store/14.3.0_kbj7owtekphem6sjpo3wfhcyru:
+    resolution: {integrity: sha512-iD/gfgun+nnTWt7QmsBl28QQxwEWEKl7VGfAhFDvmO5x+kIr4k07U+8DColloVqrPUsR1GeaxLX4eb70mKm38w==}
     peerDependencies:
       '@angular/core': ^14.0.0
       rxjs: ^6.5.3 || ^7.5.0
@@ -4296,8 +4296,8 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /@ngrx/component/14.2.0_d77qvktmbhkpvcy7bojwgd7gsu:
-    resolution: {integrity: sha512-bARzjzChZHuBkwx4G4RDizaChwP8TJhhcCZJFm5jNQwNxUp+fnkVABYoJrem60YcF4bnUX+r1STfsSUo7t48Ww==}
+  /@ngrx/component/14.3.0_d77qvktmbhkpvcy7bojwgd7gsu:
+    resolution: {integrity: sha512-Mer3olNxuvi6xnFKcnhFVZVMM0U6LMfK8mIlhGEvbyjfuBFKNCFc5ySs6EhsGWLUkadWFjTz6sqAvko6Nz21Cg==}
     peerDependencies:
       '@angular/common': ^14.0.0
       '@angular/core': ^14.0.0
