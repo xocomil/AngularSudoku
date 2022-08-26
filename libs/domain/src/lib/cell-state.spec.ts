@@ -12,7 +12,7 @@ describe('CellState', () => {
         column: 0,
         region: 0,
         value: undefined,
-        readonly: false,
+        isReadonly: false,
         valid: true,
       };
 
@@ -28,7 +28,7 @@ describe('CellState', () => {
         column: 0,
         region: 0,
         value,
-        readonly: false,
+        isReadonly: false,
         valid: true,
       });
 
@@ -44,7 +44,7 @@ describe('CellState', () => {
         column: 0,
         region: 0,
         value,
-        readonly: true,
+        isReadonly: true,
         valid: true,
       });
 
@@ -53,7 +53,7 @@ describe('CellState', () => {
         column: 0,
         region: 0,
         value,
-        readonly: true,
+        isReadonly: true,
       });
 
       expect(result).toEqual(expected);

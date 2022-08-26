@@ -1,0 +1,19 @@
+:host {
+  display: block;
+}
+
+.game-ui {
+  display: flex;
+  gap: 0.6rem;
+
+  sud-grid: {
+    flex-basis: 200px;
+    flex-grow: 1;
+  }
+
+  .game-ui-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+}

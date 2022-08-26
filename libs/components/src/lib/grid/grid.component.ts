@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  Output,
+} from '@angular/core';
 import { PushModule } from '@ngrx/component';
 import { CellState, GridDirection } from '@sud/domain';
 import { logObservable } from '@sud/rxjs-operators';
@@ -30,6 +35,7 @@ import { GridStore } from './store/grid.store';
         [cellState]="cellState"
         [focusState]="selected$ | ngrxPush | gridCellSelect: cellState"
         [nextToFocus]="nextToFocus$ | ngrxPush"
+        [creatingPuzzleMode]="creatingPuzzleMode"
         (cellFocusReceived)="cellFocused(cellState)"
         (cellBlurReceived)="cellBlurred()"
         (cellValueChanged)="cellValueChanged($event, cellState)"
@@ -43,9 +49,12 @@ import { GridStore } from './store/grid.store';
   providers: [GridStore],
 })
 export class GridComponent {
-  readonly grid$ = this._gridStore.grid$;
+  readonly grid$ = this._gridStore.grid$.pipe(logObservable('grid'));
   readonly selected$ = this._gridStore.selected$;
   readonly nextToFocus$ = this._gridStore.nextToFocus$;
+
+  @Input() creatingPuzzleMode = false;
+
   @Output() gameWon = this._gridStore.gameWon$.pipe(
     logObservable<boolean>('game won:')
   );
@@ -69,6 +78,16 @@ export class GridComponent {
   }
 
   cellValueChanged(newValue: number | undefined, cellState: CellState): void {
+    if (this.creatingPuzzleMode) {
+      this.#createPuzzleCell(newValue, cellState);
+
+      return;
+    }
+
+    this.#updateCellValue(newValue, cellState);
+  }
+
+  #updateCellValue(newValue: number | undefined, cellState: CellState): void {
     this._gridStore.cellValueChanged({
       value: newValue,
       row: cellState.row,
@@ -90,5 +109,15 @@ export class GridComponent {
 
   cellBlurred(): void {
     this._gridStore.resetSelected();
+  }
+
+  #createPuzzleCell(newValue: number | undefined, cellState: CellState): void {
+    console.log('createPuzzleCell called');
+
+    this._gridStore.createPuzzleCell({
+      value: newValue,
+      row: cellState.row,
+      column: cellState.column,
+    });
   }
 }
