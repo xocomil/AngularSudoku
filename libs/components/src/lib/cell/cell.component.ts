@@ -27,12 +27,13 @@ import { filter, fromEvent, map, of, Subject, Subscription, tap } from 'rxjs';
   template: `
     <div [class.error]="!cellState.valid">
       <div class="debug" *ngIf="debug$ | async">
-        focusState: {{ focusState }} <br />
-        coords: ({{ cellState.column }}, row: {{ cellState.row }}<br />
-        col: {{ cellState.column }}<br />
-        reg: {{ cellState.region }}<br />
-        valid: {{ cellState.valid }}<br />
-        value: {{ cellState.value + '' }}
+        <!--        focusState: {{ focusState }} <br />-->
+        <!--        coords: ({{ cellState.column }}, row: {{ cellState.row }}<br />-->
+        <!--        col: {{ cellState.column }}<br />-->
+        <!--        reg: {{ cellState.region }}<br />-->
+        <!--        valid: {{ cellState.valid }}<br />-->
+        <!--        value: {{ cellState.value + '' }}-->
+        isReadonly: {{ cellState.isReadonly }}
       </div>
       <input
         data-testid="cellInput"
@@ -41,6 +42,8 @@ import { filter, fromEvent, map, of, Subject, Subscription, tap } from 'rxjs';
         (focus)="cellFocusReceived.emit()"
         (blur)="cellBlurReceived.emit()"
         autocomplete="none"
+        [class.is-readonly]="cellState.isReadonly"
+        [disabled]="!creatingPuzzleMode && cellState.isReadonly"
       />
     </div>
   `,
@@ -48,6 +51,8 @@ import { filter, fromEvent, map, of, Subject, Subscription, tap } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CellComponent implements OnInit, OnDestroy {
+  @Input() creatingPuzzleMode = false;
+
   debug$ = of(false);
 
   readonly #allowedValues = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];

@@ -2,7 +2,7 @@
   --region-brown: 100 100 0;
   --error-background: rgb(255 0 0 / 50%);
   --error-color: rgb(255 0 0 / 100%);
-  --cell-highlight-color: rgb(255 255 255);
+  --cell-highlight-color: hsl(0deg 0% 85% / 70%);
   --checkerboard-color: rgb(0 72 125 / 15%);
 
   display: block;
@@ -59,6 +59,11 @@ input {
   width: 100%;
   outline: none;
   border: none;
+
+  &.is-readonly {
+    background-color: transparent;
+    color: hsl(0deg 0% 10%);
+  }
 }
 
 .error {

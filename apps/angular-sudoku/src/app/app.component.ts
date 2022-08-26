@@ -1,26 +1,37 @@
 import { NgIf } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { GridComponent } from '@sud/components';
+import { GridComponent, PencilMarkComponent } from '@sud/components';
 
 @Component({
   selector: 'angular-sudoku-root',
   standalone: true,
-  imports: [GridComponent, NgIf],
-  template: `<sud-grid #grid (gameWon)="gameWonHandler($event)"></sud-grid>
-    <div>
-      <button type="button" (click)="generateWinningGrid()">
-        Add Winning Grid
-      </button>
-      <button type="button" (click)="generateGridWithErrors()">
-        Add Grid With Errors
-      </button>
+  imports: [GridComponent, NgIf, PencilMarkComponent],
+  template: `<div class="game-ui">
+      <sud-grid
+        #grid
+        [creatingPuzzleMode]="creatingPuzzleMode"
+        (gameWon)="gameWonHandler($event)"
+      ></sud-grid>
+      <div class="game-ui-buttons">
+        <button type="button" (click)="toggleCreatePuzzleMode()">
+          {{ creatingPuzzleMode ? 'End' : 'Start' }} Create Puzzle Mode
+        </button>
+        <button type="button" (click)="generateWinningGrid()">
+          Add Winning Grid
+        </button>
+        <button type="button" (click)="generateGridWithErrors()">
+          Add Grid With Errors
+        </button>
+        <sud-pencil-mark></sud-pencil-mark>
+      </div>
     </div>
     <div class="gameWon" *ngIf="gameWon">Congratulations! You won!</div>`,
-  styles: [],
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   title = 'angular-sudoku';
-  gameWon = false;
+  protected gameWon = false;
+  protected creatingPuzzleMode = false;
 
   @ViewChild('grid', { static: true }) grid!: GridComponent;
 
@@ -54,5 +65,9 @@ export class AppComponent {
       [8, 9, 7, 2, 3, 1, 5, 6, 4],
       [5, 6, 4, 8, 9, 7, 2, 3, 1],
     ]);
+  }
+
+  toggleCreatePuzzleMode(): void {
+    this.creatingPuzzleMode = !this.creatingPuzzleMode;
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { CellState, GridDirection } from '@sud/domain';
 import { errorAnalyzer } from '@sud/fast-analayzers';
+import { logObservable } from '@sud/rxjs-operators';
 import produce from 'immer';
 import { Observable, of, tap, withLatestFrom } from 'rxjs';
 import { createGridState } from './grid.store.helpers';
@@ -34,10 +35,12 @@ const updateSelected = (cellState: CellState) =>
 const updateCellValue = (
   value: number | undefined,
   row: number,
-  column: number
+  column: number,
+  isReadonly: boolean
 ) =>
   write((state: GridState) => {
     state.grid[row][column].value = value;
+    state.grid[row][column].isReadonly = isReadonly;
   });
 
 const resetSelected = write((state: GridState) => {
@@ -114,6 +117,23 @@ export class GridStore extends ComponentStore<GridState> {
       )
   );
 
+  createPuzzleCell = this.effect(
+    (
+      changes$: Observable<{
+        column: number;
+        row: number;
+        value: number | undefined;
+      }>
+    ) =>
+      changes$.pipe(
+        logObservable('createPuzzleCell'),
+        tap((changes) => {
+          this.#updateCellValue({ ...changes, isReadonly: !!changes.value });
+          this.#checkGridForErrors();
+        })
+      )
+  );
+
   #checkGridForWin = this.effect((check$: Observable<void>) =>
     check$.pipe(
       withLatestFrom(this.grid$, this.hasError$),
@@ -164,9 +184,14 @@ export class GridStore extends ComponentStore<GridState> {
   #updateCellValue = this.updater(
     (
       state: GridState,
-      { value, row, column }: { value?: number; row: number; column: number }
+      {
+        value,
+        row,
+        column,
+        isReadonly = false,
+      }: { value?: number; row: number; column: number; isReadonly?: boolean }
     ) => {
-      const updater = updateCellValue(value, row, column);
+      const updater = updateCellValue(value, row, column, isReadonly);
 
       return updater(state);
     }

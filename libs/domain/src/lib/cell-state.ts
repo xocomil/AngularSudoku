@@ -1,7 +1,7 @@
 export interface CellState {
   value?: number;
   valid: boolean;
-  readonly: boolean;
+  isReadonly: boolean;
   row: number;
   column: number;
   region: number;
@@ -13,7 +13,7 @@ export const createCellState = ({
   region,
   value = undefined,
   valid = true,
-  readonly = false,
+  isReadonly = false,
 }: Partial<CellState> &
   Pick<CellState, 'row' | 'column' | 'region'>): CellState => ({
   row,
@@ -21,5 +21,5 @@ export const createCellState = ({
   region,
   value,
   valid,
-  readonly,
+  isReadonly: isReadonly,
 });
