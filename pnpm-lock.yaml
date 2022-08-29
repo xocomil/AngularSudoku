@@ -27,7 +27,7 @@ specifiers:
   '@nrwl/eslint-plugin-nx': 14.5.10
   '@nrwl/jest': 14.5.10
   '@nrwl/linter': 14.5.10
-  '@nrwl/nx-cloud': 14.5.4
+  '@nrwl/nx-cloud': 14.6.0
   '@nrwl/storybook': 14.5.10
   '@nrwl/workspace': 14.5.10
   '@storybook/addon-essentials': 6.5.10
@@ -104,7 +104,7 @@ devDependencies:
   '@nrwl/eslint-plugin-nx': 14.5.10_mkfqjmeize2qesywaebju6tdq4
   '@nrwl/jest': 14.5.10_oqd6w67pqggug57az6damxqvgm
   '@nrwl/linter': 14.5.10_3psvxjt3liempitzqbdf5qxvj4
-  '@nrwl/nx-cloud': 14.5.4
+  '@nrwl/nx-cloud': 14.6.0
   '@nrwl/storybook': 14.5.10_uujzgzqelqwnyy226yrgqj7oiu
   '@nrwl/workspace': 14.5.10_kxl3u5377hpplmpncpxn2z7soa
   '@storybook/addon-essentials': 6.5.10_chd5dcm356vkfpdbsyif4sz2cm
@@ -4678,8 +4678,8 @@ packages:
       - typescript
       - utf-8-validate
 
-  /@nrwl/nx-cloud/14.5.4:
-    resolution: {integrity: sha512-fuKsx+2jvpL5OAuwSUsODEydzt01qiPJwZslbCtMWXRGva5KNbT4udNwl0C1M/W9RFVYmFbD7n4Ewz3oho531A==}
+  /@nrwl/nx-cloud/14.6.0:
+    resolution: {integrity: sha512-TAL3MtuAPOYA+9Zk3q0qvOc67TW/L8gABFMMq5I9ywoPyK6qpUQn0SOGvC8nFCKdi/oC7L7xtDMXnjECNIL2ng==}
     hasBin: true
     dependencies:
       axios: 0.21.4
