@@ -19,6 +19,7 @@
       "@sud/domain": ["libs/domain/src/index.ts"],
       "@sud/fast-analayzers": ["libs/fast-analyzers/src/index.ts"],
       "@sud/grid-analyzers": ["libs/grid-analyzers/src/index.ts"],
+      "@sud/pipes": ["libs/pipes/src/index.ts"],
       "@sud/rxjs-operators": ["libs/rxjs-operators/src/index.ts"]
     }
   },

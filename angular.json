@@ -9,6 +9,7 @@
     "domain": "libs/domain",
     "fast-analyzers": "libs/fast-analyzers",
     "grid-analyzers": "libs/grid-analyzers",
+    "pipes": "libs/pipes",
     "rxjs-operators": "libs/rxjs-operators"
   }
 }

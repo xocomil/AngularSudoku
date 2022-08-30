@@ -7,7 +7,7 @@ export default {
   decorators: [
     componentWrapperDecorator(
       (story) => `
-<div style="height: 35px; display: inline-flex">
+<div style="width: 60px">
     ${story}
 </div>
 `

@@ -1,0 +1,22 @@
+{
+  "projectType": "library",
+  "sourceRoot": "libs/pipes/src",
+  "prefix": "sud",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/pipes"],
+      "options": {
+        "jestConfig": "libs/pipes/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/pipes/**/*.ts", "libs/pipes/**/*.html"]
+      }
+    }
+  },
+  "tags": []
+}
