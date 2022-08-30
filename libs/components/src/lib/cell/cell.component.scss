@@ -46,6 +46,10 @@
 
   &:nth-child(even) {
     background-color: var(--checkerboard-color);
+
+    &[data-focused-state='region'] {
+      --pencil-mark-color: hsl(0deg 0% 75%);
+    }
   }
 }
 
@@ -85,4 +89,14 @@ input {
   color: blue;
   background-color: rgb(0 0 255 /25%);
   padding: 0;
+}
+
+.pencil-marks {
+  z-index: 2000;
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+  max-height: 90%;
+  pointer-events: none;
 }
