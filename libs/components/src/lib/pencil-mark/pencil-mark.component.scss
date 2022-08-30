@@ -2,6 +2,6 @@
   display: block;
 
   svg {
-    height: 100%;
+    fill: var(--pencil-mark-color, hsl(0deg 0% 40%));
   }
 }

@@ -19,21 +19,27 @@ import {
   gridDirectionFromKeyboard,
 } from '@sud/domain';
 import { filter, fromEvent, map, of, Subject, Subscription, tap } from 'rxjs';
+import { PencilMarkComponent } from '../pencil-mark/pencil-mark.component';
 
 @Component({
   selector: 'sud-cell',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PencilMarkComponent],
   template: `
     <div [class.error]="!cellState.valid">
+      <sud-pencil-mark
+        *ngIf="!cellState.value"
+        class="pencil-marks"
+      ></sud-pencil-mark>
       <div class="debug" *ngIf="debug$ | async">
         <!--        focusState: {{ focusState }} <br />-->
         <!--        coords: ({{ cellState.column }}, row: {{ cellState.row }}<br />-->
         <!--        col: {{ cellState.column }}<br />-->
         <!--        reg: {{ cellState.region }}<br />-->
         <!--        valid: {{ cellState.valid }}<br />-->
-        <!--        value: {{ cellState.value + '' }}-->
-        isReadonly: {{ cellState.isReadonly }}
+        value: {{ cellState.value + '' }}<br />
+        truthy: {{ !!cellState.value | json }}
+        <!--        isReadonly: {{ cellState.isReadonly }}-->
       </div>
       <input
         data-testid="cellInput"
