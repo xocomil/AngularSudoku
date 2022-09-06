@@ -6,7 +6,9 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/angular-sudoku",
         "index": "apps/angular-sudoku/src/index.html",
@@ -18,7 +20,9 @@
           "apps/angular-sudoku/src/favicon.ico",
           "apps/angular-sudoku/src/assets"
         ],
-        "styles": ["apps/angular-sudoku/src/styles.scss"],
+        "styles": [
+          "apps/angular-sudoku/src/styles.scss"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -83,11 +87,63 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/angular-sudoku"],
+      "outputs": [
+        "coverage/apps/angular-sudoku"
+      ],
       "options": {
         "jestConfig": "apps/angular-sudoku/jest.config.ts",
         "passWithNoTests": true
       }
+    },
+    "cap": {
+      "executor": "@nrwl/workspace:run-commands",
+      "configurations": {
+        "add-ios": {
+          "command": "npx cap add ios",
+          "cwd": "apps/angular-sudoku"
+        },
+        "add-android": {
+          "command": "npx cap add android",
+          "cwd": "apps/angular-sudoku"
+        },
+        "any": {
+          "command": "npx cap {args.cmd}",
+          "cwd": "apps/angular-sudoku"
+        },
+        "update": {
+          "commands": [
+            "nx build angular-sudoku",
+            "npx cap update"
+          ],
+          "parallel": false,
+          "cwd": "apps/angular-sudoku"
+        },
+        "sync": {
+          "commands": [
+            "nx build angular-sudoku",
+            "npx cap sync"
+          ],
+          "parallel": false,
+          "cwd": "apps/angular-sudoku"
+        },
+        "open-ios": {
+          "command": "npx cap open ios",
+          "cwd": "apps/angular-sudoku"
+        },
+        "open-android": {
+          "command": "npx cap open android",
+          "cwd": "apps/angular-sudoku"
+        },
+        "run-ios": {
+          "command": "npx cap run ios",
+          "cwd": "apps/angular-sudoku"
+        },
+        "run-android": {
+          "command": "npx cap run android",
+          "cwd": "apps/angular-sudoku"
+        }
+      },
+      "defaultConfiguration": "any"
     }
   },
   "tags": []

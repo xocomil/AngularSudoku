@@ -1,0 +1,7 @@
+{
+  "name": "ng-sudoku",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

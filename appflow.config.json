@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "appId": "5ad4b722",
+      "root": "apps/angular-sudoku",
+      "dependencyInstallCommand": "cd ../../ && npm i"
+    }
+  ]
+}

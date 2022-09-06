@@ -1,0 +1,13 @@
+{
+  "appId": "app.ng.sudoku",
+  "appName": "ng-sudoku",
+  "bundledWebRuntime": false,
+  "npmClient": "pnpm",
+  "webDir": "../../dist/apps/angular-sudoku",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 3000
+    }
+  },
+  "cordova": {}
+}

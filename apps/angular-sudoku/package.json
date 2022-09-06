@@ -1,0 +1,9 @@
+{
+  "name": "angular-sudoku",
+  "scripts": {
+    "appflow:build": "cd ../../ && npx nx run angular-sudoku:build:production"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "4.1.0"
+  }
+}
