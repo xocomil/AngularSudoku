@@ -9,5 +9,9 @@
       "launchShowDuration": 3000
     }
   },
-  "cordova": {}
+  "cordova": {
+    "preferences": {
+      "DisableDeploy": "false"
+    }
+  }
 }
