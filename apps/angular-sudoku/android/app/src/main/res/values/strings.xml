@@ -4,4 +4,10 @@
     <string name="title_activity_main">ng-sudoku</string>
     <string name="package_name">app.ng.sudoku</string>
     <string name="custom_url_scheme">app.ng.sudoku</string>
+    <string name="ionic_app_id">974140c6</string>
+    <string name="ionic_channel_name">Development</string>
+    <string name="ionic_update_method">background</string>
+    <string name="ionic_max_versions">2</string>
+    <string name="ionic_min_background_duration">30</string>
+    <string name="ionic_update_api">https://api.ionicjs.com</string>
 </resources>

@@ -5,5 +5,8 @@
   },
   "devDependencies": {
     "@capacitor/cli": "4.1.0"
+  },
+  "dependencies": {
+    "cordova-plugin-ionic": "5.5.2"
   }
 }

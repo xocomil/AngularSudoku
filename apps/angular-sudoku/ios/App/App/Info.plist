@@ -50,5 +50,17 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+   <key>IonAppId</key>
+    <string>974140c6</string>
+    <key>IonChannelName</key>
+    <string>Development</string>
+    <key>IonUpdateMethod</key>
+    <string>background</string>
+    <key>IonMaxVersions</key>
+    <string>2</string>
+    <key>IonMinBackgroundDuration</key>
+    <string>30</string>
+    <key>IonApi</key>
+    <string>https://api.ionicjs.com</string>
 </dict>
 </plist>
