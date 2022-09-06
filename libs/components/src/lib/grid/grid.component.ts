@@ -6,7 +6,12 @@ import {
   Output,
 } from '@angular/core';
 import { PushModule } from '@ngrx/component';
-import { CellState, GridDirection } from '@sud/domain';
+import {
+  CellState,
+  CellValue,
+  GridDirection,
+  valueIsCellValue,
+} from '@sud/domain';
 import { logObservable } from '@sud/rxjs-operators';
 import { CellComponent } from '../cell/cell.component';
 import { GridCellSelectPipe } from '../grid/grid-cell-select.pipe';
@@ -61,7 +66,7 @@ export class GridComponent {
 
   constructor(private readonly _gridStore: GridStore) {}
 
-  setGridValues(values: number[][]) {
+  setGridValues(values: CellValue[][]) {
     values.forEach((row, rowIndex) => {
       row.forEach((value, columnIndex) => {
         this._gridStore.cellValueChanged({
@@ -78,16 +83,22 @@ export class GridComponent {
   }
 
   cellValueChanged(newValue: number | undefined, cellState: CellState): void {
+    // TODO: determine if the CellValue belongs in the CellComponent or here
+    const valueToUse = valueIsCellValue(newValue) ? newValue : undefined;
+
     if (this.creatingPuzzleMode) {
-      this.#createPuzzleCell(newValue, cellState);
+      this.#createPuzzleCell(valueToUse, cellState);
 
       return;
     }
 
-    this.#updateCellValue(newValue, cellState);
+    this.#updateCellValue(valueToUse, cellState);
   }
 
-  #updateCellValue(newValue: number | undefined, cellState: CellState): void {
+  #updateCellValue(
+    newValue: CellValue | undefined,
+    cellState: CellState
+  ): void {
     this._gridStore.cellValueChanged({
       value: newValue,
       row: cellState.row,
@@ -111,7 +122,10 @@ export class GridComponent {
     this._gridStore.resetSelected();
   }
 
-  #createPuzzleCell(newValue: number | undefined, cellState: CellState): void {
+  #createPuzzleCell(
+    newValue: CellValue | undefined,
+    cellState: CellState
+  ): void {
     console.log('createPuzzleCell called');
 
     this._gridStore.createPuzzleCell({

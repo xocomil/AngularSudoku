@@ -1,10 +1,15 @@
+export const allPencilMarks = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
+
+export type CellValue = typeof allPencilMarks[number];
+
 export interface CellState {
-  value?: number;
+  value?: CellValue;
   valid: boolean;
   isReadonly: boolean;
   row: number;
   column: number;
   region: number;
+  valuesToHide: CellValue[];
 }
 
 export const createCellState = ({
@@ -22,4 +27,9 @@ export const createCellState = ({
   value,
   valid,
   isReadonly: isReadonly,
+  valuesToHide: [],
 });
+
+export const valueIsCellValue = (
+  value: number | undefined
+): value is CellValue => value != null && value >= 1 && value <= 9;

@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import { CellState, GridDirection } from '@sud/domain';
+import {
+  CellState,
+  CellValue,
+  GridDirection,
+  valueIsCellValue,
+} from '@sud/domain';
 import { errorAnalyzer } from '@sud/fast-analayzers';
 import { logObservable } from '@sud/rxjs-operators';
 import produce from 'immer';
@@ -33,7 +38,7 @@ const updateSelected = (cellState: CellState) =>
   });
 
 const updateCellValue = (
-  value: number | undefined,
+  value: CellValue | undefined,
   row: number,
   column: number,
   isReadonly: boolean
@@ -65,6 +70,12 @@ function checkGridCompleted(grid: CellState[][]): boolean {
   }
 
   return true;
+}
+
+interface CellValueChangedOptions {
+  value?: CellValue;
+  row: number;
+  column: number;
 }
 
 @Injectable()
@@ -107,12 +118,15 @@ export class GridStore extends ComponentStore<GridState> {
   resetSelected = this.updater((state) => resetSelected(state));
 
   cellValueChanged = this.effect(
-    (cellValue$: Observable<{ value?: number; row: number; column: number }>) =>
+    (cellValue$: Observable<CellValueChangedOptions>) =>
       cellValue$.pipe(
-        tap((cellValue) => {
+        withLatestFrom(this.grid$),
+        tap(([cellValue, grid]) => {
+          const oldValue = grid[cellValue.row][cellValue.column].value;
           this.#updateCellValue(cellValue);
           this.#checkGridForErrors();
           this.#checkGridForWin();
+          this.#updatePencilMarks({ cellValue, oldValue });
         })
       )
   );
@@ -122,7 +136,7 @@ export class GridStore extends ComponentStore<GridState> {
       changes$: Observable<{
         column: number;
         row: number;
-        value: number | undefined;
+        value: CellValue | undefined;
       }>
     ) =>
       changes$.pipe(
@@ -132,6 +146,77 @@ export class GridStore extends ComponentStore<GridState> {
           this.#checkGridForErrors();
         })
       )
+  );
+
+  #updatePencilMarks = this.effect(
+    (
+      cellValue$: Observable<{
+        cellValue: CellValueChangedOptions;
+        oldValue: CellValue | undefined;
+      }>
+    ) =>
+      cellValue$.pipe(
+        withLatestFrom(this.grid$),
+        tap(
+          ([
+            {
+              cellValue: { column, row },
+              oldValue,
+            },
+            grid,
+          ]) => {
+            this.#setPencilMarks({ cells: grid[row], oldValue });
+            this.#setPencilMarks({
+              cells: getColumnToAnalyze(column, grid),
+              oldValue,
+            });
+            this.#setPencilMarks({
+              cells: getRegionToAnalyze(grid[row][column].region, grid),
+              oldValue,
+            });
+          }
+        )
+      )
+  );
+
+  #setPencilMarks = this.effect(
+    (
+      cells$: Observable<{
+        cells: CellState[];
+        oldValue: CellValue | undefined;
+      }>
+    ) =>
+      cells$.pipe(
+        tap(({ cells, oldValue }) => {
+          const usedPencilMarks = cells
+            .map((cell) => cell.value)
+            .filter(valueIsCellValue);
+
+          cells.forEach((cell) => {
+            const valuesToHide = valueIsCellValue(oldValue)
+              ? cell.valuesToHide.filter((curValue) => curValue === oldValue)
+              : cell.valuesToHide;
+
+            this.#setRowValuesToHideForCell({
+              row: cell.row,
+              column: cell.column,
+              valuesToHide: valuesToHide.concat(usedPencilMarks),
+            });
+          });
+        })
+      )
+  );
+
+  #setRowValuesToHideForCell = this.updater(
+    (
+      state: GridState,
+      update: { row: number; column: number; valuesToHide: CellValue[] }
+    ) => {
+      return produce(state, (draft) => {
+        draft.grid[update.row][update.column].valuesToHide =
+          update.valuesToHide;
+      });
+    }
   );
 
   #checkGridForWin = this.effect((check$: Observable<void>) =>
@@ -189,7 +274,12 @@ export class GridStore extends ComponentStore<GridState> {
         row,
         column,
         isReadonly = false,
-      }: { value?: number; row: number; column: number; isReadonly?: boolean }
+      }: {
+        value?: CellValue;
+        row: number;
+        column: number;
+        isReadonly?: boolean;
+      }
     ) => {
       const updater = updateCellValue(value, row, column, isReadonly);
 

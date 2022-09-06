@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true,
 })
 export class SvgPencilMarkPipe implements PipeTransform {
-  transform(numbersToDisplay: number[], numberToShow: number): boolean {
-    return numbersToDisplay.includes(numberToShow);
+  transform(numbersToHide: number[], numberToShow: number): boolean {
+    return !numbersToHide.includes(numberToShow);
   }
 }
