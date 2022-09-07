@@ -47,7 +47,7 @@
     "@nrwl/eslint-plugin-nx": "14.5.10",
     "@nrwl/jest": "14.5.10",
     "@nrwl/linter": "14.5.10",
-    "@nrwl/nx-cloud": "14.5.4",
+    "@nrwl/nx-cloud": "14.6.2",
     "@nrwl/storybook": "14.5.10",
     "@nrwl/workspace": "14.5.10",
     "@storybook/addon-essentials": "6.5.10",
