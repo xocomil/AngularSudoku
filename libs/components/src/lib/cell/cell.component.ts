@@ -30,6 +30,7 @@ import { PencilMarkComponent } from '../pencil-mark/pencil-mark.component';
       <sud-pencil-mark
         *ngIf="!cellState.value"
         class="pencil-marks"
+        [numbersToHide]="cellState.valuesToHide"
       ></sud-pencil-mark>
       <div class="debug" *ngIf="debug$ | async">
         <!--        focusState: {{ focusState }} <br />-->

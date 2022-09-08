@@ -22,7 +22,6 @@ import { GridComponent, PencilMarkComponent } from '@sud/components';
         <button type="button" (click)="generateGridWithErrors()">
           Add Grid With Errors
         </button>
-        <sud-pencil-mark></sud-pencil-mark>
       </div>
     </div>
     <div class="gameWon" *ngIf="gameWon">Congratulations! You won!</div>`,
