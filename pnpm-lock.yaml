@@ -16,7 +16,7 @@ specifiers:
   '@angular/platform-browser': 14.1.3
   '@angular/platform-browser-dynamic': 14.1.3
   '@angular/router': 14.1.3
-  '@faker-js/faker': 7.4.0
+  '@faker-js/faker': 7.5.0
   '@hirez_io/observer-spy': 2.2.0
   '@ngneat/spectator': 11.1.3
   '@ngrx/component': 14.2.0
@@ -96,7 +96,7 @@ devDependencies:
   '@angular/cli': 14.1.3
   '@angular/compiler-cli': 14.1.3_qojfq3xayca5hnab24uayitgi4
   '@angular/language-service': 14.1.3
-  '@faker-js/faker': 7.4.0
+  '@faker-js/faker': 7.5.0
   '@hirez_io/observer-spy': 2.2.0_ajerfardmwlrg4c66pjbq6gdau
   '@ngneat/spectator': 11.1.3_55rgyarirw3pbmqj5idx3jhiry
   '@nrwl/cli': 14.5.10
@@ -3914,8 +3914,8 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@faker-js/faker/7.4.0:
-    resolution: {integrity: sha512-xDd3Tvkt2jgkx1LkuwwxpNBy/Oe+LkZBTwkgEFTiWpVSZgQ5sc/LenbHKRHbFl0dq/KFeeq/szyyPtpJRKY0fg==}
+  /@faker-js/faker/7.5.0:
+    resolution: {integrity: sha512-8wNUCCUHvfvI0gQpDUho/3gPzABffnCn5um65F8dzQ86zz6dlt4+nmAA7PQUc8L+eH+9RgR/qzy5N/8kN0Ozdw==}
     engines: {node: '>=14.0.0', npm: '>=6.0.0'}
     dev: true
 
