@@ -9,7 +9,9 @@ export interface CellState {
   row: number;
   column: number;
   region: number;
-  valuesToHide: CellValue[];
+  rowValuesToHide: CellValue[];
+  columnValuesToHide: CellValue[];
+  regionValuesToHide: CellValue[];
 }
 
 export const createCellState = ({
@@ -27,7 +29,9 @@ export const createCellState = ({
   value,
   valid,
   isReadonly: isReadonly,
-  valuesToHide: [],
+  rowValuesToHide: [],
+  columnValuesToHide: [],
+  regionValuesToHide: [],
 });
 
 export const valueIsCellValue = (

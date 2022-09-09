@@ -9,7 +9,7 @@ import {
 import { errorAnalyzer } from '@sud/fast-analayzers';
 import { logObservable } from '@sud/rxjs-operators';
 import produce from 'immer';
-import { Observable, of, tap, withLatestFrom } from 'rxjs';
+import { map, Observable, of, tap, withLatestFrom } from 'rxjs';
 import { createGridState } from './grid.store.helpers';
 
 export interface GridState {
@@ -120,13 +120,11 @@ export class GridStore extends ComponentStore<GridState> {
   cellValueChanged = this.effect(
     (cellValue$: Observable<CellValueChangedOptions>) =>
       cellValue$.pipe(
-        withLatestFrom(this.grid$),
-        tap(([cellValue, grid]) => {
-          const oldValue = grid[cellValue.row][cellValue.column].value;
+        tap((cellValue) => {
           this.#updateCellValue(cellValue);
           this.#checkGridForErrors();
           this.#checkGridForWin();
-          this.#updatePencilMarks({ cellValue, oldValue });
+          this.#updatePencilMarks(cellValue);
         })
       )
   );
@@ -144,67 +142,91 @@ export class GridStore extends ComponentStore<GridState> {
         tap((changes) => {
           this.#updateCellValue({ ...changes, isReadonly: !!changes.value });
           this.#checkGridForErrors();
+          this.#updatePencilMarks(changes);
         })
       )
   );
 
   #updatePencilMarks = this.effect(
-    (
-      cellValue$: Observable<{
-        cellValue: CellValueChangedOptions;
-        oldValue: CellValue | undefined;
-      }>
-    ) =>
+    (cellValue$: Observable<CellValueChangedOptions>) =>
       cellValue$.pipe(
         withLatestFrom(this.grid$),
-        tap(
-          ([
-            {
-              cellValue: { column, row },
-              oldValue,
-            },
-            grid,
-          ]) => {
-            this.#setPencilMarks({ cells: grid[row], oldValue });
-            this.#setPencilMarks({
-              cells: getColumnToAnalyze(column, grid),
-              oldValue,
-            });
-            this.#setPencilMarks({
-              cells: getRegionToAnalyze(grid[row][column].region, grid),
-              oldValue,
-            });
-          }
-        )
+        tap(([{ column, row }, grid]) => {
+          this.#setRowPencilMarks(grid[row]);
+          this.#setColumnPencilMarks(getColumnToAnalyze(column, grid));
+          this.#setRegionPencilMarks(
+            getRegionToAnalyze(grid[row][column].region, grid)
+          );
+        })
       )
   );
 
-  #setPencilMarks = this.effect(
-    (
-      cells$: Observable<{
-        cells: CellState[];
-        oldValue: CellValue | undefined;
-      }>
-    ) =>
-      cells$.pipe(
-        tap(({ cells, oldValue }) => {
-          const usedPencilMarks = cells
-            .map((cell) => cell.value)
-            .filter(valueIsCellValue);
-
-          cells.forEach((cell) => {
-            const valuesToHide = valueIsCellValue(oldValue)
-              ? cell.valuesToHide.filter((curValue) => curValue === oldValue)
-              : cell.valuesToHide;
-
-            this.#setRowValuesToHideForCell({
-              row: cell.row,
-              column: cell.column,
-              valuesToHide: valuesToHide.concat(usedPencilMarks),
-            });
+  #setRegionPencilMarks = this.effect((cells$: Observable<CellState[]>) =>
+    cells$.pipe(
+      withLatestFrom(cells$.pipe(getCellValuesToHide)),
+      tap(([cells, valuesToHide]) => {
+        cells.forEach((cell) => {
+          this.#setRegionValuesToHideForCell({
+            row: cell.row,
+            column: cell.column,
+            valuesToHide,
           });
-        })
-      )
+        });
+      })
+    )
+  );
+  #setColumnPencilMarks = this.effect((cells$: Observable<CellState[]>) =>
+    cells$.pipe(
+      withLatestFrom(cells$.pipe(getCellValuesToHide)),
+      tap(([cells, valuesToHide]) => {
+        cells.forEach((cell) => {
+          this.#setColumnValuesToHideForCell({
+            row: cell.row,
+            column: cell.column,
+            valuesToHide,
+          });
+        });
+      })
+    )
+  );
+
+  #setRowPencilMarks = this.effect((cells$: Observable<CellState[]>) =>
+    cells$.pipe(
+      withLatestFrom(cells$.pipe(getCellValuesToHide)),
+      tap(([cells, valuesToHide]) => {
+        cells.forEach((cell) => {
+          this.#setRowValuesToHideForCell({
+            row: cell.row,
+            column: cell.column,
+            valuesToHide,
+          });
+        });
+      })
+    )
+  );
+
+  #setRegionValuesToHideForCell = this.updater(
+    (
+      state: GridState,
+      update: { row: number; column: number; valuesToHide: CellValue[] }
+    ) => {
+      return produce(state, (draft) => {
+        draft.grid[update.row][update.column].regionValuesToHide =
+          update.valuesToHide;
+      });
+    }
+  );
+
+  #setColumnValuesToHideForCell = this.updater(
+    (
+      state: GridState,
+      update: { row: number; column: number; valuesToHide: CellValue[] }
+    ) => {
+      return produce(state, (draft) => {
+        draft.grid[update.row][update.column].columnValuesToHide =
+          update.valuesToHide;
+      });
+    }
   );
 
   #setRowValuesToHideForCell = this.updater(
@@ -213,7 +235,7 @@ export class GridStore extends ComponentStore<GridState> {
       update: { row: number; column: number; valuesToHide: CellValue[] }
     ) => {
       return produce(state, (draft) => {
-        draft.grid[update.row][update.column].valuesToHide =
+        draft.grid[update.row][update.column].rowValuesToHide =
           update.valuesToHide;
       });
     }
@@ -432,3 +454,10 @@ const getRegionToAnalyze = (
 
   return regionCells;
 };
+
+const getCellValuesToHide = (
+  cells$: Observable<CellState[]>
+): Observable<CellValue[]> =>
+  cells$.pipe(
+    map((cells) => cells.map((cell) => cell.value).filter(valueIsCellValue))
+  );
