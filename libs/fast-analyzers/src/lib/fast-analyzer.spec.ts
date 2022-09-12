@@ -1,4 +1,4 @@
-import { createCellState } from '@sud/domain';
+import { CellValue, createCellState } from '@sud/domain';
 import { errorAnalyzer } from './fast-analyzer';
 
 describe('errorAnalyzer', () => {
@@ -10,7 +10,7 @@ describe('errorAnalyzer', () => {
         row,
         column: value,
         region: 0,
-        value: value + 1,
+        value: (value + 1) as CellValue,
       })
     );
 
@@ -27,7 +27,7 @@ describe('errorAnalyzer', () => {
         row,
         column: value,
         region: 0,
-        value: value + 1,
+        value: (value + 1) as CellValue,
       })
     );
 
