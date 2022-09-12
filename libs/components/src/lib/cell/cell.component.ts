@@ -20,17 +20,18 @@ import {
 } from '@sud/domain';
 import { filter, fromEvent, map, of, Subject, Subscription, tap } from 'rxjs';
 import { PencilMarkComponent } from '../pencil-mark/pencil-mark.component';
+import { NumbersToHidePipe } from './numbers-to-hide.pipe';
 
 @Component({
   selector: 'sud-cell',
   standalone: true,
-  imports: [CommonModule, FormsModule, PencilMarkComponent],
+  imports: [CommonModule, FormsModule, PencilMarkComponent, NumbersToHidePipe],
   template: `
     <div [class.error]="!cellState.valid">
       <sud-pencil-mark
         *ngIf="!cellState.value"
         class="pencil-marks"
-        [numbersToHide]="cellState.valuesToHide"
+        [numbersToHide]="cellState | numbersToHide"
       ></sud-pencil-mark>
       <div class="debug" *ngIf="debug$ | async">
         <!--        focusState: {{ focusState }} <br />-->
