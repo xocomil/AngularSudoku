@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker';
-import { CellState, createCellState } from './cell-state';
+import { CellState, CellValue, createCellState } from './cell-state';
 
 describe('CellState', () => {
-  const createSudokuCellValue = (): number =>
-    faker.datatype.number({ min: 1, max: 9 });
+  const createSudokuCellValue = (): CellValue =>
+    faker.datatype.number({ min: 1, max: 9 }) as CellValue;
 
   describe('createCellState', () => {
     test('should create a default CellState', () => {
@@ -14,6 +14,9 @@ describe('CellState', () => {
         value: undefined,
         isReadonly: false,
         valid: true,
+        columnValuesToHide: [],
+        regionValuesToHide: [],
+        rowValuesToHide: [],
       };
 
       const result = createCellState({ row: 0, column: 0, region: 0 });

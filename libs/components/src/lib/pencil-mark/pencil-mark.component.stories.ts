@@ -23,4 +23,4 @@ export const Primary = Template.bind({});
 
 export const NumbersHidden = Template.bind({});
 
-NumbersHidden.args = { numbersToDisplay: [2, 3, 4, 6, 7, 8] };
+NumbersHidden.args = { numbersToHide: [2, 3, 4, 6, 7, 8] };
