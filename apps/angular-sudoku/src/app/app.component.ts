@@ -22,6 +22,7 @@ import { GridComponent, PencilMarkComponent } from '@sud/components';
         <button type="button" (click)="generateGridWithErrors()">
           Add Grid With Errors
         </button>
+        <button type="button" (click)="solveOneCell()">Solve 1 Cell</button>
       </div>
     </div>
     <div class="gameWon" *ngIf="gameWon">Congratulations! You won!</div>`,
@@ -68,5 +69,9 @@ export class AppComponent {
 
   toggleCreatePuzzleMode(): void {
     this.creatingPuzzleMode = !this.creatingPuzzleMode;
+  }
+
+  solveOneCell(): void {
+    this.grid.solveOneCell();
   }
 }

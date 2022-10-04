@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import {
+  allPencilMarks,
   CellState,
   CellValue,
   GridDirection,
@@ -10,6 +11,7 @@ import { errorAnalyzer } from '@sud/fast-analayzers';
 import { logObservable } from '@sud/rxjs-operators';
 import produce from 'immer';
 import { map, Observable, of, tap, withLatestFrom } from 'rxjs';
+import { solveOneCell } from '../solvers/wavefunction-collapse.solver';
 import { createGridState } from './grid.store.helpers';
 
 export interface GridState {
@@ -175,6 +177,7 @@ export class GridStore extends ComponentStore<GridState> {
       })
     )
   );
+
   #setColumnPencilMarks = this.effect((cells$: Observable<CellState[]>) =>
     cells$.pipe(
       withLatestFrom(cells$.pipe(getCellValuesToHide)),
@@ -201,6 +204,34 @@ export class GridStore extends ComponentStore<GridState> {
             valuesToHide,
           });
         });
+      })
+    )
+  );
+
+  solveOneCell = this.effect((solveClick$: Observable<void>) =>
+    solveClick$.pipe(
+      withLatestFrom(this.grid$),
+      map(([, grid]) => solveOneCell(grid)),
+      tap((cellState) => {
+        if (cellState) {
+          const possibleValues = allPencilMarks.filter(
+            (value) =>
+              !cellState.columnValuesToHide.includes(value) &&
+              !cellState.rowValuesToHide.includes(value) &&
+              !cellState.regionValuesToHide.includes(value)
+          );
+
+          const value =
+            possibleValues[Math.floor(Math.random() * possibleValues.length)];
+
+          console.log('chosen value for cell', cellState, value);
+
+          this.cellValueChanged({
+            row: cellState.row,
+            column: cellState.column,
+            value: value,
+          });
+        }
       })
     )
   );

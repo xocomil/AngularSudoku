@@ -37,3 +37,15 @@ export const createCellState = ({
 export const valueIsCellValue = (
   value: number | undefined
 ): value is CellValue => value != null && value >= 1 && value <= 9;
+
+export const valuesToHide = ({
+  rowValuesToHide,
+  columnValuesToHide,
+  regionValuesToHide,
+}: CellState): CellValue[] => [
+  ...new Set([
+    ...rowValuesToHide,
+    ...columnValuesToHide,
+    ...regionValuesToHide,
+  ]),
+];

@@ -54,7 +54,7 @@ import { GridStore } from './store/grid.store';
   providers: [GridStore],
 })
 export class GridComponent {
-  readonly grid$ = this._gridStore.grid$.pipe(logObservable('grid'));
+  readonly grid$ = this._gridStore.grid$;
   readonly selected$ = this._gridStore.selected$;
   readonly nextToFocus$ = this._gridStore.nextToFocus$;
 
@@ -133,5 +133,9 @@ export class GridComponent {
       row: cellState.row,
       column: cellState.column,
     });
+  }
+
+  solveOneCell() {
+    this._gridStore.solveOneCell();
   }
 }
