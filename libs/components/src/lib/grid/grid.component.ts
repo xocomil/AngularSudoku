@@ -1,17 +1,7 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output } from '@angular/core';
 import { PushModule } from '@ngrx/component';
-import {
-  CellState,
-  CellValue,
-  GridDirection,
-  valueIsCellValue,
-} from '@sud/domain';
+import { CellState, CellValue, GridDirection, valueIsCellValue } from '@sud/domain';
 import { logObservable } from '@sud/rxjs-operators';
 import { CellComponent } from '../cell/cell.component';
 import { GridCellSelectPipe } from '../grid/grid-cell-select.pipe';
@@ -22,20 +12,10 @@ import { GridStore } from './store/grid.store';
   standalone: true,
   imports: [CommonModule, CellComponent, GridCellSelectPipe, PushModule],
   template: `
-    <ng-container
-      *ngFor="
-        let row of grid$ | ngrxPush;
-        index as rowIndex;
-        trackBy: rowTrackByFunction
-      "
-    >
+    <ng-container *ngFor="let row of grid$ | ngrxPush; index as rowIndex; trackBy: rowTrackByFunction">
       <sud-cell
         #cell
-        *ngFor="
-          let cellState of row;
-          index as columnIndex;
-          trackBy: columnTrackByFunction
-        "
+        *ngFor="let cellState of row; index as columnIndex; trackBy: columnTrackByFunction"
         [class]="['row-' + rowIndex, 'col-' + columnIndex, 'sudoku-cell']"
         [cellState]="cellState"
         [focusState]="selected$ | ngrxPush | gridCellSelect: cellState"
@@ -60,9 +40,7 @@ export class GridComponent {
 
   @Input() creatingPuzzleMode = false;
 
-  @Output() gameWon = this._gridStore.gameWon$.pipe(
-    logObservable<boolean>('game won:')
-  );
+  @Output() gameWon = this._gridStore.gameWon$.pipe(logObservable<boolean>('game won:'));
 
   constructor(private readonly _gridStore: GridStore) {}
 
@@ -95,10 +73,7 @@ export class GridComponent {
     this.#updateCellValue(valueToUse, cellState);
   }
 
-  #updateCellValue(
-    newValue: CellValue | undefined,
-    cellState: CellState
-  ): void {
+  #updateCellValue(newValue: CellValue | undefined, cellState: CellState): void {
     this._gridStore.cellValueChanged({
       value: newValue,
       row: cellState.row,
@@ -122,10 +97,7 @@ export class GridComponent {
     this._gridStore.resetSelected();
   }
 
-  #createPuzzleCell(
-    newValue: CellValue | undefined,
-    cellState: CellState
-  ): void {
+  #createPuzzleCell(newValue: CellValue | undefined, cellState: CellState): void {
     console.log('createPuzzleCell called');
 
     this._gridStore.createPuzzleCell({
@@ -137,5 +109,9 @@ export class GridComponent {
 
   solveOneCell() {
     this._gridStore.solveOneCell();
+  }
+
+  resetGrid(): void {
+    this._gridStore.resetGrid();
   }
 }

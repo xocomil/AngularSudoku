@@ -1,12 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import {
-  allPencilMarks,
-  CellState,
-  CellValue,
-  GridDirection,
-  valueIsCellValue,
-} from '@sud/domain';
+import { allPencilMarks, CellState, CellValue, GridDirection, valueIsCellValue } from '@sud/domain';
 import { errorAnalyzer } from '@sud/fast-analayzers';
 import { logObservable } from '@sud/rxjs-operators';
 import produce from 'immer';
@@ -39,12 +33,7 @@ const updateSelected = (cellState: CellState) =>
     };
   });
 
-const updateCellValue = (
-  value: CellValue | undefined,
-  row: number,
-  column: number,
-  isReadonly: boolean
-) =>
+const updateCellValue = (value: CellValue | undefined, row: number, column: number, isReadonly: boolean) =>
   write((state: GridState) => {
     state.grid[row][column].value = value;
     state.grid[row][column].isReadonly = isReadonly;
@@ -85,27 +74,20 @@ export class GridStore extends ComponentStore<GridState> {
   readonly grid$ = this.select((state) => state.grid);
   readonly gameWon$ = this.select((state: GridState) => state.gameWon);
   readonly hasError$ = this.select((state) => state.hasError);
-  readonly selected$: Observable<readonly [number, number, number]> =
-    this.select((state) => {
-      if (state.selected) {
-        return [
-          state.selected.row,
-          state.selected.column,
-          state.selected.region,
-        ];
-      }
-
-      return noCellSelected;
-    });
-  readonly nextToFocus$: Observable<readonly [number, number]> = this.select(
-    (state) => {
-      if (state.nextToFocus) {
-        return [state.nextToFocus.row, state.nextToFocus.column];
-      }
-
-      return noCellToFocus;
+  readonly selected$: Observable<readonly [number, number, number]> = this.select((state) => {
+    if (state.selected) {
+      return [state.selected.row, state.selected.column, state.selected.region];
     }
-  );
+
+    return noCellSelected;
+  });
+  readonly nextToFocus$: Observable<readonly [number, number]> = this.select((state) => {
+    if (state.nextToFocus) {
+      return [state.nextToFocus.row, state.nextToFocus.column];
+    }
+
+    return noCellToFocus;
+  });
 
   constructor() {
     super(initialState);
@@ -119,16 +101,15 @@ export class GridStore extends ComponentStore<GridState> {
 
   resetSelected = this.updater((state) => resetSelected(state));
 
-  cellValueChanged = this.effect(
-    (cellValue$: Observable<CellValueChangedOptions>) =>
-      cellValue$.pipe(
-        tap((cellValue) => {
-          this.#updateCellValue(cellValue);
-          this.#checkGridForErrors();
-          this.#checkGridForWin();
-          this.#updatePencilMarks(cellValue);
-        })
-      )
+  cellValueChanged = this.effect((cellValue$: Observable<CellValueChangedOptions>) =>
+    cellValue$.pipe(
+      tap((cellValue) => {
+        this.#updateCellValue(cellValue);
+        this.#checkGridForErrors();
+        this.#checkGridForWin();
+        this.#updatePencilMarks(cellValue);
+      })
+    )
   );
 
   createPuzzleCell = this.effect(
@@ -149,18 +130,15 @@ export class GridStore extends ComponentStore<GridState> {
       )
   );
 
-  #updatePencilMarks = this.effect(
-    (cellValue$: Observable<CellValueChangedOptions>) =>
-      cellValue$.pipe(
-        withLatestFrom(this.grid$),
-        tap(([{ column, row }, grid]) => {
-          this.#setRowPencilMarks(grid[row]);
-          this.#setColumnPencilMarks(getColumnToAnalyze(column, grid));
-          this.#setRegionPencilMarks(
-            getRegionToAnalyze(grid[row][column].region, grid)
-          );
-        })
-      )
+  #updatePencilMarks = this.effect((cellValue$: Observable<CellValueChangedOptions>) =>
+    cellValue$.pipe(
+      withLatestFrom(this.grid$),
+      tap(([{ column, row }, grid]) => {
+        this.#setRowPencilMarks(grid[row]);
+        this.#setColumnPencilMarks(getColumnToAnalyze(column, grid));
+        this.#setRegionPencilMarks(getRegionToAnalyze(grid[row][column].region, grid));
+      })
+    )
   );
 
   #setRegionPencilMarks = this.effect((cells$: Observable<CellState[]>) =>
@@ -208,6 +186,21 @@ export class GridStore extends ComponentStore<GridState> {
     )
   );
 
+  resetGrid = this.effect((resetClick$: Observable<void>) =>
+    resetClick$.pipe(
+      tap(() => {
+        this.#updateGrid(createGridState());
+        this.#checkGridForWin();
+      })
+    )
+  );
+
+  #updateGrid = this.updater((state, grid: CellState[][]) =>
+    produce(state, (draft) => {
+      draft.grid = grid;
+    })
+  );
+
   solveOneCell = this.effect((solveClick$: Observable<void>) =>
     solveClick$.pipe(
       withLatestFrom(this.grid$),
@@ -221,8 +214,7 @@ export class GridStore extends ComponentStore<GridState> {
               !cellState.regionValuesToHide.includes(value)
           );
 
-          const value =
-            possibleValues[Math.floor(Math.random() * possibleValues.length)];
+          const value = possibleValues[Math.floor(Math.random() * possibleValues.length)];
 
           console.log('chosen value for cell', cellState, value);
 
@@ -236,41 +228,23 @@ export class GridStore extends ComponentStore<GridState> {
     )
   );
 
-  #setRegionValuesToHideForCell = this.updater(
-    (
-      state: GridState,
-      update: { row: number; column: number; valuesToHide: CellValue[] }
-    ) => {
-      return produce(state, (draft) => {
-        draft.grid[update.row][update.column].regionValuesToHide =
-          update.valuesToHide;
-      });
-    }
-  );
+  #setRegionValuesToHideForCell = this.updater((state: GridState, update: { row: number; column: number; valuesToHide: CellValue[] }) => {
+    return produce(state, (draft) => {
+      draft.grid[update.row][update.column].regionValuesToHide = update.valuesToHide;
+    });
+  });
 
-  #setColumnValuesToHideForCell = this.updater(
-    (
-      state: GridState,
-      update: { row: number; column: number; valuesToHide: CellValue[] }
-    ) => {
-      return produce(state, (draft) => {
-        draft.grid[update.row][update.column].columnValuesToHide =
-          update.valuesToHide;
-      });
-    }
-  );
+  #setColumnValuesToHideForCell = this.updater((state: GridState, update: { row: number; column: number; valuesToHide: CellValue[] }) => {
+    return produce(state, (draft) => {
+      draft.grid[update.row][update.column].columnValuesToHide = update.valuesToHide;
+    });
+  });
 
-  #setRowValuesToHideForCell = this.updater(
-    (
-      state: GridState,
-      update: { row: number; column: number; valuesToHide: CellValue[] }
-    ) => {
-      return produce(state, (draft) => {
-        draft.grid[update.row][update.column].rowValuesToHide =
-          update.valuesToHide;
-      });
-    }
-  );
+  #setRowValuesToHideForCell = this.updater((state: GridState, update: { row: number; column: number; valuesToHide: CellValue[] }) => {
+    return produce(state, (draft) => {
+      draft.grid[update.row][update.column].rowValuesToHide = update.valuesToHide;
+    });
+  });
 
   #checkGridForWin = this.effect((check$: Observable<void>) =>
     check$.pipe(
@@ -372,11 +346,7 @@ export class GridStore extends ComponentStore<GridState> {
     })
   );
 
-  #updateSelectedFromNavigation(
-    direction: GridDirection,
-    cellState: CellState,
-    grid: CellState[][]
-  ) {
+  #updateSelectedFromNavigation(direction: GridDirection, cellState: CellState, grid: CellState[][]) {
     switch (direction) {
       case GridDirection.Up:
         if (cellState.row > 0) {
@@ -429,11 +399,7 @@ const analyzeErrors = (grid: CellState[][]): boolean[][] => {
   return errors;
 };
 
-const checkRowForErrors = (
-  row: number,
-  grid: CellState[][],
-  errors: boolean[][]
-): void => {
+const checkRowForErrors = (row: number, grid: CellState[][], errors: boolean[][]): void => {
   markCellsWithErrors(grid[row], errors);
 };
 
@@ -443,35 +409,21 @@ const markCellsWithErrors = (cells: CellState[], errors: boolean[][]): void => {
   });
 };
 
-const checkColumnForErrors = (
-  column: number,
-  grid: CellState[][],
-  errors: boolean[][]
-): void => {
+const checkColumnForErrors = (column: number, grid: CellState[][], errors: boolean[][]): void => {
   markCellsWithErrors(getColumnToAnalyze(column, grid), errors);
 };
 
-const getColumnToAnalyze = (
-  column: number,
-  grid: CellState[][]
-): CellState[] => {
+const getColumnToAnalyze = (column: number, grid: CellState[][]): CellState[] => {
   return grid.map((row) => row[column]);
 };
 
-const checkRegionForErrors = (
-  region: number,
-  grid: CellState[][],
-  errors: boolean[][]
-): void => {
+const checkRegionForErrors = (region: number, grid: CellState[][], errors: boolean[][]): void => {
   markCellsWithErrors(getRegionToAnalyze(region, grid), errors);
 };
 
 const ITEMS_TO_TAKE = 3 as const;
 
-const getRegionToAnalyze = (
-  region: number,
-  grid: CellState[][]
-): CellState[] => {
+const getRegionToAnalyze = (region: number, grid: CellState[][]): CellState[] => {
   const column = (region % 3) * 3;
   const row = region - (region % 3);
 
@@ -486,9 +438,5 @@ const getRegionToAnalyze = (
   return regionCells;
 };
 
-const getCellValuesToHide = (
-  cells$: Observable<CellState[]>
-): Observable<CellValue[]> =>
-  cells$.pipe(
-    map((cells) => cells.map((cell) => cell.value).filter(valueIsCellValue))
-  );
+const getCellValuesToHide = (cells$: Observable<CellState[]>): Observable<CellValue[]> =>
+  cells$.pipe(map((cells) => cells.map((cell) => cell.value).filter(valueIsCellValue)));
