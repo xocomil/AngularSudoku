@@ -8,18 +8,24 @@ import { map, Observable, of, tap, withLatestFrom } from 'rxjs';
 import { solveOneCell } from '../solvers/wavefunction-collapse.solver';
 import { createGridState } from './grid.store.helpers';
 
+type GridCommand = CellValueChangedOptions & { previousValue?: CellValue; value?: CellValue };
+
 export interface GridState {
   grid: CellState[][];
   selected?: { row: number; column: number; region: number };
   nextToFocus?: { row: number; column: number };
   gameWon: boolean;
   hasError: boolean;
+  commandStack: GridCommand[];
+  currentCommandIndex: number;
 }
 
 const initialState: GridState = {
   grid: createGridState(),
   gameWon: false,
   hasError: false,
+  commandStack: [],
+  currentCommandIndex: -1,
 };
 
 const updateSelected = (cellState: CellState) =>
@@ -88,6 +94,8 @@ export class GridStore extends ComponentStore<GridState> {
 
     return noCellToFocus;
   });
+  readonly #commandStack$ = this.select((state) => state.commandStack);
+  readonly #currentCommandIndex$ = this.select((state) => state.currentCommandIndex);
 
   constructor() {
     super(initialState);
@@ -103,13 +111,31 @@ export class GridStore extends ComponentStore<GridState> {
 
   cellValueChanged = this.effect((cellValue$: Observable<CellValueChangedOptions>) =>
     cellValue$.pipe(
-      tap((cellValue) => {
-        this.#updateCellValue(cellValue);
-        this.#checkGridForErrors();
-        this.#checkGridForWin();
-        this.#updatePencilMarks(cellValue);
+      withLatestFrom(this.grid$),
+      tap(([cellValue, grid]) => {
+        this.#changeCellValue(cellValue);
+        this.#clearOldCommands();
+        this.#updateCommandStack({ ...cellValue, previousValue: grid[cellValue.row][cellValue.column].value });
       })
     )
+  );
+
+  #clearOldCommands = this.effect((clearOldCommands$: Observable<void>) =>
+    clearOldCommands$.pipe(
+      withLatestFrom(this.#currentCommandIndex$, this.#commandStack$),
+      tap(([, currentCommandIndex, commandStack]) => {
+        if (currentCommandIndex < commandStack.length - 1) {
+          this.#setCommandStack(commandStack.slice(0, currentCommandIndex + 1));
+        }
+      })
+    )
+  );
+
+  #updateCommandStack = this.updater((state, gridCommand: GridCommand) =>
+    produce(state, (draft) => {
+      draft.commandStack.push(gridCommand);
+      draft.currentCommandIndex = draft.commandStack.length - 1;
+    })
   );
 
   createPuzzleCell = this.effect(
@@ -191,8 +217,16 @@ export class GridStore extends ComponentStore<GridState> {
       tap(() => {
         this.#updateGrid(createGridState());
         this.#checkGridForWin();
+        this.#setCommandStack([]);
       })
     )
+  );
+
+  #setCommandStack = this.updater((state, commandStack: GridCommand[]) =>
+    produce(state, (draft) => {
+      draft.commandStack = commandStack;
+      draft.currentCommandIndex = commandStack.length - 1;
+    })
   );
 
   #updateGrid = this.updater((state, grid: CellState[][]) =>
@@ -340,11 +374,50 @@ export class GridStore extends ComponentStore<GridState> {
     return updater(state);
   });
 
-  readonly setGrid = this.updater((state: GridState, grid: CellState[][]) =>
+  readonly undo = this.effect((undoClick$: Observable<void>) =>
+    undoClick$.pipe(
+      withLatestFrom(this.#currentCommandIndex$, this.#commandStack$),
+      tap(([, currentCommandIndex, commandStack]) => {
+        if (currentCommandIndex < 0) {
+          return;
+        }
+
+        const command = commandStack[currentCommandIndex];
+
+        this.#changeCellValue({ ...command, value: command.previousValue });
+        this.#changeCurrentCommandIndex(currentCommandIndex - 1);
+      })
+    )
+  );
+
+  readonly redo = this.effect((redoClick$: Observable<void>) =>
+    redoClick$.pipe(
+      withLatestFrom(this.#currentCommandIndex$, this.#commandStack$),
+      tap(([, currentCommandIndex, commandStack]) => {
+        if (currentCommandIndex >= commandStack.length - 1) {
+          return;
+        }
+
+        const command = commandStack[currentCommandIndex + 1];
+
+        this.#changeCellValue(command);
+        this.#changeCurrentCommandIndex(currentCommandIndex + 1);
+      })
+    )
+  );
+
+  #changeCurrentCommandIndex = this.updater((state, currentCommandIndex: number) =>
     produce(state, (draft) => {
-      draft.grid = grid;
+      draft.currentCommandIndex = currentCommandIndex;
     })
   );
+
+  #changeCellValue(cellValue: CellValueChangedOptions): void {
+    this.#updateCellValue(cellValue);
+    this.#checkGridForErrors();
+    this.#checkGridForWin();
+    this.#updatePencilMarks(cellValue);
+  }
 
   #updateSelectedFromNavigation(direction: GridDirection, cellState: CellState, grid: CellState[][]) {
     switch (direction) {

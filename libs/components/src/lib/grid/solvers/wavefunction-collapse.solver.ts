@@ -8,12 +8,9 @@ export const solveOneCell = (grid: CellState[][]): CellState | undefined => {
   return randomArrayItem(leastEntropy);
 };
 
-export const randomArrayItem = (cellStates: CellState[]): CellState =>
-  cellStates[Math.floor(Math.random() * cellStates.length)];
+export const randomArrayItem = (cellStates: CellState[]): CellState => cellStates[Math.floor(Math.random() * cellStates.length)];
 
-export const getCellsWithLeastEntropy = (
-  grid: CellState[][]
-): CellState[] | undefined => {
+export const getCellsWithLeastEntropy = (grid: CellState[][]): CellState[] | undefined => {
   const entropyMap = new Map<number, CellState[]>();
   let lowestEntropy = -1;
 
@@ -23,8 +20,6 @@ export const getCellsWithLeastEntropy = (
 
       const invalidValues = valuesToHide(cell);
       const usedValueCount = invalidValues.length;
-
-      if (usedValueCount === 9) continue;
 
       if (!entropyMap.has(usedValueCount)) {
         entropyMap.set(usedValueCount, []);

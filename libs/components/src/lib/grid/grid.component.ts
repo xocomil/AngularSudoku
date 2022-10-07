@@ -44,7 +44,7 @@ export class GridComponent {
 
   constructor(private readonly _gridStore: GridStore) {}
 
-  setGridValues(values: CellValue[][]) {
+  setGridValues(values: (CellValue | undefined)[][]) {
     values.forEach((row, rowIndex) => {
       row.forEach((value, columnIndex) => {
         this._gridStore.cellValueChanged({
@@ -61,7 +61,6 @@ export class GridComponent {
   }
 
   cellValueChanged(newValue: number | undefined, cellState: CellState): void {
-    // TODO: determine if the CellValue belongs in the CellComponent or here
     const valueToUse = valueIsCellValue(newValue) ? newValue : undefined;
 
     if (this.creatingPuzzleMode) {
@@ -70,12 +69,8 @@ export class GridComponent {
       return;
     }
 
-    this.#updateCellValue(valueToUse, cellState);
-  }
-
-  #updateCellValue(newValue: CellValue | undefined, cellState: CellState): void {
     this._gridStore.cellValueChanged({
-      value: newValue,
+      value: valueToUse,
       row: cellState.row,
       column: cellState.column,
     });
@@ -113,5 +108,13 @@ export class GridComponent {
 
   resetGrid(): void {
     this._gridStore.resetGrid();
+  }
+
+  undo(): void {
+    this._gridStore.undo();
+  }
+
+  redo(): void {
+    this._gridStore.redo();
   }
 }
