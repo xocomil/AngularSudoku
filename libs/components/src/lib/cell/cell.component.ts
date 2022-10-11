@@ -12,12 +12,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {
-  CellState,
-  createCellState,
-  GridDirection,
-  gridDirectionFromKeyboard,
-} from '@sud/domain';
+import { CellState, createCellState, GridDirection, gridDirectionFromKeyboard } from '@sud/domain';
 import { filter, fromEvent, map, of, Subject, Subscription, tap } from 'rxjs';
 import { PencilMarkComponent } from '../pencil-mark/pencil-mark.component';
 import { NumbersToHidePipe } from './numbers-to-hide.pipe';
@@ -28,11 +23,7 @@ import { NumbersToHidePipe } from './numbers-to-hide.pipe';
   imports: [CommonModule, FormsModule, PencilMarkComponent, NumbersToHidePipe],
   template: `
     <div [class.error]="!cellState.valid">
-      <sud-pencil-mark
-        *ngIf="!cellState.value"
-        class="pencil-marks"
-        [numbersToHide]="cellState | numbersToHide"
-      ></sud-pencil-mark>
+      <sud-pencil-mark *ngIf="!cellState.value" class="pencil-marks" [numbersToHide]="cellState | numbersToHide"></sud-pencil-mark>
       <div class="debug" *ngIf="debug$ | async">
         <!--        focusState: {{ focusState }} <br />-->
         <!--        coords: ({{ cellState.column }}, row: {{ cellState.row }}<br />-->
@@ -59,21 +50,12 @@ import { NumbersToHidePipe } from './numbers-to-hide.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CellComponent implements OnInit, OnDestroy {
-  @Input() creatingPuzzleMode = false;
+  @Input() creatingPuzzleMode? = false;
 
   debug$ = of(false);
 
   readonly #allowedValues = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
-  readonly #navigationValues = [
-    'w',
-    'a',
-    's',
-    'd',
-    'arrowleft',
-    'arrowright',
-    'arrowup',
-    'arrowdown',
-  ];
+  readonly #navigationValues = ['w', 'a', 's', 'd', 'arrowleft', 'arrowright', 'arrowup', 'arrowdown'];
   readonly #deleteKeys = ['delete', 'backspace'];
   readonly #subs = new Subscription();
   readonly #navigationKey$ = new Subject<GridDirection>();
@@ -126,21 +108,12 @@ export class CellComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.cellInput) {
-      const keydown$ = fromEvent<KeyboardEvent>(
-        this.cellInput.nativeElement,
-        'keydown'
-      ).pipe(
+      const keydown$ = fromEvent<KeyboardEvent>(this.cellInput.nativeElement, 'keydown').pipe(
         tap((event) => this.handleKeyEvent(event)),
-        filter((event) =>
-          this.#navigationValues.includes(event.key.toLowerCase())
-        )
+        filter((event) => this.#navigationValues.includes(event.key.toLowerCase()))
       );
 
-      this.#subs.add(
-        keydown$
-          .pipe(map((event) => gridDirectionFromKeyboard(event.key)))
-          .subscribe(this.#navigationKey$)
-      );
+      this.#subs.add(keydown$.pipe(map((event) => gridDirectionFromKeyboard(event.key))).subscribe(this.#navigationKey$));
     }
   }
 

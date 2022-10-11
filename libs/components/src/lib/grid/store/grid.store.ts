@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { allPencilMarks, CellState, CellValue, GridDirection, valueIsCellValue } from '@sud/domain';
 import { errorAnalyzer } from '@sud/fast-analayzers';
-import { logObservable } from '@sud/rxjs-operators';
 import produce from 'immer';
 import { map, Observable, of, tap, withLatestFrom } from 'rxjs';
 import { solveOneCell } from '../solvers/wavefunction-collapse.solver';
@@ -15,6 +14,7 @@ export interface GridState {
   selected?: { row: number; column: number; region: number };
   nextToFocus?: { row: number; column: number };
   gameWon: boolean;
+  creatingPuzzleMode: boolean;
   hasError: boolean;
   commandStack: GridCommand[];
   currentCommandIndex: number;
@@ -23,6 +23,7 @@ export interface GridState {
 const initialState: GridState = {
   grid: createGridState(),
   gameWon: false,
+  creatingPuzzleMode: false,
   hasError: false,
   commandStack: [],
   currentCommandIndex: -1,
@@ -79,6 +80,7 @@ interface CellValueChangedOptions {
 export class GridStore extends ComponentStore<GridState> {
   readonly grid$ = this.select((state) => state.grid);
   readonly gameWon$ = this.select((state: GridState) => state.gameWon);
+  readonly creatingPuzzleMode$ = this.select((state) => state.creatingPuzzleMode);
   readonly hasError$ = this.select((state) => state.hasError);
   readonly selected$: Observable<readonly [number, number, number]> = this.select((state) => {
     if (state.selected) {
@@ -111,8 +113,18 @@ export class GridStore extends ComponentStore<GridState> {
 
   cellValueChanged = this.effect((cellValue$: Observable<CellValueChangedOptions>) =>
     cellValue$.pipe(
-      withLatestFrom(this.grid$),
-      tap(([cellValue, grid]) => {
+      withLatestFrom(this.grid$, this.creatingPuzzleMode$),
+      tap(([cellValue, grid, creatingPuzzleMode]) => {
+        if (creatingPuzzleMode) {
+          this.#createPuzzleCell({
+            value: cellValue.value,
+            row: cellValue.row,
+            column: cellValue.column,
+          });
+
+          return;
+        }
+
         this.#changeCellValue(cellValue);
         this.#clearOldCommands();
         this.#updateCommandStack({ ...cellValue, previousValue: grid[cellValue.row][cellValue.column].value });
@@ -138,7 +150,7 @@ export class GridStore extends ComponentStore<GridState> {
     })
   );
 
-  createPuzzleCell = this.effect(
+  #createPuzzleCell = this.effect(
     (
       changes$: Observable<{
         column: number;
@@ -147,7 +159,6 @@ export class GridStore extends ComponentStore<GridState> {
       }>
     ) =>
       changes$.pipe(
-        logObservable('createPuzzleCell'),
         tap((changes) => {
           this.#updateCellValue({ ...changes, isReadonly: !!changes.value });
           this.#checkGridForErrors();
@@ -210,6 +221,21 @@ export class GridStore extends ComponentStore<GridState> {
         });
       })
     )
+  );
+
+  toggleCreatePuzzleMode = this.effect((toggleClick$: Observable<void>) =>
+    toggleClick$.pipe(
+      withLatestFrom(this.creatingPuzzleMode$),
+      tap(([, creatingPuzzleMode]) => {
+        this.#setCreatePuzzleMode(!creatingPuzzleMode);
+      })
+    )
+  );
+
+  #setCreatePuzzleMode = this.updater((state, creatingPuzzleMode: boolean) =>
+    produce(state, (draft) => {
+      draft.creatingPuzzleMode = creatingPuzzleMode;
+    })
   );
 
   resetGrid = this.effect((resetClick$: Observable<void>) =>

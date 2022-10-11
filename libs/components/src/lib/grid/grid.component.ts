@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Output } from '@angular/core';
 import { PushModule } from '@ngrx/component';
-import { CellState, CellValue, GridDirection, valueIsCellValue } from '@sud/domain';
+import { CellState, GridDirection, valueIsCellValue } from '@sud/domain';
 import { logObservable } from '@sud/rxjs-operators';
 import { CellComponent } from '../cell/cell.component';
-import { GridCellSelectPipe } from '../grid/grid-cell-select.pipe';
+import { GridCellSelectPipe } from './grid-cell-select.pipe';
 import { GridStore } from './store/grid.store';
 
 @Component({
@@ -14,13 +14,12 @@ import { GridStore } from './store/grid.store';
   template: `
     <ng-container *ngFor="let row of grid$ | ngrxPush; index as rowIndex; trackBy: rowTrackByFunction">
       <sud-cell
-        #cell
         *ngFor="let cellState of row; index as columnIndex; trackBy: columnTrackByFunction"
         [class]="['row-' + rowIndex, 'col-' + columnIndex, 'sudoku-cell']"
         [cellState]="cellState"
         [focusState]="selected$ | ngrxPush | gridCellSelect: cellState"
         [nextToFocus]="nextToFocus$ | ngrxPush"
-        [creatingPuzzleMode]="creatingPuzzleMode"
+        [creatingPuzzleMode]="creatingPuzzleMode$ | ngrxPush"
         (cellFocusReceived)="cellFocused(cellState)"
         (cellBlurReceived)="cellBlurred()"
         (cellValueChanged)="cellValueChanged($event, cellState)"
@@ -31,30 +30,16 @@ import { GridStore } from './store/grid.store';
   `,
   styleUrls: ['./grid.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [GridStore],
 })
 export class GridComponent {
   readonly grid$ = this._gridStore.grid$;
   readonly selected$ = this._gridStore.selected$;
   readonly nextToFocus$ = this._gridStore.nextToFocus$;
-
-  @Input() creatingPuzzleMode = false;
+  readonly creatingPuzzleMode$ = this._gridStore.creatingPuzzleMode$;
 
   @Output() gameWon = this._gridStore.gameWon$.pipe(logObservable<boolean>('game won:'));
 
   constructor(private readonly _gridStore: GridStore) {}
-
-  setGridValues(values: (CellValue | undefined)[][]) {
-    values.forEach((row, rowIndex) => {
-      row.forEach((value, columnIndex) => {
-        this._gridStore.cellValueChanged({
-          value,
-          row: rowIndex,
-          column: columnIndex,
-        });
-      });
-    });
-  }
 
   cellFocused(cellState: CellState): void {
     this._gridStore.updateSelected(cellState);
@@ -62,12 +47,6 @@ export class GridComponent {
 
   cellValueChanged(newValue: number | undefined, cellState: CellState): void {
     const valueToUse = valueIsCellValue(newValue) ? newValue : undefined;
-
-    if (this.creatingPuzzleMode) {
-      this.#createPuzzleCell(valueToUse, cellState);
-
-      return;
-    }
 
     this._gridStore.cellValueChanged({
       value: valueToUse,
@@ -90,31 +69,5 @@ export class GridComponent {
 
   cellBlurred(): void {
     this._gridStore.resetSelected();
-  }
-
-  #createPuzzleCell(newValue: CellValue | undefined, cellState: CellState): void {
-    console.log('createPuzzleCell called');
-
-    this._gridStore.createPuzzleCell({
-      value: newValue,
-      row: cellState.row,
-      column: cellState.column,
-    });
-  }
-
-  solveOneCell() {
-    this._gridStore.solveOneCell();
-  }
-
-  resetGrid(): void {
-    this._gridStore.resetGrid();
-  }
-
-  undo(): void {
-    this._gridStore.undo();
-  }
-
-  redo(): void {
-    this._gridStore.redo();
   }
 }
