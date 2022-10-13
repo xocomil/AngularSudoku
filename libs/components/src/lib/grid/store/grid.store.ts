@@ -487,7 +487,7 @@ export function write<S>(updater: (state: S) => void): (state: S) => S {
 }
 
 const analyzeErrors = (grid: CellState[][]): boolean[][] => {
-  const errors = Array<boolean[]>.from({ length: 9 }, () => [] as boolean[]);
+  const errors = Array.from({ length: 9 }, () => [] as boolean[]);
 
   for (let i = 0; i < 9; i++) {
     checkRowForErrors(i, grid, errors);
