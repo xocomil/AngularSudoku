@@ -24,7 +24,7 @@
     "@ngrx/eslint-plugin": "14.3.2",
     "@nrwl/angular": "14.7.5",
     "@testing-library/angular": "12.1.2",
-    "@testing-library/dom": "8.17.1",
+    "@testing-library/dom": "8.19.0",
     "@testing-library/user-event": "14.4.3",
     "immer": "9.0.15",
     "ng-mocks": "14.3.0",

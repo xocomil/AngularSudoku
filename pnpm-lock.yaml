@@ -37,7 +37,7 @@ specifiers:
   '@storybook/core-server': 6.5.10
   '@storybook/manager-webpack5': 6.5.10
   '@testing-library/angular': 12.1.2
-  '@testing-library/dom': 8.17.1
+  '@testing-library/dom': 8.19.0
   '@testing-library/user-event': 14.4.3
   '@types/jest': 28.1.8
   '@types/node': 18.7.16
@@ -83,8 +83,8 @@ dependencies:
   '@ngrx/eslint-plugin': 14.3.2_sorwav4hsh5vncerguqybud76i
   '@nrwl/angular': 14.7.5_gezqwaeifbpu6s7lbhmamqypde
   '@testing-library/angular': 12.1.2_6ijmvpybwiml2iaetww2vaqivi
-  '@testing-library/dom': 8.17.1
-  '@testing-library/user-event': 14.4.3_wl4iynrlixafokvgqnhzlvigei
+  '@testing-library/dom': 8.19.0
+  '@testing-library/user-event': 14.4.3_aaq3sbffpfe3jnxzm2zngsddei
   immer: 9.0.15
   ng-mocks: 14.3.0_t276xbdwv5xquv57alabjsacvy
   rxjs: 7.5.6
@@ -3440,7 +3440,7 @@ packages:
       '@angular/animations': 14.2.1_@angular+core@14.2.1
       '@angular/common': 14.2.1_xx5kjva5ggfx6cmsqrkxlt3jke
       '@angular/router': 14.2.1_nkboozztpybu6c6qwc6xmeddj4
-      '@testing-library/dom': 8.17.1
+      '@testing-library/dom': 8.19.0
       jquery: 3.6.0
       replace-in-file: 6.2.0
       tslib: 2.4.0
@@ -6129,31 +6129,31 @@ packages:
       '@angular/core': 14.2.1_rxjs@7.5.6+zone.js@0.11.8
       '@angular/platform-browser': 14.2.1_fqzhziugyvj3fng5w37amzoy3y
       '@angular/router': 14.2.1_nkboozztpybu6c6qwc6xmeddj4
-      '@testing-library/dom': 8.17.1
+      '@testing-library/dom': 8.19.0
       rxjs: 7.5.6
       tslib: 2.4.0
     dev: false
 
-  /@testing-library/dom/8.17.1:
-    resolution: {integrity: sha512-KnH2MnJUzmFNPW6RIKfd+zf2Wue8mEKX0M3cpX6aKl5ZXrJM1/c/Pc8c2xDNYQCnJO48Sm5ITbMXgqTr3h4jxQ==}
+  /@testing-library/dom/8.19.0:
+    resolution: {integrity: sha512-6YWYPPpxG3e/xOo6HIWwB/58HukkwIVTOaZ0VwdMVjhRUX/01E4FtQbck9GazOOj7MXHc5RBzMrU86iBJHbI+A==}
     engines: {node: '>=12'}
     dependencies:
       '@babel/code-frame': 7.18.6
       '@babel/runtime': 7.18.9
       '@types/aria-query': 4.2.2
-      aria-query: 5.0.0
+      aria-query: 5.0.2
       chalk: 4.1.2
       dom-accessibility-api: 0.5.14
       lz-string: 1.4.4
       pretty-format: 27.5.1
 
-  /@testing-library/user-event/14.4.3_wl4iynrlixafokvgqnhzlvigei:
+  /@testing-library/user-event/14.4.3_aaq3sbffpfe3jnxzm2zngsddei:
     resolution: {integrity: sha512-kCUc5MEwaEMakkO5x7aoD+DLi02ehmEM2QCGWvNqAS1dV/fAvORWEjnjsEIvml59M7Y5kCkWN6fCCyPOe8OL6Q==}
     engines: {node: '>=12', npm: '>=6'}
     peerDependencies:
       '@testing-library/dom': '>=7.21.4'
     dependencies:
-      '@testing-library/dom': 8.17.1
+      '@testing-library/dom': 8.19.0
     dev: false
 
   /@tootallnate/once/2.0.0:
@@ -7252,14 +7252,9 @@ packages:
   /argparse/2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
 
-  /aria-query/5.0.0:
-    resolution: {integrity: sha512-V+SM7AbUwJ+EBnB8+DXs0hPZHO0W6pqBcc0dW90OwtVG02PswOu/teuARoLQjdDOH+t9pJgGnW5/Qmouf3gPJg==}
-    engines: {node: '>=6.0'}
-
   /aria-query/5.0.2:
     resolution: {integrity: sha512-eigU3vhqSO+Z8BKDnVLN/ompjhf3pYzecKXz8+whRy+9gZu8n1TCGfwzQUUPnqdHl9ax1Hr9031orZ+UOEYr7Q==}
     engines: {node: '>=6.0'}
-    dev: true
 
   /arr-diff/4.0.0:
     resolution: {integrity: sha512-YVIQ82gZPGBebQV/a8dar4AitzCQs0jjXwMPZllpXMaGjXPYVUawSxQrRsjhjupyVxEvbHgUmIhKVlND+j02kA==}
