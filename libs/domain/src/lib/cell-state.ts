@@ -42,10 +42,11 @@ export const valuesToHide = ({
   rowValuesToHide,
   columnValuesToHide,
   regionValuesToHide,
-}: CellState): CellValue[] => [
+}: CellState, pivotPointInvalidValues: CellValue[]): CellValue[] => [
   ...new Set([
     ...rowValuesToHide,
     ...columnValuesToHide,
     ...regionValuesToHide,
+    ...pivotPointInvalidValues
   ]),
 ];

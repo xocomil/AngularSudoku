@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { allPencilMarks, CellState, CellValue, GridDirection, valueIsCellValue } from '@sud/domain';
 import { errorAnalyzer } from '@sud/fast-analayzers';
+import { logObservable } from '@sud/rxjs-operators';
 import produce from 'immer';
 import { map, Observable, of, tap, withLatestFrom } from 'rxjs';
 import { solveOneCell } from '../solvers/wavefunction-collapse.solver';
@@ -18,6 +19,7 @@ export interface GridState {
   hasError: boolean;
   commandStack: GridCommand[];
   currentCommandIndex: number;
+  pivotPoints: Map<string, CellValue[]>;
 }
 
 const initialState: GridState = {
@@ -27,6 +29,7 @@ const initialState: GridState = {
   hasError: false,
   commandStack: [],
   currentCommandIndex: -1,
+  pivotPoints: new Map(),
 };
 
 const updateSelected = (cellState: CellState) =>
@@ -98,6 +101,7 @@ export class GridStore extends ComponentStore<GridState> {
   });
   readonly #commandStack$ = this.select((state) => state.commandStack);
   readonly #currentCommandIndex$ = this.select((state) => state.currentCommandIndex);
+  readonly #pivotPoints$ = this.select((state) => state.pivotPoints).pipe(logObservable('pivotPoints'));
 
   constructor() {
     super(initialState);
@@ -263,8 +267,8 @@ export class GridStore extends ComponentStore<GridState> {
 
   solveOneCell = this.effect((solveClick$: Observable<void>) =>
     solveClick$.pipe(
-      withLatestFrom(this.grid$),
-      map(([, grid]) => solveOneCell(grid)),
+      withLatestFrom(this.grid$, this.#pivotPoints$),
+      map(([, grid, pivotPoints]) => solveOneCell(grid, pivotPoints)),
       tap((cellState) => {
         if (cellState) {
           const possibleValues = allPencilMarks.filter(
@@ -278,6 +282,12 @@ export class GridStore extends ComponentStore<GridState> {
 
           console.log('chosen value for cell', cellState, value);
 
+          if (value == null) {
+            this.#setPivotPoint();
+
+            return;
+          }
+
           this.cellValueChanged({
             row: cellState.row,
             column: cellState.column,
@@ -286,6 +296,30 @@ export class GridStore extends ComponentStore<GridState> {
         }
       })
     )
+  );
+
+  #setPivotPoint = this.effect((setPivotPoint$: Observable<void>) =>
+    setPivotPoint$.pipe(
+      withLatestFrom(this.#commandStack$),
+      tap(([, commandStack]) => {
+        const lastCommand = commandStack.slice(-1)[0];
+
+        this.#setInvalidValueForPivotPoint(lastCommand);
+      })
+    )
+  );
+
+  #setInvalidValueForPivotPoint = this.updater((state: GridState, update: GridCommand) =>
+    produce(state, (draft) => {
+      if (update.value == null) {
+        return;
+      }
+
+      const pivotKey = `${update.row}${update.column}`;
+      const previousValues = draft.pivotPoints.get(pivotKey) ?? [];
+
+      draft.pivotPoints.set(pivotKey, [...previousValues, update.value]);
+    })
   );
 
   #setRegionValuesToHideForCell = this.updater((state: GridState, update: { row: number; column: number; valuesToHide: CellValue[] }) => {
