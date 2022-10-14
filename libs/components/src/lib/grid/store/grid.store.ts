@@ -8,7 +8,7 @@ import { map, Observable, of, tap, withLatestFrom } from 'rxjs';
 import { solveOneCell } from '../solvers/wavefunction-collapse.solver';
 import { createGridState } from './grid.store.helpers';
 
-type GridCommand = CellValueChangedOptions & { previousValue?: CellValue; value?: CellValue };
+type GridCommand = CellValueChangedOptions & { previousValue?: CellValue; value?: CellValue; invalidValues: CellValue[] };
 
 export interface GridState {
   grid: CellState[][];
@@ -19,7 +19,6 @@ export interface GridState {
   hasError: boolean;
   commandStack: GridCommand[];
   currentCommandIndex: number;
-  pivotPoints: Map<string, CellValue[]>;
 }
 
 const initialState: GridState = {
@@ -29,7 +28,6 @@ const initialState: GridState = {
   hasError: false,
   commandStack: [],
   currentCommandIndex: -1,
-  pivotPoints: new Map(),
 };
 
 const updateSelected = (cellState: CellState) =>
@@ -99,9 +97,10 @@ export class GridStore extends ComponentStore<GridState> {
 
     return noCellToFocus;
   });
-  readonly #commandStack$ = this.select((state) => state.commandStack);
+  readonly #commandStack$ = this.select((state) => state.commandStack).pipe(logObservable('commandStack'));
   readonly #currentCommandIndex$ = this.select((state) => state.currentCommandIndex);
-  readonly #pivotPoints$ = this.select((state) => state.pivotPoints).pipe(logObservable('pivotPoints'));
+  readonly #currentCommand$ = this.select(state => state.commandStack[state.currentCommandIndex]);
+  readonly #commandStackInvalidValues$: Observable<Record<string, CellValue[]>> = this.select(state => state.commandStack.reduce((prev, currentCommand) => ({...prev, [`${currentCommand.row}${currentCommand.column}`]: currentCommand.invalidValues}), {}));
 
   constructor() {
     super(initialState);
@@ -131,7 +130,7 @@ export class GridStore extends ComponentStore<GridState> {
 
         this.#changeCellValue(cellValue);
         this.#clearOldCommands();
-        this.#updateCommandStack({ ...cellValue, previousValue: grid[cellValue.row][cellValue.column].value });
+        this.#updateCommandStack({ ...cellValue, previousValue: grid[cellValue.row][cellValue.column].value, invalidValues: [] });
       })
     )
   );
@@ -267,15 +266,20 @@ export class GridStore extends ComponentStore<GridState> {
 
   solveOneCell = this.effect((solveClick$: Observable<void>) =>
     solveClick$.pipe(
-      withLatestFrom(this.grid$, this.#pivotPoints$),
-      map(([, grid, pivotPoints]) => solveOneCell(grid, pivotPoints)),
-      tap((cellState) => {
+      withLatestFrom(this.grid$, this.#commandStackInvalidValues$),
+      map(([, grid, pivotPoints]) => ({
+        cellState: solveOneCell(grid, pivotPoints),
+        pivotPoints,
+      })),
+      tap(({ cellState, pivotPoints }) => {
         if (cellState) {
+          const invalidPivotPointValues = pivotPoints[`${cellState.row}${cellState.column}`] ?? [];
           const possibleValues = allPencilMarks.filter(
             (value) =>
               !cellState.columnValuesToHide.includes(value) &&
               !cellState.rowValuesToHide.includes(value) &&
-              !cellState.regionValuesToHide.includes(value)
+              !cellState.regionValuesToHide.includes(value) &&
+              !invalidPivotPointValues.includes(value)
           );
 
           const value = possibleValues[Math.floor(Math.random() * possibleValues.length)];
@@ -284,6 +288,7 @@ export class GridStore extends ComponentStore<GridState> {
 
           if (value == null) {
             this.#setPivotPoint();
+            this.undo();
 
             return;
           }
@@ -300,10 +305,8 @@ export class GridStore extends ComponentStore<GridState> {
 
   #setPivotPoint = this.effect((setPivotPoint$: Observable<void>) =>
     setPivotPoint$.pipe(
-      withLatestFrom(this.#commandStack$),
-      tap(([, commandStack]) => {
-        const lastCommand = commandStack.slice(-1)[0];
-
+      withLatestFrom(this.#currentCommand$),
+      tap(([, lastCommand]) => {
         this.#setInvalidValueForPivotPoint(lastCommand);
       })
     )
@@ -315,10 +318,7 @@ export class GridStore extends ComponentStore<GridState> {
         return;
       }
 
-      const pivotKey = `${update.row}${update.column}`;
-      const previousValues = draft.pivotPoints.get(pivotKey) ?? [];
-
-      draft.pivotPoints.set(pivotKey, [...previousValues, update.value]);
+      draft.commandStack[draft.currentCommandIndex]?.invalidValues.push(update.value);
     })
   );
 
