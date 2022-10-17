@@ -14,10 +14,7 @@
         "polyfills": "apps/angular-sudoku/src/polyfills.ts",
         "tsConfig": "apps/angular-sudoku/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": [
-          "apps/angular-sudoku/src/favicon.ico",
-          "apps/angular-sudoku/src/assets"
-        ],
+        "assets": ["apps/angular-sudoku/src/favicon.ico", "apps/angular-sudoku/src/assets"],
         "styles": ["apps/angular-sudoku/src/styles.scss"],
         "scripts": []
       },
@@ -75,15 +72,12 @@
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
-        "lintFilePatterns": [
-          "apps/angular-sudoku/**/*.ts",
-          "apps/angular-sudoku/**/*.html"
-        ]
+        "lintFilePatterns": ["apps/angular-sudoku/**/*.ts", "apps/angular-sudoku/**/*.html"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/angular-sudoku"],
+      "outputs": ["{workspaceRoot}/coverage/apps/angular-sudoku"],
       "options": {
         "jestConfig": "apps/angular-sudoku/jest.config.ts",
         "passWithNoTests": true

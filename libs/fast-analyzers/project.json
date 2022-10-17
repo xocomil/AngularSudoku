@@ -5,7 +5,7 @@
   "targets": {
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/fast-analyzers"],
+      "outputs": ["{workspaceRoot}/coverage/libs/fast-analyzers"],
       "options": {
         "jestConfig": "libs/fast-analyzers/jest.config.ts",
         "passWithNoTests": true
@@ -14,10 +14,7 @@
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
-        "lintFilePatterns": [
-          "libs/fast-analyzers/**/*.ts",
-          "libs/fast-analyzers/**/*.html"
-        ]
+        "lintFilePatterns": ["libs/fast-analyzers/**/*.ts", "libs/fast-analyzers/**/*.html"]
       }
     }
   },
