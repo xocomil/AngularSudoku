@@ -1,22 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { createComponentFactory, mockProvider } from '@ngneat/spectator/jest';
+import { NEVER } from 'rxjs';
+import { GridStore } from '../../grid/store/grid.store';
 import { ButtonHostComponent } from './button-host.component';
 
 describe('ButtonHostComponent', () => {
-  let component: ButtonHostComponent;
-  let fixture: ComponentFixture<ButtonHostComponent>;
+  const gridStoreStub: Partial<GridStore> = {
+    creatingPuzzleMode$: NEVER,
+  };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ButtonHostComponent],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(ButtonHostComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  const createComponent = createComponentFactory({ component: ButtonHostComponent, providers: [mockProvider(GridStore, gridStoreStub)] });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    const spectator = createComponent();
+
+    expect(spectator).toBeTruthy();
   });
 });
