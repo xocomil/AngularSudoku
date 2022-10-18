@@ -1,7 +1,7 @@
-import { CellState, CellValue, valuesToHide } from '@sud/domain';
+import { CellState, valuesToHide } from '@sud/domain';
 
-export const solveOneCell = (grid: CellState[][], pivotPoints: Record<string, CellValue[]>): CellState | undefined => {
-  const leastEntropy = getCellsWithLeastEntropy(grid, pivotPoints);
+export const solveOneCell = (grid: CellState[][]): CellState | undefined => {
+  const leastEntropy = getCellsWithLeastEntropy(grid);
 
   if (!leastEntropy) return undefined;
 
@@ -10,7 +10,7 @@ export const solveOneCell = (grid: CellState[][], pivotPoints: Record<string, Ce
 
 export const randomArrayItem = (cellStates: CellState[]): CellState => cellStates[Math.floor(Math.random() * cellStates.length)];
 
-export const getCellsWithLeastEntropy = (grid: CellState[][], pivotPoints: Record<string, CellValue[]>): CellState[] | undefined => {
+export const getCellsWithLeastEntropy = (grid: CellState[][]): CellState[] | undefined => {
   const entropyMap = new Map<number, CellState[]>();
   let lowestEntropy = -1;
 
@@ -18,7 +18,7 @@ export const getCellsWithLeastEntropy = (grid: CellState[][], pivotPoints: Recor
     for (const cell of row) {
       if (cell.isReadonly || cell.value) continue;
 
-      const invalidValues = valuesToHide(cell, pivotPoints[`${cell.row}${cell.column}`] ?? []);
+      const invalidValues = valuesToHide(cell, []);
       const usedValueCount = invalidValues.length;
 
       if (!entropyMap.has(usedValueCount)) {

@@ -77,6 +77,22 @@ interface CellValueChangedOptions {
   column: number;
 }
 
+const findNextValue = (cellState: CellState, invalidValues: CellValue[] = []): CellValue | undefined => {
+  const possibleValues = allPencilMarks.filter(
+    (value) =>
+      !cellState.columnValuesToHide.includes(value) &&
+      !cellState.rowValuesToHide.includes(value) &&
+      !cellState.regionValuesToHide.includes(value) &&
+      !invalidValues.includes(value)
+  );
+
+  const value = possibleValues[Math.floor(Math.random() * possibleValues.length)];
+
+  console.log('chosen value for cell', cellState, value);
+
+  return value;
+};
+
 @Injectable()
 export class GridStore extends ComponentStore<GridState> {
   readonly grid$ = this.select((state) => state.grid);
@@ -100,11 +116,8 @@ export class GridStore extends ComponentStore<GridState> {
   readonly #commandStack$ = this.select((state) => state.commandStack).pipe(logObservable('commandStack'));
   readonly #currentCommandIndex$ = this.select((state) => state.currentCommandIndex);
   readonly #currentCommand$ = this.select((state) => state.commandStack[state.currentCommandIndex]);
-  readonly #commandStackInvalidValues$: Observable<Record<string, CellValue[]>> = this.select((state) =>
-    state.commandStack.reduce(
-      (prev, currentCommand) => ({ ...prev, [`${currentCommand.row}${currentCommand.column}`]: currentCommand.invalidValues }),
-      {}
-    )
+  readonly #commandStackInvalidValues$: Observable<CellValue[]> = this.#currentCommand$.pipe(
+    map((currentCommand) => currentCommand?.invalidValues ?? [])
   );
 
   constructor() {
@@ -290,29 +303,14 @@ export class GridStore extends ComponentStore<GridState> {
   solveOneCell = this.effect((solveClick$: Observable<void>) =>
     solveClick$.pipe(
       withLatestFrom(this.grid$, this.#commandStackInvalidValues$),
-      map(([, grid, pivotPoints]) => ({
-        cellState: solveOneCell(grid, pivotPoints),
-        pivotPoints,
-      })),
+      map(([, grid]) => solveOneCell(grid)),
       tap({
-        next: ({ cellState, pivotPoints }) => {
+        next: (cellState) => {
           if (cellState) {
-            const invalidPivotPointValues = pivotPoints[`${cellState.row}${cellState.column}`] ?? [];
-            const possibleValues = allPencilMarks.filter(
-              (value) =>
-                !cellState.columnValuesToHide.includes(value) &&
-                !cellState.rowValuesToHide.includes(value) &&
-                !cellState.regionValuesToHide.includes(value) &&
-                !invalidPivotPointValues.includes(value)
-            );
-
-            const value = possibleValues[Math.floor(Math.random() * possibleValues.length)];
-
-            console.log('chosen value for cell', cellState, value);
+            const value = findNextValue(cellState);
 
             if (value == null) {
-              this.#setPivotPoint();
-              this.undo();
+              this.#unwindBadDecision();
 
               return;
             }
@@ -320,7 +318,7 @@ export class GridStore extends ComponentStore<GridState> {
             this.cellValueChanged({
               row: cellState.row,
               column: cellState.column,
-              value: value,
+              value,
             });
           }
         },
@@ -328,19 +326,51 @@ export class GridStore extends ComponentStore<GridState> {
     )
   );
 
-  #setPivotPoint = this.effect((setPivotPoint$: Observable<void>) =>
-    setPivotPoint$.pipe(
-      withLatestFrom(this.#currentCommand$),
+  #unwindBadDecision = this.effect((unwind$: Observable<void>) =>
+    unwind$.pipe(
+      withLatestFrom(this.#currentCommand$, this.grid$),
+      logObservable('unwinding'),
       tap({
-        next: ([, lastCommand]) => {
-          this.#setInvalidValueForPivotPoint(lastCommand);
+        next: ([, lastCommand, grid]) => {
+          this.#setInvalidValueForCommand(lastCommand);
+
+          const cellState = grid[lastCommand.row][lastCommand.column];
+
+          const invalidValues: CellValue[] = lastCommand.value
+            ? [...lastCommand.invalidValues, lastCommand.value]
+            : lastCommand.invalidValues;
+          const nextValue = findNextValue(cellState, invalidValues);
+
+          this.undo();
+
+          if (nextValue == null) {
+            this.#unwindBadDecision();
+
+            return;
+          }
+
+          this.cellValueChanged({
+            row: cellState.row,
+            column: cellState.column,
+            value: nextValue,
+          });
+
+          this.#setInvalidValuesForNewCommand(lastCommand.invalidValues);
         },
       })
     )
   );
 
-  #setInvalidValueForPivotPoint = this.updater((state: GridState, update: GridCommand) =>
+  readonly #setInvalidValuesForNewCommand = this.updater((state, invalidValues: CellValue[]) =>
     produce(state, (draft) => {
+      draft.commandStack[draft.currentCommandIndex].invalidValues = invalidValues ?? [];
+    })
+  );
+
+  #setInvalidValueForCommand = this.updater((state: GridState, update: GridCommand) =>
+    produce(state, (draft) => {
+      console.log('updating invalidValues', update);
+
       if (update.value == null) {
         return;
       }
