@@ -332,13 +332,14 @@ export class GridStore extends ComponentStore<GridState> {
       logObservable('unwinding'),
       tap({
         next: ([, lastCommand, grid]) => {
-          this.#setInvalidValueForCommand(lastCommand);
-
           const cellState = grid[lastCommand.row][lastCommand.column];
 
           const invalidValues: CellValue[] = lastCommand.value
             ? [...lastCommand.invalidValues, lastCommand.value]
             : lastCommand.invalidValues;
+
+          console.log('invalidValues', invalidValues, lastCommand);
+
           const nextValue = findNextValue(cellState, invalidValues);
 
           this.undo();
@@ -349,13 +350,15 @@ export class GridStore extends ComponentStore<GridState> {
             return;
           }
 
+          console.log('after recursive call', cellState, lastCommand);
+
           this.cellValueChanged({
             row: cellState.row,
             column: cellState.column,
             value: nextValue,
           });
 
-          this.#setInvalidValuesForNewCommand(lastCommand.invalidValues);
+          this.#setInvalidValuesForNewCommand(invalidValues);
         },
       })
     )
@@ -363,19 +366,9 @@ export class GridStore extends ComponentStore<GridState> {
 
   readonly #setInvalidValuesForNewCommand = this.updater((state, invalidValues: CellValue[]) =>
     produce(state, (draft) => {
+      console.log('final invalidValues', invalidValues);
+
       draft.commandStack[draft.currentCommandIndex].invalidValues = invalidValues ?? [];
-    })
-  );
-
-  #setInvalidValueForCommand = this.updater((state: GridState, update: GridCommand) =>
-    produce(state, (draft) => {
-      console.log('updating invalidValues', update);
-
-      if (update.value == null) {
-        return;
-      }
-
-      draft.commandStack[draft.currentCommandIndex]?.invalidValues.push(update.value);
     })
   );
 
