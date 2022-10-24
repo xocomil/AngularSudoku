@@ -6,7 +6,9 @@
   "targets": {
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/libs/components"],
+      "outputs": [
+        "{workspaceRoot}/coverage/libs/components"
+      ],
       "options": {
         "jestConfig": "libs/components/jest.config.ts",
         "passWithNoTests": true
@@ -15,7 +17,10 @@
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
-        "lintFilePatterns": ["libs/components/**/*.ts", "libs/components/**/*.html"]
+        "lintFilePatterns": [
+          "libs/components/**/*.ts",
+          "libs/components/**/*.html"
+        ]
       }
     },
     "storybook": {
@@ -26,7 +31,9 @@
         "browserTarget": "components:build-storybook",
         "compodoc": false
       },
-      "styles": ["apps/angular-sudoku/src/styles.scss"],
+      "styles": [
+        "apps/angular-sudoku/src/styles.scss"
+      ],
       "configurations": {
         "ci": {
           "quiet": true
@@ -35,18 +42,31 @@
     },
     "build-storybook": {
       "executor": "@storybook/angular:build-storybook",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputDir": "dist/storybook/components",
         "configDir": "libs/components/.storybook",
         "browserTarget": "components:build-storybook",
         "compodoc": false
       },
-      "styles": ["apps/angular-sudoku/src/styles.scss"],
+      "styles": [
+        "apps/angular-sudoku/src/styles.scss"
+      ],
       "configurations": {
         "ci": {
           "quiet": true
         }
+      }
+    },
+    "component-test": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "libs/components/cypress.config.ts",
+        "testingType": "component",
+        "skipServe": true,
+        "devServerTarget": "angular-sudoku:build"
       }
     }
   },
