@@ -5,7 +5,7 @@
   "targets": {
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/grid-analyzers"],
+      "outputs": ["{workspaceRoot}/coverage/libs/grid-analyzers"],
       "options": {
         "jestConfig": "libs/grid-analyzers/jest.config.ts",
         "passWithNoTests": true
@@ -14,10 +14,7 @@
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
-        "lintFilePatterns": [
-          "libs/grid-analyzers/**/*.ts",
-          "libs/grid-analyzers/**/*.html"
-        ]
+        "lintFilePatterns": ["libs/grid-analyzers/**/*.ts", "libs/grid-analyzers/**/*.html"]
       }
     }
   },

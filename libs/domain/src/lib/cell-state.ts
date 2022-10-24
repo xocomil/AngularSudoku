@@ -21,8 +21,7 @@ export const createCellState = ({
   value = undefined,
   valid = true,
   isReadonly = false,
-}: Partial<CellState> &
-  Pick<CellState, 'row' | 'column' | 'region'>): CellState => ({
+}: Partial<CellState> & Pick<CellState, 'row' | 'column' | 'region'>): CellState => ({
   row,
   column,
   region,
@@ -34,6 +33,9 @@ export const createCellState = ({
   regionValuesToHide: [],
 });
 
-export const valueIsCellValue = (
-  value: number | undefined
-): value is CellValue => value != null && value >= 1 && value <= 9;
+export const valueIsCellValue = (value: number | undefined): value is CellValue => value != null && value >= 1 && value <= 9;
+
+export const valuesToHide = (
+  { rowValuesToHide, columnValuesToHide, regionValuesToHide }: CellState,
+  invalidValues: CellValue[]
+): CellValue[] => [...new Set([...rowValuesToHide, ...columnValuesToHide, ...regionValuesToHide, ...invalidValues])];
