@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CellState, createCellState, GridDirection, gridDirectionFromKeyboard } from '@sud/domain';
+import { logObservable } from '@sud/rxjs-operators';
 import { filter, fromEvent, map, of, Subject, Subscription, tap } from 'rxjs';
 import { PencilMarkComponent } from '../pencil-mark/pencil-mark.component';
 import { NumbersToHidePipe } from './numbers-to-hide.pipe';
@@ -35,7 +36,7 @@ import { NumbersToHidePipe } from './numbers-to-hide.pipe';
         <!--        isReadonly: {{ cellState.isReadonly }}-->
       </div>
       <input
-        data-testid="cellInput"
+        data-cy="cellInput"
         #cellInput
         [ngModel]="cellState.value"
         (focus)="cellFocusReceived.emit()"
@@ -113,7 +114,14 @@ export class CellComponent implements OnInit, OnDestroy {
         filter((event) => this.#navigationValues.includes(event.key.toLowerCase()))
       );
 
-      this.#subs.add(keydown$.pipe(map((event) => gridDirectionFromKeyboard(event.key))).subscribe(this.#navigationKey$));
+      this.#subs.add(
+        keydown$
+          .pipe(
+            map((event) => gridDirectionFromKeyboard(event.key)),
+            logObservable('gridDirection')
+          )
+          .subscribe(this.#navigationKey$)
+      );
     }
   }
 
