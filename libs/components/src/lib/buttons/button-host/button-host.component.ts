@@ -10,7 +10,9 @@ import { GridStore } from '../../grid/store/grid.store';
   standalone: true,
   imports: [CommonModule, PushModule],
   template: `
-    <button type="button" (click)="toggleCreatePuzzleMode()">{{ toggleButtonText$ | ngrxPush }} Create Puzzle Mode</button>
+    <button type="button" data-cy="create-puzzle" (click)="toggleCreatePuzzleMode()">
+      {{ toggleButtonText$ | ngrxPush }} Create Puzzle Mode
+    </button>
     <button type="button" (click)="resetGrid()">Reset</button>
     <button type="button" (click)="generateWinningGrid()">Add Winning Grid</button>
     <button type="button" (click)="generateProblemGrid()">Add Problem Grid</button>
