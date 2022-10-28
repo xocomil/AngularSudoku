@@ -19,9 +19,7 @@ describe(GridComponent.name, () => {
       const centerCellSelector = '.col-4.row-4';
       const centerCellInputSelector = `${centerCellSelector} > div > [data-cy="cellInput"]`;
 
-      const centerCellInput = cy.get(centerCellInputSelector);
-
-      centerCellInput.click();
+      cy.get(centerCellInputSelector).click();
 
       cy.get('.col-4.row-4').invoke('attr', 'data-focused-state').should('equal', 'self');
 
@@ -51,6 +49,38 @@ describe(GridComponent.name, () => {
 
         cy.get(columnSelector).invoke('attr', 'data-focused-state').should('equal', 'col');
         cy.get(rowSelector).invoke('attr', 'data-focused-state').should('equal', 'row');
+      });
+    });
+  });
+
+  describe('keyboard navigation', () => {
+    describe('up arrow', () => {
+      it('should move focus to the next cell above', () => {
+        cy.mount(GridComponent, config);
+        const centerCellSelector = '.col-4.row-4';
+        const centerCellInputSelector = `${centerCellSelector} > div > [data-cy="cellInput"]`;
+
+        cy.get(centerCellInputSelector).click();
+
+        cy.get(centerCellInputSelector).should('have.focus');
+
+        cy.get(centerCellInputSelector).type('{upArrow}');
+
+        cy.get('.row-3.col-4 > div > [data-cy="cellInput"]').should('have.focus');
+      });
+
+      it('should not move focus if at top of grid', () => {
+        cy.mount(GridComponent, config);
+        const centerCellSelector = '.col-4.row-0';
+        const centerCellInputSelector = `${centerCellSelector} > div > [data-cy="cellInput"]`;
+
+        cy.get(centerCellInputSelector).click();
+
+        cy.get(centerCellInputSelector).should('have.focus');
+
+        cy.get(centerCellInputSelector).type('{upArrow}');
+
+        cy.get(centerCellInputSelector).should('have.focus');
       });
     });
   });
