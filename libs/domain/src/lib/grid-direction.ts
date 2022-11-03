@@ -3,6 +3,8 @@ export const GridDirection = Object.freeze({
   Down: 'down',
   Left: 'left',
   Right: 'right',
+  Tab: 'tab',
+  Escape: 'escape',
 });
 
 export type GridDirection = typeof GridDirection[keyof typeof GridDirection];
@@ -16,11 +18,11 @@ export const directionMap = new Map<string, GridDirection>([
   ['arrowdown', GridDirection.Down],
   ['arrowleft', GridDirection.Left],
   ['arrowright', GridDirection.Right],
+  ['tab', GridDirection.Tab],
+  ['escape', GridDirection.Escape],
 ]);
 
-export const gridDirectionFromKeyboard = (
-  keyboardDirection: string
-): GridDirection => {
+export const gridDirectionFromKeyboard = (keyboardDirection: string): GridDirection => {
   const direction = directionMap.get(keyboardDirection.toLowerCase());
 
   if (!direction) {

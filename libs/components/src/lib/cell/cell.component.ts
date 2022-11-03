@@ -58,6 +58,7 @@ export class CellComponent implements OnInit, OnDestroy {
   readonly #allowedValues = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
   readonly #navigationValues = ['w', 'a', 's', 'd', 'arrowleft', 'arrowright', 'arrowup', 'arrowdown'];
   readonly #deleteKeys = ['delete', 'backspace'];
+  readonly #skipHandler = ['tab', 'escape'];
   readonly #subs = new Subscription();
   readonly #navigationKey$ = new Subject<GridDirection>();
 
@@ -130,6 +131,12 @@ export class CellComponent implements OnInit, OnDestroy {
   }
 
   protected handleKeyEvent(event: KeyboardEvent) {
+    console.log('handleKeyEvent', event.key, event);
+
+    if (this.#skipHandler.includes(event.key.toLowerCase())) {
+      return;
+    }
+
     event.preventDefault();
 
     if (this.#allowedValues.includes(event.key)) {
