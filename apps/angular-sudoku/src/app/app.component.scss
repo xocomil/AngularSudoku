@@ -1,13 +1,25 @@
-:host {
-  display: block;
+.game-ui {
+  display: grid;
+  gap: 0.6rem;
 }
 
-.game-ui {
-  display: flex;
-  gap: 0.6rem;
+@media (min-width: 755px) {
+  .game-ui {
+    grid-template-areas:
+      'title title'
+      'nav main';
+    grid-template-columns: fit-content(100%) 300px;
+  }
 
-  sud-grid: {
-    flex-basis: 200px;
-    flex-grow: 1;
+  h1 {
+    grid-area: title;
+  }
+
+  main {
+    grid-area: main;
+  }
+
+  nav {
+    grid-area: nav;
   }
 }

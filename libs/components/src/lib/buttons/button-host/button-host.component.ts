@@ -10,15 +10,19 @@ import { GridStore } from '../../grid/store/grid.store';
   standalone: true,
   imports: [CommonModule, PushModule],
   template: `
-    <button type="button" data-cy="create-puzzle" (click)="toggleCreatePuzzleMode()">
-      {{ toggleButtonText$ | ngrxPush }} Create Puzzle Mode
-    </button>
-    <button type="button" (click)="resetGrid()">Reset</button>
-    <button type="button" (click)="generateWinningGrid()">Add Winning Grid</button>
-    <button type="button" (click)="generateProblemGrid()">Add Problem Grid</button>
-    <button type="button" (click)="solveOneCell()">Solve 1 Cell</button>
-    <button type="button" (click)="undo()">Undo</button>
-    <button type="button" (click)="redo()">Redo</button>
+    <ul>
+      <li>
+        <button type="button" data-cy="create-puzzle" (click)="toggleCreatePuzzleMode()">
+          {{ toggleButtonText$ | ngrxPush }} Create Puzzle Mode
+        </button>
+      </li>
+      <li><button type="button" (click)="resetGrid()">Reset</button></li>
+      <li><button type="button" (click)="generateWinningGrid()">Add Winning Grid</button></li>
+      <li><button type="button" (click)="generateProblemGrid()">Add Problem Grid</button></li>
+      <li><button type="button" (click)="solveOneCell()">Solve 1 Cell</button></li>
+      <li><button type="button" (click)="undo()">Undo</button></li>
+      <li><button type="button" (click)="redo()">Redo</button></li>
+    </ul>
   `,
   styleUrls: ['./button-host.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

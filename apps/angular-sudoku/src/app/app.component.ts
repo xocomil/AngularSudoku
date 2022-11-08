@@ -7,8 +7,11 @@ import { ButtonHostComponent, GridComponent, GridStore, PencilMarkComponent } fr
   standalone: true,
   imports: [GridComponent, NgIf, PencilMarkComponent, ButtonHostComponent],
   template: ` <div class="game-ui">
-      <sud-grid (gameWon)="gameWonHandler($event)"></sud-grid>
-      <sud-button-host></sud-button-host>
+      <h1>The awesomeeeest sudoku grid of all times</h1>
+      <nav title="grid actions"><sud-button-host></sud-button-host></nav>
+      <main>
+        <sud-grid (gameWon)="gameWonHandler($event)"></sud-grid>
+      </main>
     </div>
     <div class="gameWon" *ngIf="gameWon">Congratulations! You won!</div>`,
   styleUrls: ['./app.component.scss'],
