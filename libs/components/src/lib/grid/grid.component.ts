@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Output } from '@angular/core';
 import { PushModule } from '@ngrx/component';
 import { CellState, GridDirection, valueIsCellValue } from '@sud/domain';
 import { logObservable } from '@sud/rxjs-operators';
@@ -32,23 +32,23 @@ import { GridStore } from './store/grid.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GridComponent {
-  readonly grid$ = this._gridStore.grid$;
-  readonly selected$ = this._gridStore.selected$;
-  readonly nextToFocus$ = this._gridStore.nextToFocus$;
-  readonly creatingPuzzleMode$ = this._gridStore.creatingPuzzleMode$;
+  readonly #gridStore = inject(GridStore);
 
-  @Output() gameWon = this._gridStore.gameWon$.pipe(logObservable<boolean>('game won:'));
+  readonly grid$ = this.#gridStore.grid$;
+  readonly selected$ = this.#gridStore.selected$;
+  readonly nextToFocus$ = this.#gridStore.nextToFocus$;
+  readonly creatingPuzzleMode$ = this.#gridStore.creatingPuzzleMode$;
 
-  constructor(private readonly _gridStore: GridStore) {}
+  @Output() gameWon = this.#gridStore.gameWon$.pipe(logObservable<boolean>('game won:'));
 
   cellFocused(cellState: CellState): void {
-    this._gridStore.updateSelected(cellState);
+    this.#gridStore.updateSelected(cellState);
   }
 
   cellValueChanged(newValue: number | undefined, cellState: CellState): void {
     const valueToUse = valueIsCellValue(newValue) ? newValue : undefined;
 
-    this._gridStore.cellValueChanged({
+    this.#gridStore.cellValueChanged({
       value: valueToUse,
       row: cellState.row,
       column: cellState.column,
@@ -56,7 +56,7 @@ export class GridComponent {
   }
 
   cellNavigated(direction: GridDirection, cellState: CellState): void {
-    this._gridStore.navigateToCell({ direction, cellState });
+    this.#gridStore.navigateToCell({ direction, cellState });
   }
 
   rowTrackByFunction(_index: number, row: CellState[]): number {
@@ -68,6 +68,6 @@ export class GridComponent {
   }
 
   cellBlurred(): void {
-    this._gridStore.resetSelected();
+    this.#gridStore.resetSelected();
   }
 }

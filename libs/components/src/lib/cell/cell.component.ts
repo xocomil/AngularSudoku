@@ -37,6 +37,7 @@ import { NumbersToHidePipe } from './numbers-to-hide.pipe';
       </div>
       <input
         data-cy="cellInput"
+        data-testId="cellInput"
         #cellInput
         [ngModel]="cellState.value"
         (focus)="cellFocusReceived.emit()"
