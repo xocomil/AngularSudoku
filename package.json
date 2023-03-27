@@ -76,7 +76,7 @@
     "nx": "15.0.0",
     "prettier": "2.7.1",
     "prettier-plugin-organize-attributes": "0.0.5",
-    "stylelint": "14.11.0",
+    "stylelint": "14.16.1",
     "stylelint-config-prettier": "9.0.3",
     "stylelint-config-prettier-scss": "0.0.1",
     "stylelint-config-standard": "28.0.0",
