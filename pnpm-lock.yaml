@@ -17,7 +17,7 @@ specifiers:
   '@angular/platform-browser-dynamic': 14.2.6
   '@angular/router': 14.2.6
   '@cypress/webpack-dev-server': ^2.0.0
-  '@faker-js/faker': 7.5.0
+  '@faker-js/faker': 7.6.0
   '@hirez_io/observer-spy': 2.2.0
   '@ngneat/spectator': 11.1.3
   '@ngrx/component': 14.3.2
@@ -105,7 +105,7 @@ devDependencies:
   '@angular/compiler-cli': 14.2.6_berdmfrv6b33c2wuoyy6wmwhva
   '@angular/language-service': 14.2.6
   '@cypress/webpack-dev-server': 2.4.1_webpack@5.74.0
-  '@faker-js/faker': 7.5.0
+  '@faker-js/faker': 7.6.0
   '@hirez_io/observer-spy': 2.2.0_uvboyg3mlt6miccacx4kvxkp2a
   '@ngneat/spectator': 11.1.3_z3dptj7likdbtp6ueuieg6ncxq
   '@nrwl/cli': 15.0.0
@@ -4070,8 +4070,8 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@faker-js/faker/7.5.0:
-    resolution: {integrity: sha512-8wNUCCUHvfvI0gQpDUho/3gPzABffnCn5um65F8dzQ86zz6dlt4+nmAA7PQUc8L+eH+9RgR/qzy5N/8kN0Ozdw==}
+  /@faker-js/faker/7.6.0:
+    resolution: {integrity: sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==}
     engines: {node: '>=14.0.0', npm: '>=6.0.0'}
     dev: true
 
