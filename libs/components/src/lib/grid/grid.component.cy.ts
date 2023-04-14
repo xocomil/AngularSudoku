@@ -1,3 +1,4 @@
+import { TestBed } from '@angular/core/testing';
 import { MountConfig } from 'cypress/angular';
 import { GridComponent } from './grid.component';
 import { GridStore } from './store/grid.store';
@@ -10,11 +11,13 @@ describe(GridComponent.name, () => {
   };
 
   it('renders', () => {
+    TestBed.overrideComponent(GridComponent, { add: { providers: config.providers } });
     cy.mount(GridComponent, config);
   });
 
   describe('cell highlighting', () => {
     it('should add the proper classes when an input is clicked', () => {
+      TestBed.overrideComponent(GridComponent, { add: { providers: config.providers } });
       cy.mount(GridComponent, config);
       const centerCellSelector = '.col-4.row-4';
       const centerCellInputSelector = `${centerCellSelector} > div > [data-cy="cellInput"]`;
@@ -56,6 +59,7 @@ describe(GridComponent.name, () => {
   describe('keyboard navigation', () => {
     describe('up arrow', () => {
       it('should move focus to the next cell above', () => {
+        TestBed.overrideComponent(GridComponent, { add: { providers: config.providers } });
         cy.mount(GridComponent, config);
         const centerCellSelector = '.col-4.row-4';
         const centerCellInputSelector = `${centerCellSelector} > div > [data-cy="cellInput"]`;
@@ -70,6 +74,7 @@ describe(GridComponent.name, () => {
       });
 
       it('should not move focus if at top of grid', () => {
+        TestBed.overrideComponent(GridComponent, { add: { providers: config.providers } });
         cy.mount(GridComponent, config);
         const centerCellSelector = '.col-4.row-0';
         const centerCellInputSelector = `${centerCellSelector} > div > [data-cy="cellInput"]`;

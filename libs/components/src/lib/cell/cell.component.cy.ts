@@ -1,3 +1,4 @@
+import { TestBed } from '@angular/core/testing';
 import { MountConfig } from 'cypress/angular';
 import { GridDirection } from '../../../../domain/src/lib/grid-direction';
 import { CellComponent } from './cell.component';
@@ -13,10 +14,12 @@ describe(CellComponent.name, () => {
   };
 
   it('renders', () => {
+    TestBed.overrideComponent(CellComponent, { add: { providers: config.providers } });
     cy.mount(CellComponent, config);
   });
 
   it('should enter a proper CellValue', () => {
+    TestBed.overrideComponent(CellComponent, { add: { providers: config.providers } });
     cy.mount(CellComponent, config);
 
     const input = cy.get(numberInput);
@@ -28,6 +31,7 @@ describe(CellComponent.name, () => {
 
   describe('keyboard navigation', () => {
     it('should navigate up when "w" is entered', () => {
+      TestBed.overrideComponent(CellComponent, { add: { providers: config.providers } });
       cy.mount(CellComponent, config).then((wrapper) => {
         console.log({ wrapper });
         cy.spy(wrapper.component.cellNavigated, 'next').as('cellNavigatedSpy');
