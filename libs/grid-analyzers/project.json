@@ -1,4 +1,6 @@
 {
+  "name": "grid-analyzers",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/grid-analyzers/src",
   "prefix": "sud",
