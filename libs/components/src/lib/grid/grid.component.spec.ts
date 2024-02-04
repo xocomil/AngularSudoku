@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { faker } from '@faker-js/faker/locale/en';
 import { createComponentFactory, mockProvider } from '@ngneat/spectator/jest';
-import { PushModule } from '@ngrx/component';
+import { PushModule, PushPipe } from '@ngrx/component';
 import { CellState, createCellState, GridDirection } from '@sud/domain';
 import { NEVER, Subject } from 'rxjs';
 import { CellComponent } from '../cell/cell.component';

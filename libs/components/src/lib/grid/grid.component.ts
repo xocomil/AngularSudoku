@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, Output } from '@angular/core';
-import { PushModule } from '@ngrx/component';
+import { PushPipe } from '@ngrx/component';
 import { CellState, GridDirection, valueIsCellValue } from '@sud/domain';
 import { logObservable } from '@sud/rxjs-operators';
 import { CellComponent } from '../cell/cell.component';
@@ -10,7 +10,7 @@ import { GridStore } from './store/grid.store';
 @Component({
   selector: 'sud-grid',
   standalone: true,
-  imports: [CommonModule, CellComponent, GridCellSelectPipe, PushModule],
+  imports: [CommonModule, CellComponent, GridCellSelectPipe, PushPipe],
   template: `
     <ng-container *ngFor="let row of grid$ | ngrxPush; index as rowIndex; trackBy: rowTrackByFunction">
       <sud-cell
