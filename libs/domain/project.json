@@ -6,7 +6,7 @@
   "prefix": "sud",
   "targets": {
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/domain"],
       "options": {
         "jestConfig": "libs/domain/jest.config.ts",
@@ -14,7 +14,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "options": {
         "lintFilePatterns": ["libs/domain/**/*.ts", "libs/domain/**/*.html"]
       }

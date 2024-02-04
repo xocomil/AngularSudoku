@@ -2,6 +2,7 @@ import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { CellComponent } from '../cell/cell.component';
 import { GridCellSelectPipe } from './grid-cell-select.pipe';
 import { GridComponent } from './grid.component';
+import { GridStore } from './store/grid.store';
 
 export default {
   title: 'Grid',
@@ -9,6 +10,7 @@ export default {
   decorators: [
     moduleMetadata({
       imports: [CellComponent, GridCellSelectPipe],
+      providers: [GridStore]
     }),
   ],
 } as Meta;

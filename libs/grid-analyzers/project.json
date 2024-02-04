@@ -6,7 +6,7 @@
   "prefix": "sud",
   "targets": {
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/grid-analyzers"],
       "options": {
         "jestConfig": "libs/grid-analyzers/jest.config.ts",
@@ -14,7 +14,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "options": {
         "lintFilePatterns": ["libs/grid-analyzers/**/*.ts", "libs/grid-analyzers/**/*.html"]
       }

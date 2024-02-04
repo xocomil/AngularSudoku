@@ -13,7 +13,7 @@
       "path": "./.storybook/tsconfig.json"
     },
     {
-      "path": "./cypress/tsconfig.cy.json"
+      "path": "./cypress/tsconfig.json"
     }
   ],
   "compilerOptions": {
@@ -23,7 +23,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "target": "es2020"
+    "target": "es2022"
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

@@ -42,3 +42,7 @@ Thumbs.db
 
 # stryker temp files
 .stryker-tmp
+
+storybook-migration-summary.md
+
+.nx/cache
