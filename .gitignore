@@ -44,3 +44,5 @@ Thumbs.db
 .stryker-tmp
 
 storybook-migration-summary.md
+
+.nx/cache

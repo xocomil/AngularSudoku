@@ -13,7 +13,7 @@
       "path": "./.storybook/tsconfig.json"
     },
     {
-      "path": "./cypress/tsconfig.cy.json"
+      "path": "./cypress/tsconfig.json"
     }
   ],
   "compilerOptions": {
