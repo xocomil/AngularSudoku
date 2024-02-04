@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { PushPipe } from '@ngrx/component';
 import { CellValue } from '@sud/domain';
 import { map } from 'rxjs';
@@ -28,14 +28,14 @@ import { GridStore } from '../../grid/store/grid.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonHostComponent {
-  readonly toggleButtonText$ = this._gridStore.creatingPuzzleMode$.pipe(
+  readonly #gridStore = inject(GridStore);
+
+  readonly toggleButtonText$ = this.#gridStore.creatingPuzzleMode$.pipe(
     map((creatingPuzzleMode) => (creatingPuzzleMode ? 'End' : 'Start'))
   );
 
-  constructor(private _gridStore: GridStore) {}
-
   toggleCreatePuzzleMode(): void {
-    this._gridStore.toggleCreatePuzzleMode();
+    this.#gridStore.toggleCreatePuzzleMode();
   }
 
   protected generateWinningGrid(): void {
@@ -72,25 +72,25 @@ export class ButtonHostComponent {
   }
 
   protected solveOneCell(): void {
-    this._gridStore.solveOneCell();
+    this.#gridStore.solveOneCell();
   }
 
   protected resetGrid(): void {
-    this._gridStore.resetGrid();
+    this.#gridStore.resetGrid();
   }
 
   protected undo(): void {
-    this._gridStore.undo();
+    this.#gridStore.undo();
   }
 
   protected redo(): void {
-    this._gridStore.redo();
+    this.#gridStore.redo();
   }
 
   #setGridValues(values: (CellValue | undefined)[][]) {
     values.forEach((row, rowIndex) => {
       row.forEach((value, columnIndex) => {
-        this._gridStore.cellValueChanged({
+        this.#gridStore.cellValueChanged({
           value,
           row: rowIndex,
           column: columnIndex,
