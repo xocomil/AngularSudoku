@@ -1,9 +1,9 @@
-import { faker } from '@faker-js/faker';
 import { CellState, CellValue, createCellState } from './cell-state';
+import { fakeCellValue } from './testing-helpers/random-number.helper';
 
 describe('CellState', () => {
   const createSudokuCellValue = (): CellValue =>
-    faker.datatype.number({ min: 1, max: 9 }) as CellValue;
+    fakeCellValue() as CellValue;
 
   describe('createCellState', () => {
     test('should create a default CellState', () => {

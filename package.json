@@ -43,7 +43,7 @@
     "@angular/compiler-cli": "17.1.2",
     "@angular/language-service": "17.1.2",
     "@cypress/webpack-dev-server": "^3.4.1",
-    "@faker-js/faker": "7.6.0",
+    "@faker-js/faker": "8.4.0",
     "@hirez_io/observer-spy": "2.2.0",
     "@ngneat/spectator": "14.0.0",
     "@nx/cypress": "18.0.1",

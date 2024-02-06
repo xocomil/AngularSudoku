@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { faker } from '@faker-js/faker/locale/en';
 import { createComponentFactory, mockProvider } from '@ngneat/spectator/jest';
 import { PushPipe } from '@ngrx/component';
 import { CellState, createCellState, GridDirection } from '@sud/domain';
+import { fakeCellPosition, fakeCellValue } from '@sud/domain/testing-helpers';
 import { NEVER, Subject } from 'rxjs';
 import { CellComponent } from '../cell/cell.component';
 import { GridCellSelectPipe } from './grid-cell-select.pipe';
@@ -33,7 +33,7 @@ describe('GridComponent', () => {
     expect(spectator).toBeTruthy();
   });
 
-  const randomGridNumber = () => faker.datatype.number({ min: 0, max: 8 });
+  const randomGridNumber = () => fakeCellPosition();
   const createFakeCellState = ({ row = randomGridNumber() }: Partial<CellState> = {}) =>
     createCellState({
       row,
@@ -56,7 +56,7 @@ describe('GridComponent', () => {
 
   describe('cellValueChanged()', () => {
     it('should pass the new value with the cell state to the store', () => {
-      const testValue = faker.datatype.number({ min: 1, max: 9 });
+      const testValue = fakeCellValue();
       const testCellState = createFakeCellState();
 
       const spectator = createComponent();

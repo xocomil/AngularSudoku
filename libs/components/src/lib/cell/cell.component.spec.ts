@@ -1,8 +1,8 @@
 import { EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { faker } from '@faker-js/faker/locale/en';
 import { subscribeSpyTo } from '@hirez_io/observer-spy';
 import { createComponentFactory } from '@ngneat/spectator/jest';
+import { fakeCellPosition } from '@sud/domain/testing-helpers';
 import { createCellState, directionMap } from '@sud/domain';
 import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
@@ -16,7 +16,7 @@ describe('CellComponent', () => {
   });
 
   const randomCellPosition = (): number =>
-    faker.datatype.number({ min: 0, max: 8 });
+    fakeCellPosition();
   const randomNextToFocus = (): readonly [number, number] =>
     [randomCellPosition(), randomCellPosition()] as const;
 
