@@ -9,15 +9,11 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/rxjs-operators"],
       "options": {
-        "jestConfig": "libs/rxjs-operators/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/rxjs-operators/jest.config.ts"
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "options": {
-        "lintFilePatterns": ["libs/rxjs-operators/**/*.ts", "libs/rxjs-operators/**/*.html"]
-      }
+      "executor": "@nx/eslint:lint"
     }
   },
   "tags": []

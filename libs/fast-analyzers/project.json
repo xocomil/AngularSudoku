@@ -9,15 +9,11 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/fast-analyzers"],
       "options": {
-        "jestConfig": "libs/fast-analyzers/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/fast-analyzers/jest.config.ts"
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "options": {
-        "lintFilePatterns": ["libs/fast-analyzers/**/*.ts", "libs/fast-analyzers/**/*.html"]
-      }
+      "executor": "@nx/eslint:lint"
     }
   },
   "tags": []

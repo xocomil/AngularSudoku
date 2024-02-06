@@ -17,6 +17,7 @@
     "paths": {
       "@sud/components": ["libs/components/src/index.ts"],
       "@sud/domain": ["libs/domain/src/index.ts"],
+      "@sud/domain/testing-helpers": ["libs/domain/src/lib/testing-helpers/public-api.ts"],
       "@sud/fast-analayzers": ["libs/fast-analyzers/src/index.ts"],
       "@sud/grid-analyzers": ["libs/grid-analyzers/src/index.ts"],
       "@sud/pipes": ["libs/pipes/src/index.ts"],

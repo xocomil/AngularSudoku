@@ -9,15 +9,11 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/pipes"],
       "options": {
-        "jestConfig": "libs/pipes/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/pipes/jest.config.ts"
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "options": {
-        "lintFilePatterns": ["libs/pipes/**/*.ts", "libs/pipes/**/*.html"]
-      }
+      "executor": "@nx/eslint:lint"
     }
   },
   "tags": []
