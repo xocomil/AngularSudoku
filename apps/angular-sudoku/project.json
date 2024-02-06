@@ -6,13 +6,13 @@
   "prefix": "angular-sudoku",
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@angular-devkit/build-angular:application",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/angular-sudoku",
         "index": "apps/angular-sudoku/src/index.html",
-        "main": "apps/angular-sudoku/src/main.ts",
-        "polyfills": "apps/angular-sudoku/src/polyfills.ts",
+        "browser": "apps/angular-sudoku/src/main.ts",
+        "polyfills": ["apps/angular-sudoku/src/polyfills.ts"],
         "tsConfig": "apps/angular-sudoku/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/angular-sudoku/src/favicon.ico", "apps/angular-sudoku/src/assets"],
@@ -42,9 +42,7 @@
           "outputHashing": "all"
         },
         "development": {
-          "buildOptimizer": false,
           "optimization": false,
-          "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true
