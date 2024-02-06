@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { faker } from '@faker-js/faker/locale/en';
 import { createComponentFactory, mockProvider } from '@ngneat/spectator/jest';
-import { PushModule, PushPipe } from '@ngrx/component';
+import { PushPipe } from '@ngrx/component';
 import { CellState, createCellState, GridDirection } from '@sud/domain';
 import { NEVER, Subject } from 'rxjs';
 import { CellComponent } from '../cell/cell.component';
@@ -23,7 +23,7 @@ describe('GridComponent', () => {
 
   const createComponent = createComponentFactory({
     component: GridComponent,
-    imports: [CellComponent, CommonModule, GridCellSelectPipe, PushModule],
+    imports: [CellComponent, CommonModule, GridCellSelectPipe, PushPipe],
     componentProviders: [mockProvider(GridStore, gridStoreStub)],
   });
 
@@ -34,9 +34,7 @@ describe('GridComponent', () => {
   });
 
   const randomGridNumber = () => faker.datatype.number({ min: 0, max: 8 });
-  const createFakeCellState = ({
-    row = randomGridNumber(),
-  }: Partial<CellState> = {}) =>
+  const createFakeCellState = ({ row = randomGridNumber() }: Partial<CellState> = {}) =>
     createCellState({
       row,
       column: randomGridNumber(),
@@ -109,9 +107,7 @@ describe('GridComponent', () => {
   describe('rowTrackByFunction()', () => {
     it('should return a unique number for the row', () => {
       const testRowNumber = randomGridNumber();
-      const testRow = Array.from({ length: 9 }, () =>
-        createFakeCellState({ row: testRowNumber })
-      );
+      const testRow = Array.from({ length: 9 }, () => createFakeCellState({ row: testRowNumber }));
 
       const spectator = createComponent();
 
@@ -127,10 +123,7 @@ describe('GridComponent', () => {
 
       const spectator = createComponent();
 
-      const result = spectator.component.columnTrackByFunction(
-        0,
-        createCellState({ row: 2, column: 3, region: 0 })
-      );
+      const result = spectator.component.columnTrackByFunction(0, createCellState({ row: 2, column: 3, region: 0 }));
 
       expect(result).toBe(expected);
     });
