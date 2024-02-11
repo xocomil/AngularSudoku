@@ -1,0 +1,12 @@
+// BETTERER RESULTS V2.
+// 
+// If this file contains merge conflicts, use `betterer merge` to automatically resolve them:
+// https://phenomnomnominal.github.io/betterer/docs/results-file/#merge
+//
+exports[`no more immer`] = {
+  value: `{
+    "libs/components/src/lib/grid/store/grid.store.ts:2942156092": [
+      [5, 0, 28, "\'immer\' import is restricted from being used. use mutative instead.", "655122673"]
+    ]
+  }`
+};

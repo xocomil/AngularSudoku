@@ -43,6 +43,8 @@
     "@angular/cli": "~17.1.0",
     "@angular/compiler-cli": "17.1.2",
     "@angular/language-service": "17.1.2",
+    "@betterer/cli": "^5.4.0",
+    "@betterer/eslint": "^5.4.0",
     "@cypress/webpack-dev-server": "^3.7.4",
     "@faker-js/faker": "8.4.1",
     "@hirez_io/observer-spy": "2.2.0",
