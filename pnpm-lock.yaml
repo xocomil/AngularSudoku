@@ -53,6 +53,9 @@ dependencies:
   immer:
     specifier: 9.0.21
     version: 9.0.21
+  mutative:
+    specifier: ^1.0.3
+    version: 1.0.3
   ng-mocks:
     specifier: 14.12.1
     version: 14.12.1(@angular/common@17.1.2)(@angular/core@17.1.2)(@angular/forms@17.1.2)(@angular/platform-browser@17.1.2)
@@ -13216,6 +13219,11 @@ packages:
   /mutation-testing-report-schema@3.0.2:
     resolution: {integrity: sha512-1F6s37zFDsoWa262sANVBDKANMvmKPVU1FAVEpSCMtKAGkFoar+tjXUlPnD0dWJfPuKV58G86zP7sMlcu+QOJQ==}
     dev: true
+
+  /mutative@1.0.3:
+    resolution: {integrity: sha512-2DW6gxEtV+6108QajMBVZZd9OGb0sxih8GvM+SWT71qSLTU1UNCAUWGgRw5T7+i2xGN48WDJcQpPitp5SWqM8Q==}
+    engines: {node: '>=14.0'}
+    dev: false
 
   /mute-stream@1.0.0:
     resolution: {integrity: sha512-avsJQhyd+680gKXyG/sQc0nXaC6rBkPOfyHYcFb9+hdkqQkR9bdnkJ0AMZhke0oesPqIO+mFFJ+IdBc7mst4IA==}

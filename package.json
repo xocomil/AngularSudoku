@@ -27,6 +27,7 @@
     "@testing-library/dom": "9.3.4",
     "@testing-library/user-event": "14.5.2",
     "immer": "9.0.21",
+    "mutative": "^1.0.3",
     "ng-mocks": "14.12.1",
     "rxjs": "7.8.1",
     "tslib": "2.6.2",
@@ -94,4 +95,3 @@
     "node": "18.16.0"
   }
 }
-
