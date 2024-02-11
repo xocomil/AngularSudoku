@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, inject, Output } from '@angular/core';
 import { PushPipe } from '@ngrx/component';
 import { CellState, GridDirection, valueIsCellValue } from '@sud/domain';
@@ -10,24 +10,25 @@ import { GridStore } from './store/grid.store';
 @Component({
   selector: 'sud-grid',
   standalone: true,
-  imports: [CommonModule, CellComponent, GridCellSelectPipe, PushPipe],
+  imports: [CellComponent, GridCellSelectPipe, PushPipe],
   template: `
-    <ng-container *ngFor="let row of grid$ | ngrxPush; index as rowIndex; trackBy: rowTrackByFunction">
-      <sud-cell
-        *ngFor="let cellState of row; index as columnIndex; trackBy: columnTrackByFunction"
-        [class]="['row-' + rowIndex, 'col-' + columnIndex, 'sudoku-cell']"
-        [cellState]="cellState"
-        [focusState]="selected$ | ngrxPush | gridCellSelect: cellState"
-        [nextToFocus]="nextToFocus$ | ngrxPush"
-        [creatingPuzzleMode]="creatingPuzzleMode$ | ngrxPush"
-        (cellFocusReceived)="cellFocused(cellState)"
-        (cellBlurReceived)="cellBlurred()"
-        (cellValueChanged)="cellValueChanged($event, cellState)"
-        (cellNavigated)="cellNavigated($event, cellState)"
-      >
-      </sud-cell>
-    </ng-container>
-  `,
+    @for (row of grid$ | ngrxPush; track rowTrackByFunction(rowIndex, row); let rowIndex = $index) {
+      @for (cellState of row; track columnTrackByFunction(columnIndex, cellState); let columnIndex = $index) {
+        <sud-cell
+          [class]="['row-' + rowIndex, 'col-' + columnIndex, 'sudoku-cell']"
+          [cellState]="cellState"
+          [focusState]="selected$ | ngrxPush | gridCellSelect: cellState"
+          [nextToFocus]="nextToFocus$ | ngrxPush"
+          [creatingPuzzleMode]="creatingPuzzleMode$ | ngrxPush"
+          (cellFocusReceived)="cellFocused(cellState)"
+          (cellBlurReceived)="cellBlurred()"
+          (cellValueChanged)="cellValueChanged($event, cellState)"
+          (cellNavigated)="cellNavigated($event, cellState)"
+          >
+        </sud-cell>
+      }
+    }
+    `,
   styleUrls: ['./grid.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

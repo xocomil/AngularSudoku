@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { PushPipe } from '@ngrx/component';
 import { CellValue } from '@sud/domain';
@@ -8,7 +8,7 @@ import { GridStore } from '../../grid/store/grid.store';
 @Component({
   selector: 'sud-button-host',
   standalone: true,
-  imports: [CommonModule, PushPipe],
+  imports: [PushPipe],
   template: `
     <ul>
       <li>
