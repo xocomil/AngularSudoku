@@ -1,14 +1,24 @@
 import { Injectable } from '@angular/core';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import { allPencilMarks, CellState, CellValue, GridDirection, valueIsCellValue } from '@sud/domain';
+import {
+  CellState,
+  CellValue,
+  GridDirection,
+  allPencilMarks,
+  valueIsCellValue,
+} from '@sud/domain';
 import { errorAnalyzer } from '@sud/fast-analayzers';
 import { logObservable } from '@sud/rxjs-operators';
-import produce from 'immer';
-import { map, Observable, of, tap, withLatestFrom } from 'rxjs';
+import { create } from 'mutative';
+import { Observable, map, of, tap, withLatestFrom } from 'rxjs';
 import { solveOneCell } from '../solvers/wavefunction-collapse.solver';
 import { createGridState } from './grid.store.helpers';
 
-type GridCommand = CellValueChangedOptions & { previousValue?: CellValue; value?: CellValue; invalidValues: CellValue[] };
+type GridCommand = CellValueChangedOptions & {
+  previousValue?: CellValue;
+  value?: CellValue;
+  invalidValues: CellValue[];
+};
 
 export interface GridState {
   grid: CellState[][];
@@ -41,7 +51,12 @@ const updateSelected = (cellState: CellState) =>
     };
   });
 
-const updateCellValue = (value: CellValue | undefined, row: number, column: number, isReadonly: boolean) =>
+const updateCellValue = (
+  value: CellValue | undefined,
+  row: number,
+  column: number,
+  isReadonly: boolean,
+) =>
   write((state: GridState) => {
     state.grid[row][column].value = value;
     state.grid[row][column].isReadonly = isReadonly;
@@ -77,16 +92,20 @@ interface CellValueChangedOptions {
   column: number;
 }
 
-const findNextValue = (cellState: CellState, invalidValues: CellValue[] = []): CellValue | undefined => {
+const findNextValue = (
+  cellState: CellState,
+  invalidValues: CellValue[] = [],
+): CellValue | undefined => {
   const possibleValues = allPencilMarks.filter(
     (value) =>
       !cellState.columnValuesToHide.includes(value) &&
       !cellState.rowValuesToHide.includes(value) &&
       !cellState.regionValuesToHide.includes(value) &&
-      !invalidValues.includes(value)
+      !invalidValues.includes(value),
   );
 
-  const value = possibleValues[Math.floor(Math.random() * possibleValues.length)];
+  const value =
+    possibleValues[Math.floor(Math.random() * possibleValues.length)];
 
   console.log('chosen value for cell', cellState, value);
 
@@ -97,28 +116,44 @@ const findNextValue = (cellState: CellState, invalidValues: CellValue[] = []): C
 export class GridStore extends ComponentStore<GridState> {
   readonly grid$ = this.select((state) => state.grid);
   readonly gameWon$ = this.select((state: GridState) => state.gameWon);
-  readonly creatingPuzzleMode$ = this.select((state) => state.creatingPuzzleMode);
-  readonly hasError$ = this.select((state) => state.hasError);
-  readonly selected$: Observable<readonly [number, number, number]> = this.select((state) => {
-    if (state.selected) {
-      return [state.selected.row, state.selected.column, state.selected.region];
-    }
-
-    return noCellSelected;
-  });
-  readonly nextToFocus$: Observable<readonly [number, number]> = this.select((state) => {
-    if (state.nextToFocus) {
-      return [state.nextToFocus.row, state.nextToFocus.column];
-    }
-
-    return noCellToFocus;
-  });
-  readonly #commandStack$ = this.select((state) => state.commandStack).pipe(logObservable('commandStack'));
-  readonly #currentCommandIndex$ = this.select((state) => state.currentCommandIndex);
-  readonly #currentCommand$ = this.select((state) => state.commandStack[state.currentCommandIndex]);
-  readonly #commandStackInvalidValues$: Observable<CellValue[]> = this.#currentCommand$.pipe(
-    map((currentCommand) => currentCommand?.invalidValues ?? [])
+  readonly creatingPuzzleMode$ = this.select(
+    (state) => state.creatingPuzzleMode,
   );
+  readonly hasError$ = this.select((state) => state.hasError);
+  readonly selected$: Observable<readonly [number, number, number]> =
+    this.select((state) => {
+      if (state.selected) {
+        return [
+          state.selected.row,
+          state.selected.column,
+          state.selected.region,
+        ];
+      }
+
+      return noCellSelected;
+    });
+  readonly nextToFocus$: Observable<readonly [number, number]> = this.select(
+    (state) => {
+      if (state.nextToFocus) {
+        return [state.nextToFocus.row, state.nextToFocus.column];
+      }
+
+      return noCellToFocus;
+    },
+  );
+  readonly #commandStack$ = this.select((state) => state.commandStack).pipe(
+    logObservable('commandStack'),
+  );
+  readonly #currentCommandIndex$ = this.select(
+    (state) => state.currentCommandIndex,
+  );
+  readonly #currentCommand$ = this.select(
+    (state) => state.commandStack[state.currentCommandIndex],
+  );
+  readonly #commandStackInvalidValues$: Observable<CellValue[]> =
+    this.#currentCommand$.pipe(
+      map((currentCommand) => currentCommand?.invalidValues ?? []),
+    );
 
   constructor() {
     super(initialState);
@@ -132,27 +167,32 @@ export class GridStore extends ComponentStore<GridState> {
 
   resetSelected = this.updater((state): GridState => resetSelected(state));
 
-  cellValueChanged = this.effect((cellValue$: Observable<CellValueChangedOptions>) =>
-    cellValue$.pipe(
-      withLatestFrom(this.grid$, this.creatingPuzzleMode$),
-      tap({
-        next: ([cellValue, grid, creatingPuzzleMode]) => {
-          if (creatingPuzzleMode) {
-            this.#createPuzzleCell({
-              value: cellValue.value,
-              row: cellValue.row,
-              column: cellValue.column,
+  cellValueChanged = this.effect(
+    (cellValue$: Observable<CellValueChangedOptions>) =>
+      cellValue$.pipe(
+        withLatestFrom(this.grid$, this.creatingPuzzleMode$),
+        tap({
+          next: ([cellValue, grid, creatingPuzzleMode]) => {
+            if (creatingPuzzleMode) {
+              this.#createPuzzleCell({
+                value: cellValue.value,
+                row: cellValue.row,
+                column: cellValue.column,
+              });
+
+              return;
+            }
+
+            this.#changeCellValue(cellValue);
+            this.#clearOldCommands();
+            this.#updateCommandStack({
+              ...cellValue,
+              previousValue: grid[cellValue.row][cellValue.column].value,
+              invalidValues: [],
             });
-
-            return;
-          }
-
-          this.#changeCellValue(cellValue);
-          this.#clearOldCommands();
-          this.#updateCommandStack({ ...cellValue, previousValue: grid[cellValue.row][cellValue.column].value, invalidValues: [] });
-        },
-      })
-    )
+          },
+        }),
+      ),
   );
 
   #clearOldCommands = this.effect((clearOldCommands$: Observable<void>) =>
@@ -161,18 +201,20 @@ export class GridStore extends ComponentStore<GridState> {
       tap({
         next: ([, currentCommandIndex, commandStack]) => {
           if (currentCommandIndex < commandStack.length - 1) {
-            this.#setCommandStack(commandStack.slice(0, currentCommandIndex + 1));
+            this.#setCommandStack(
+              commandStack.slice(0, currentCommandIndex + 1),
+            );
           }
         },
-      })
-    )
+      }),
+    ),
   );
 
   #updateCommandStack = this.updater((state, gridCommand: GridCommand) =>
-    produce(state, (draft) => {
+    create(state, (draft) => {
       draft.commandStack.push(gridCommand);
       draft.currentCommandIndex = draft.commandStack.length - 1;
-    })
+    }),
   );
 
   #createPuzzleCell = this.effect(
@@ -181,7 +223,7 @@ export class GridStore extends ComponentStore<GridState> {
         column: number;
         row: number;
         value: CellValue | undefined;
-      }>
+      }>,
     ) =>
       changes$.pipe(
         tap({
@@ -190,21 +232,24 @@ export class GridStore extends ComponentStore<GridState> {
             this.#checkGridForErrors();
             this.#updatePencilMarks(changes);
           },
-        })
-      )
+        }),
+      ),
   );
 
-  #updatePencilMarks = this.effect((cellValue$: Observable<CellValueChangedOptions>) =>
-    cellValue$.pipe(
-      withLatestFrom(this.grid$),
-      tap({
-        next: ([{ column, row }, grid]) => {
-          this.#setRowPencilMarks(grid[row]);
-          this.#setColumnPencilMarks(getColumnToAnalyze(column, grid));
-          this.#setRegionPencilMarks(getRegionToAnalyze(grid[row][column].region, grid));
-        },
-      })
-    )
+  #updatePencilMarks = this.effect(
+    (cellValue$: Observable<CellValueChangedOptions>) =>
+      cellValue$.pipe(
+        withLatestFrom(this.grid$),
+        tap({
+          next: ([{ column, row }, grid]) => {
+            this.#setRowPencilMarks(grid[row]);
+            this.#setColumnPencilMarks(getColumnToAnalyze(column, grid));
+            this.#setRegionPencilMarks(
+              getRegionToAnalyze(grid[row][column].region, grid),
+            );
+          },
+        }),
+      ),
   );
 
   #setRegionPencilMarks = this.effect((cells$: Observable<CellState[]>) =>
@@ -220,8 +265,8 @@ export class GridStore extends ComponentStore<GridState> {
             });
           });
         },
-      })
-    )
+      }),
+    ),
   );
 
   #setColumnPencilMarks = this.effect((cells$: Observable<CellState[]>) =>
@@ -237,8 +282,8 @@ export class GridStore extends ComponentStore<GridState> {
             });
           });
         },
-      })
-    )
+      }),
+    ),
   );
 
   #setRowPencilMarks = this.effect((cells$: Observable<CellState[]>) =>
@@ -254,8 +299,8 @@ export class GridStore extends ComponentStore<GridState> {
             });
           });
         },
-      })
-    )
+      }),
+    ),
   );
 
   toggleCreatePuzzleMode = this.effect((toggleClick$: Observable<void>) =>
@@ -265,14 +310,14 @@ export class GridStore extends ComponentStore<GridState> {
         next: ([, creatingPuzzleMode]) => {
           this.#setCreatePuzzleMode(!creatingPuzzleMode);
         },
-      })
-    )
+      }),
+    ),
   );
 
   #setCreatePuzzleMode = this.updater((state, creatingPuzzleMode: boolean) =>
-    produce(state, (draft) => {
+    create(state, (draft) => {
       draft.creatingPuzzleMode = creatingPuzzleMode;
-    })
+    }),
   );
 
   resetGrid = this.effect((resetClick$: Observable<void>) =>
@@ -283,21 +328,21 @@ export class GridStore extends ComponentStore<GridState> {
           this.#checkGridForWin();
           this.#setCommandStack([]);
         },
-      })
-    )
+      }),
+    ),
   );
 
   #setCommandStack = this.updater((state, commandStack: GridCommand[]) =>
-    produce(state, (draft) => {
+    create(state, (draft) => {
       draft.commandStack = commandStack;
       draft.currentCommandIndex = commandStack.length - 1;
-    })
+    }),
   );
 
   #updateGrid = this.updater((state, grid: CellState[][]) =>
-    produce(state, (draft) => {
+    create(state, (draft) => {
       draft.grid = grid;
-    })
+    }),
   );
 
   solveOneCell = this.effect((solveClick$: Observable<void>) =>
@@ -322,8 +367,8 @@ export class GridStore extends ComponentStore<GridState> {
             });
           }
         },
-      })
-    )
+      }),
+    ),
   );
 
   #unwindBadDecision = this.effect((unwind$: Observable<void>) =>
@@ -360,35 +405,55 @@ export class GridStore extends ComponentStore<GridState> {
 
           this.#setInvalidValuesForNewCommand(invalidValues);
         },
-      })
-    )
+      }),
+    ),
   );
 
-  readonly #setInvalidValuesForNewCommand = this.updater((state, invalidValues: CellValue[]) =>
-    produce(state, (draft) => {
-      console.log('final invalidValues', invalidValues);
+  readonly #setInvalidValuesForNewCommand = this.updater(
+    (state, invalidValues: CellValue[]) =>
+      create(state, (draft) => {
+        console.log('final invalidValues', invalidValues);
 
-      draft.commandStack[draft.currentCommandIndex].invalidValues = invalidValues ?? [];
-    })
+        draft.commandStack[draft.currentCommandIndex].invalidValues =
+          invalidValues ?? [];
+      }),
   );
 
-  #setRegionValuesToHideForCell = this.updater((state: GridState, update: { row: number; column: number; valuesToHide: CellValue[] }) => {
-    return produce(state, (draft) => {
-      draft.grid[update.row][update.column].regionValuesToHide = update.valuesToHide;
-    });
-  });
+  #setRegionValuesToHideForCell = this.updater(
+    (
+      state: GridState,
+      update: { row: number; column: number; valuesToHide: CellValue[] },
+    ) => {
+      return create(state, (draft) => {
+        draft.grid[update.row][update.column].regionValuesToHide =
+          update.valuesToHide;
+      });
+    },
+  );
 
-  #setColumnValuesToHideForCell = this.updater((state: GridState, update: { row: number; column: number; valuesToHide: CellValue[] }) => {
-    return produce(state, (draft) => {
-      draft.grid[update.row][update.column].columnValuesToHide = update.valuesToHide;
-    });
-  });
+  #setColumnValuesToHideForCell = this.updater(
+    (
+      state: GridState,
+      update: { row: number; column: number; valuesToHide: CellValue[] },
+    ) => {
+      return create(state, (draft) => {
+        draft.grid[update.row][update.column].columnValuesToHide =
+          update.valuesToHide;
+      });
+    },
+  );
 
-  #setRowValuesToHideForCell = this.updater((state: GridState, update: { row: number; column: number; valuesToHide: CellValue[] }) => {
-    return produce(state, (draft) => {
-      draft.grid[update.row][update.column].rowValuesToHide = update.valuesToHide;
-    });
-  });
+  #setRowValuesToHideForCell = this.updater(
+    (
+      state: GridState,
+      update: { row: number; column: number; valuesToHide: CellValue[] },
+    ) => {
+      return create(state, (draft) => {
+        draft.grid[update.row][update.column].rowValuesToHide =
+          update.valuesToHide;
+      });
+    },
+  );
 
   #checkGridForWin = this.effect((check$: Observable<void>) =>
     check$.pipe(
@@ -397,12 +462,12 @@ export class GridStore extends ComponentStore<GridState> {
         next: ([, grid, hasError]) => {
           this.#updateGameWon(!hasError && checkGridCompleted(grid));
         },
-      })
-    )
+      }),
+    ),
   );
 
   #updateGameWon = this.updater((state: GridState, gameWon: boolean) => {
-    return produce(state, (draft) => {
+    return create(state, (draft) => {
       draft.gameWon = gameWon;
     });
   });
@@ -417,18 +482,18 @@ export class GridStore extends ComponentStore<GridState> {
 
           this.#updateCellValid(errors);
         },
-      })
-    )
+      }),
+    ),
   );
 
   #updateHasError = this.updater((state: GridState, hasError: boolean) =>
-    produce(state, (draft) => {
+    create(state, (draft) => {
       draft.hasError = hasError;
-    })
+    }),
   );
 
   #updateCellValid = this.updater((state: GridState, errors: boolean[][]) => {
-    return produce(state, (draft) => {
+    return create(state, (draft) => {
       for (let row = 0; row < draft.grid.length; row++) {
         for (let col = 0; col < draft.grid[row].length; col++) {
           draft.grid[row][col].valid = !errors[row][col];
@@ -454,12 +519,12 @@ export class GridStore extends ComponentStore<GridState> {
         row: number;
         column: number;
         isReadonly?: boolean;
-      }
+      },
     ) => {
       const updater = updateCellValue(value, row, column, isReadonly);
 
       return updater(state);
-    }
+    },
   );
 
   navigateToCell = this.effect(
@@ -467,7 +532,7 @@ export class GridStore extends ComponentStore<GridState> {
       navigation$: Observable<{
         direction: GridDirection;
         cellState: CellState;
-      }>
+      }>,
     ) =>
       navigation$.pipe(
         withLatestFrom(this.grid$),
@@ -477,9 +542,9 @@ export class GridStore extends ComponentStore<GridState> {
 
             this.#updateSelectedFromNavigation(direction, cellState, grid);
           },
-          (error: unknown) => of({})
-        )
-      )
+          (error: unknown) => of({}),
+        ),
+      ),
   );
 
   #updateNextToFocus = this.updater((state, cellState: CellState) => {
@@ -502,8 +567,8 @@ export class GridStore extends ComponentStore<GridState> {
           this.#changeCellValue({ ...command, value: command.previousValue });
           this.#changeCurrentCommandIndex(currentCommandIndex - 1);
         },
-      })
-    )
+      }),
+    ),
   );
 
   readonly redo = this.effect((redoClick$: Observable<void>) =>
@@ -520,14 +585,15 @@ export class GridStore extends ComponentStore<GridState> {
           this.#changeCellValue(command);
           this.#changeCurrentCommandIndex(currentCommandIndex + 1);
         },
-      })
-    )
+      }),
+    ),
   );
 
-  #changeCurrentCommandIndex = this.updater((state, currentCommandIndex: number) =>
-    produce(state, (draft) => {
-      draft.currentCommandIndex = currentCommandIndex;
-    })
+  #changeCurrentCommandIndex = this.updater(
+    (state, currentCommandIndex: number) =>
+      create(state, (draft) => {
+        draft.currentCommandIndex = currentCommandIndex;
+      }),
   );
 
   #changeCellValue(cellValue: CellValueChangedOptions): void {
@@ -537,7 +603,11 @@ export class GridStore extends ComponentStore<GridState> {
     this.#updatePencilMarks(cellValue);
   }
 
-  #updateSelectedFromNavigation(direction: GridDirection, cellState: CellState, grid: CellState[][]) {
+  #updateSelectedFromNavigation(
+    direction: GridDirection,
+    cellState: CellState,
+    grid: CellState[][],
+  ) {
     switch (direction) {
       case GridDirection.Up:
         if (cellState.row > 0) {
@@ -572,7 +642,7 @@ export class GridStore extends ComponentStore<GridState> {
 
 export function write<S>(updater: (state: S) => void): (state: S) => S {
   return function (state) {
-    return produce(state, (draft) => {
+    return create(state, (draft) => {
       updater(draft as S);
     });
   };
@@ -590,7 +660,11 @@ const analyzeErrors = (grid: CellState[][]): boolean[][] => {
   return errors;
 };
 
-const checkRowForErrors = (row: number, grid: CellState[][], errors: boolean[][]): void => {
+const checkRowForErrors = (
+  row: number,
+  grid: CellState[][],
+  errors: boolean[][],
+): void => {
   markCellsWithErrors(grid[row], errors);
 };
 
@@ -600,21 +674,35 @@ const markCellsWithErrors = (cells: CellState[], errors: boolean[][]): void => {
   });
 };
 
-const checkColumnForErrors = (column: number, grid: CellState[][], errors: boolean[][]): void => {
+const checkColumnForErrors = (
+  column: number,
+  grid: CellState[][],
+  errors: boolean[][],
+): void => {
   markCellsWithErrors(getColumnToAnalyze(column, grid), errors);
 };
 
-const getColumnToAnalyze = (column: number, grid: CellState[][]): CellState[] => {
+const getColumnToAnalyze = (
+  column: number,
+  grid: CellState[][],
+): CellState[] => {
   return grid.map((row) => row[column]);
 };
 
-const checkRegionForErrors = (region: number, grid: CellState[][], errors: boolean[][]): void => {
+const checkRegionForErrors = (
+  region: number,
+  grid: CellState[][],
+  errors: boolean[][],
+): void => {
   markCellsWithErrors(getRegionToAnalyze(region, grid), errors);
 };
 
 const ITEMS_TO_TAKE = 3 as const;
 
-const getRegionToAnalyze = (region: number, grid: CellState[][]): CellState[] => {
+const getRegionToAnalyze = (
+  region: number,
+  grid: CellState[][],
+): CellState[] => {
   const column = (region % 3) * 3;
   const row = region - (region % 3);
 
@@ -629,5 +717,9 @@ const getRegionToAnalyze = (region: number, grid: CellState[][]): CellState[] =>
   return regionCells;
 };
 
-const getCellValuesToHide = (cells$: Observable<CellState[]>): Observable<CellValue[]> =>
-  cells$.pipe(map((cells) => cells.map((cell) => cell.value).filter(valueIsCellValue)));
+const getCellValuesToHide = (
+  cells$: Observable<CellState[]>,
+): Observable<CellValue[]> =>
+  cells$.pipe(
+    map((cells) => cells.map((cell) => cell.value).filter(valueIsCellValue)),
+  );
