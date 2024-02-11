@@ -1,19 +1,17 @@
 import { CommonModule } from '@angular/common';
+import { signal } from '@angular/core';
 import { createComponentFactory, mockProvider } from '@ngneat/spectator/jest';
-import { PushPipe } from '@ngrx/component';
-import { CellState, createCellState, GridDirection } from '@sud/domain';
+import { CellState, GridDirection, createCellState } from '@sud/domain';
 import { fakeCellPosition, fakeCellValue } from '@sud/domain/testing-helpers';
-import { NEVER, Subject } from 'rxjs';
+import { NEVER } from 'rxjs';
 import { CellComponent } from '../cell/cell.component';
 import { GridCellSelectPipe } from './grid-cell-select.pipe';
 import { GridComponent } from './grid.component';
 import { GridStore } from './store/grid.store';
 
 describe('GridComponent', () => {
-  const grid$ = new Subject<CellState[][]>();
-
   const gridStoreStub: Partial<GridStore> = {
-    grid$,
+    grid: signal([]),
     gameWon$: NEVER,
     updateSelected: jest.fn(),
     cellValueChanged: jest.fn(),
@@ -23,7 +21,7 @@ describe('GridComponent', () => {
 
   const createComponent = createComponentFactory({
     component: GridComponent,
-    imports: [CellComponent, CommonModule, GridCellSelectPipe, PushPipe],
+    imports: [CellComponent, CommonModule, GridCellSelectPipe],
     componentProviders: [mockProvider(GridStore, gridStoreStub)],
   });
 
@@ -34,7 +32,9 @@ describe('GridComponent', () => {
   });
 
   const randomGridNumber = () => fakeCellPosition();
-  const createFakeCellState = ({ row = randomGridNumber() }: Partial<CellState> = {}) =>
+  const createFakeCellState = ({
+    row = randomGridNumber(),
+  }: Partial<CellState> = {}) =>
     createCellState({
       row,
       column: randomGridNumber(),
@@ -107,7 +107,9 @@ describe('GridComponent', () => {
   describe('rowTrackByFunction()', () => {
     it('should return a unique number for the row', () => {
       const testRowNumber = randomGridNumber();
-      const testRow = Array.from({ length: 9 }, () => createFakeCellState({ row: testRowNumber }));
+      const testRow = Array.from({ length: 9 }, () =>
+        createFakeCellState({ row: testRowNumber }),
+      );
 
       const spectator = createComponent();
 
@@ -123,7 +125,10 @@ describe('GridComponent', () => {
 
       const spectator = createComponent();
 
-      const result = spectator.component.columnTrackByFunction(0, createCellState({ row: 2, column: 3, region: 0 }));
+      const result = spectator.component.columnTrackByFunction(
+        0,
+        createCellState({ row: 2, column: 3, region: 0 }),
+      );
 
       expect(result).toBe(expected);
     });

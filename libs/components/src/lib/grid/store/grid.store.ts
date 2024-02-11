@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Signal } from '@angular/core';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import {
   CellState,
@@ -114,28 +114,28 @@ const findNextValue = (
 
 @Injectable()
 export class GridStore extends ComponentStore<GridState> {
-  readonly grid$ = this.select((state) => state.grid);
+  readonly grid = this.selectSignal(({ grid }) => grid);
+  readonly #grid$ = this.select((state) => state.grid);
   readonly gameWon$ = this.select((state: GridState) => state.gameWon);
-  readonly creatingPuzzleMode$ = this.select(
+  readonly creatingPuzzleMode = this.selectSignal(
+    ({ creatingPuzzleMode }) => creatingPuzzleMode,
+  );
+  readonly #creatingPuzzleMode$ = this.select(
     (state) => state.creatingPuzzleMode,
   );
   readonly hasError$ = this.select((state) => state.hasError);
-  readonly selected$: Observable<readonly [number, number, number]> =
-    this.select((state) => {
-      if (state.selected) {
-        return [
-          state.selected.row,
-          state.selected.column,
-          state.selected.region,
-        ];
+  readonly selected: Signal<readonly [number, number, number]> =
+    this.selectSignal(({ selected }) => {
+      if (selected) {
+        return [selected.row, selected.column, selected.region];
       }
 
       return noCellSelected;
     });
-  readonly nextToFocus$: Observable<readonly [number, number]> = this.select(
-    (state) => {
-      if (state.nextToFocus) {
-        return [state.nextToFocus.row, state.nextToFocus.column];
+  readonly nextToFocus: Signal<readonly [number, number]> = this.selectSignal(
+    ({ nextToFocus }) => {
+      if (nextToFocus) {
+        return [nextToFocus.row, nextToFocus.column];
       }
 
       return noCellToFocus;
@@ -170,7 +170,7 @@ export class GridStore extends ComponentStore<GridState> {
   cellValueChanged = this.effect(
     (cellValue$: Observable<CellValueChangedOptions>) =>
       cellValue$.pipe(
-        withLatestFrom(this.grid$, this.creatingPuzzleMode$),
+        withLatestFrom(this.#grid$, this.#creatingPuzzleMode$),
         tap({
           next: ([cellValue, grid, creatingPuzzleMode]) => {
             if (creatingPuzzleMode) {
@@ -239,7 +239,7 @@ export class GridStore extends ComponentStore<GridState> {
   #updatePencilMarks = this.effect(
     (cellValue$: Observable<CellValueChangedOptions>) =>
       cellValue$.pipe(
-        withLatestFrom(this.grid$),
+        withLatestFrom(this.#grid$),
         tap({
           next: ([{ column, row }, grid]) => {
             this.#setRowPencilMarks(grid[row]);
@@ -305,7 +305,7 @@ export class GridStore extends ComponentStore<GridState> {
 
   toggleCreatePuzzleMode = this.effect((toggleClick$: Observable<void>) =>
     toggleClick$.pipe(
-      withLatestFrom(this.creatingPuzzleMode$),
+      withLatestFrom(this.#creatingPuzzleMode$),
       tap({
         next: ([, creatingPuzzleMode]) => {
           this.#setCreatePuzzleMode(!creatingPuzzleMode);
@@ -347,7 +347,7 @@ export class GridStore extends ComponentStore<GridState> {
 
   solveOneCell = this.effect((solveClick$: Observable<void>) =>
     solveClick$.pipe(
-      withLatestFrom(this.grid$, this.#commandStackInvalidValues$),
+      withLatestFrom(this.#grid$, this.#commandStackInvalidValues$),
       map(([, grid]) => solveOneCell(grid)),
       tap({
         next: (cellState) => {
@@ -373,7 +373,7 @@ export class GridStore extends ComponentStore<GridState> {
 
   #unwindBadDecision = this.effect((unwind$: Observable<void>) =>
     unwind$.pipe(
-      withLatestFrom(this.#currentCommand$, this.grid$),
+      withLatestFrom(this.#currentCommand$, this.#grid$),
       logObservable('unwinding'),
       tap({
         next: ([, lastCommand, grid]) => {
@@ -457,7 +457,7 @@ export class GridStore extends ComponentStore<GridState> {
 
   #checkGridForWin = this.effect((check$: Observable<void>) =>
     check$.pipe(
-      withLatestFrom(this.grid$, this.hasError$),
+      withLatestFrom(this.#grid$, this.hasError$),
       tap({
         next: ([, grid, hasError]) => {
           this.#updateGameWon(!hasError && checkGridCompleted(grid));
@@ -474,7 +474,7 @@ export class GridStore extends ComponentStore<GridState> {
 
   #checkGridForErrors = this.effect((check$: Observable<void>) =>
     check$.pipe(
-      withLatestFrom(this.grid$),
+      withLatestFrom(this.#grid$),
       tap({
         next: ([_, grid]) => {
           this.#updateHasError(false);
@@ -535,7 +535,7 @@ export class GridStore extends ComponentStore<GridState> {
       }>,
     ) =>
       navigation$.pipe(
-        withLatestFrom(this.grid$),
+        withLatestFrom(this.#grid$),
         tapResponse(
           ([navigation, grid]) => {
             const { direction, cellState } = navigation;

@@ -1,27 +1,43 @@
-
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { PushPipe } from '@ngrx/component';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { CellValue } from '@sud/domain';
-import { map } from 'rxjs';
 import { GridStore } from '../../grid/store/grid.store';
 
 @Component({
   selector: 'sud-button-host',
   standalone: true,
-  imports: [PushPipe],
+  imports: [],
   template: `
     <ul>
       <li>
-        <button type="button" data-cy="create-puzzle" (click)="toggleCreatePuzzleMode()">
-          {{ toggleButtonText$ | ngrxPush }} Create Puzzle Mode
+        <button
+          (click)="toggleCreatePuzzleMode()"
+          type="button"
+          data-cy="create-puzzle"
+        >
+          {{ toggleButtonText() }} Create Puzzle Mode
         </button>
       </li>
-      <li><button type="button" (click)="resetGrid()">Reset</button></li>
-      <li><button type="button" (click)="generateWinningGrid()">Add Winning Grid</button></li>
-      <li><button type="button" (click)="generateProblemGrid()">Add Problem Grid</button></li>
-      <li><button type="button" (click)="solveOneCell()">Solve 1 Cell</button></li>
-      <li><button type="button" (click)="undo()">Undo</button></li>
-      <li><button type="button" (click)="redo()">Redo</button></li>
+      <li><button (click)="resetGrid()" type="button">Reset</button></li>
+      <li>
+        <button (click)="generateWinningGrid()" type="button">
+          Add Winning Grid
+        </button>
+      </li>
+      <li>
+        <button (click)="generateProblemGrid()" type="button">
+          Add Problem Grid
+        </button>
+      </li>
+      <li>
+        <button (click)="solveOneCell()" type="button">Solve 1 Cell</button>
+      </li>
+      <li><button (click)="undo()" type="button">Undo</button></li>
+      <li><button (click)="redo()" type="button">Redo</button></li>
     </ul>
   `,
   styleUrls: ['./button-host.component.scss'],
@@ -30,8 +46,8 @@ import { GridStore } from '../../grid/store/grid.store';
 export class ButtonHostComponent {
   readonly #gridStore = inject(GridStore);
 
-  readonly toggleButtonText$ = this.#gridStore.creatingPuzzleMode$.pipe(
-    map((creatingPuzzleMode) => (creatingPuzzleMode ? 'End' : 'Start'))
+  readonly toggleButtonText = computed(() =>
+    this.#gridStore.creatingPuzzleMode() ? 'End' : 'Start',
   );
 
   toggleCreatePuzzleMode(): void {
@@ -68,7 +84,19 @@ export class ButtonHostComponent {
 
   protected generateProblemGrid(): void {
     // eslint-disable-next-line no-sparse-arrays
-    this.#setGridValues([[], [], [], [], [], [], [2, 5, 4, 6, 8, 7, 1, 3, 9], [, 9, 1, , , , 5, 7, 6], [, , , , , , 8, 4, 2]]);
+    this.#setGridValues([
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [2, 5, 4, 6, 8, 7, 1, 3, 9],
+      // eslint-disable-next-line no-sparse-arrays
+      [, 9, 1, , , , 5, 7, 6],
+      // eslint-disable-next-line no-sparse-arrays
+      [, , , , , , 8, 4, 2],
+    ]);
   }
 
   protected solveOneCell(): void {

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { subscribeSpyTo } from '@hirez_io/observer-spy';
 import { createServiceFactory } from '@ngneat/spectator';
 import { createCellState, GridDirection } from '@sud/domain';
 
@@ -15,15 +13,11 @@ describe('GridStore', () => {
     expect(spectator).toBeTruthy();
   });
 
-  describe('grid$', () => {
+  describe('grid', () => {
     it('should select the grid', () => {
       const spectator = createService();
 
-      const gridSpy = subscribeSpyTo(spectator.service.grid$);
-
-      expect(gridSpy.getValues()).toEqual([createGridState()]);
-
-      gridSpy.unsubscribe();
+      expect(spectator.service.grid()).toEqual(createGridState());
     });
   });
 
@@ -31,32 +25,23 @@ describe('GridStore', () => {
     it('should return empty values when nothing selected', () => {
       const spectator = createService();
 
-      const selectedSpy = subscribeSpyTo(spectator.service.selected$);
-
-      expect(selectedSpy.getValues()).toEqual([noCellSelected]);
-
-      selectedSpy.unsubscribe();
+      expect(spectator.service.selected()).toEqual(noCellSelected);
     });
 
     it('should return the selected values', () => {
       const spectator = createService();
 
-      const selectedSpy = subscribeSpyTo(spectator.service.selected$);
-
       const row = 1,
         column = 2,
         region = 3;
 
+      expect(spectator.service.selected()).toEqual(noCellSelected);
+
       spectator.service.updateSelected(
-        createCellState({ row, column, region })
+        createCellState({ row, column, region }),
       );
 
-      expect(selectedSpy.getValues()).toEqual([
-        noCellSelected,
-        [row, column, region],
-      ]);
-
-      selectedSpy.unsubscribe();
+      expect(spectator.service.selected()).toEqual([row, column, region]);
     });
   });
 
@@ -64,31 +49,24 @@ describe('GridStore', () => {
     it('should return noCellToFocus if no cell to focus', () => {
       const spectator = createService();
 
-      const nextToFocusSpy = subscribeSpyTo(spectator.service.nextToFocus$);
-
-      expect(nextToFocusSpy.getValues()).toEqual([noCellToFocus]);
-
-      nextToFocusSpy.unsubscribe();
+      expect(spectator.service.nextToFocus()).toEqual(noCellToFocus);
     });
 
     it('should return the next to focus', () => {
       const spectator = createService();
 
-      const nextToFocusSpy = subscribeSpyTo(spectator.service.nextToFocus$);
-
       const row = 1,
         column = 2,
         region = 3;
+
+      expect(spectator.service.nextToFocus()).toEqual(noCellToFocus);
 
       spectator.service.navigateToCell({
         direction: GridDirection.Down,
         cellState: createCellState({ row, column, region }),
       });
 
-      expect(nextToFocusSpy.getValues()).toEqual([
-        noCellToFocus,
-        [row + 1, column],
-      ]);
+      expect(spectator.service.nextToFocus()).toEqual([row + 1, column]);
     });
   });
 
@@ -96,32 +74,27 @@ describe('GridStore', () => {
     it('should reset the nextToFocus when called', () => {
       const spectator = createService();
 
-      const selectedSpy = subscribeSpyTo(spectator.service.selected$);
+      expect(spectator.service.selected()).toEqual(noCellSelected);
 
       const row = 1,
         column = 2,
         region = 3;
 
       spectator.service.updateSelected(
-        createCellState({ row, column, region })
+        createCellState({ row, column, region }),
       );
+
+      expect(spectator.service.selected()).toEqual([row, column, region]);
 
       spectator.service.resetSelected();
 
-      expect(selectedSpy.getValues()).toEqual([
-        noCellSelected,
-        [row, column, region],
-        noCellSelected,
-      ]);
-
-      selectedSpy.unsubscribe();
+      expect(spectator.service.selected()).toEqual(noCellSelected);
     });
   });
 
   describe('cellValueChanged()', () => {
     it('should change the value of the cell', () => {
       const spectator = createService();
-      const gridSpy = subscribeSpyTo(spectator.service.grid$);
 
       const row = 1,
         column = 2;
@@ -134,18 +107,15 @@ describe('GridStore', () => {
         column,
       });
 
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const result = gridSpy.getLastValue()![row][column];
+      const result = spectator.service.grid()[row][column];
 
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      expect(result!.value).toBe(testValue);
-      expect(result!.valid).toBe(true);
+      expect(result.value).toBe(testValue);
+      expect(result.valid).toBe(true);
     });
 
     describe('errors in the grid', () => {
       it('should detect errors in the same row', () => {
         const spectator = createService();
-        const gridSpy = subscribeSpyTo(spectator.service.grid$);
 
         const row = 1,
           column = 2,
@@ -165,13 +135,13 @@ describe('GridStore', () => {
           column: column2,
         });
 
-        const resultCell1 = gridSpy.getLastValue()![row][column];
-        const resultCell2 = gridSpy.getLastValue()![row][column2];
+        const resultCell1 = spectator.service.grid()[row][column];
+        const resultCell2 = spectator.service.grid()[row][column2];
 
-        expect(resultCell1!.value).toBe(testValue);
-        expect(resultCell1!.valid).toBe(false);
-        expect(resultCell2!.value).toBe(testValue);
-        expect(resultCell2!.valid).toBe(false);
+        expect(resultCell1.value).toBe(testValue);
+        expect(resultCell1.valid).toBe(false);
+        expect(resultCell2.value).toBe(testValue);
+        expect(resultCell2.valid).toBe(false);
       });
     });
   });
