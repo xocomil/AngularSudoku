@@ -24,17 +24,21 @@ import { NumbersToHidePipe } from './numbers-to-hide.pipe';
   imports: [CommonModule, FormsModule, PencilMarkComponent, NumbersToHidePipe],
   template: `
     <div [class.error]="!cellState.valid">
-      <sud-pencil-mark *ngIf="!cellState.value" class="pencil-marks" [numbersToHide]="cellState | numbersToHide"></sud-pencil-mark>
-      <div class="debug" *ngIf="debug$ | async">
-        <!--        focusState: {{ focusState }} <br />-->
-        <!--        coords: ({{ cellState.column }}, row: {{ cellState.row }}<br />-->
-        <!--        col: {{ cellState.column }}<br />-->
-        <!--        reg: {{ cellState.region }}<br />-->
-        <!--        valid: {{ cellState.valid }}<br />-->
-        value: {{ cellState.value + '' }}<br />
-        truthy: {{ !!cellState.value | json }}
-        <!--        isReadonly: {{ cellState.isReadonly }}-->
-      </div>
+      @if (!cellState.value) {
+        <sud-pencil-mark class="pencil-marks" [numbersToHide]="cellState | numbersToHide"></sud-pencil-mark>
+      }
+      @if (debug$ | async) {
+        <div class="debug">
+          <!--        focusState: {{ focusState }} <br />-->
+          <!--        coords: ({{ cellState.column }}, row: {{ cellState.row }}<br />-->
+          <!--        col: {{ cellState.column }}<br />-->
+          <!--        reg: {{ cellState.region }}<br />-->
+          <!--        valid: {{ cellState.valid }}<br />-->
+          value: {{ cellState.value + '' }}<br />
+          truthy: {{ !!cellState.value | json }}
+          <!--        isReadonly: {{ cellState.isReadonly }}-->
+        </div>
+      }
       <input
         data-cy="cellInput"
         data-testId="cellInput"
@@ -45,9 +49,9 @@ import { NumbersToHidePipe } from './numbers-to-hide.pipe';
         autocomplete="none"
         [class.is-readonly]="cellState.isReadonly"
         [disabled]="!creatingPuzzleMode && cellState.isReadonly"
-      />
-    </div>
-  `,
+        />
+      </div>
+    `,
   styleUrls: ['./cell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

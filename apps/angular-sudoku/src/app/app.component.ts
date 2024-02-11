@@ -1,19 +1,21 @@
-import { NgIf } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { ButtonHostComponent, GridComponent, GridStore, PencilMarkComponent } from '@sud/components';
 
 @Component({
   selector: 'angular-sudoku-root',
   standalone: true,
-  imports: [GridComponent, NgIf, PencilMarkComponent, ButtonHostComponent],
+  imports: [GridComponent, PencilMarkComponent, ButtonHostComponent],
   template: ` <div class="game-ui">
-      <h1>The awesomeeeest sudoku grid of all times</h1>
-      <nav title="grid actions"><sud-button-host></sud-button-host></nav>
-      <main>
-        <sud-grid (gameWon)="gameWonHandler($event)"></sud-grid>
-      </main>
-    </div>
-    <div class="gameWon" *ngIf="gameWon">Congratulations! You won!</div>`,
+        <h1>The awesomeeeest sudoku grid of all times</h1>
+        <nav title="grid actions"><sud-button-host></sud-button-host></nav>
+        <main>
+          <sud-grid (gameWon)="gameWonHandler($event)"></sud-grid>
+        </main>
+      </div>
+      @if (gameWon) {
+        <div class="gameWon">Congratulations! You won!</div>
+      }`,
   styleUrls: ['./app.component.scss'],
   providers: [GridStore],
 })
