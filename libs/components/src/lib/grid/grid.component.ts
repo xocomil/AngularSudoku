@@ -25,6 +25,7 @@ import { GridStore } from './store/grid.store';
         track columnTrackByFunction(columnIndex, cellState);
         let columnIndex = $index
       ) {
+        <!-- TODO: change gridCellSelect from a pipe to a computed signal-->
         <sud-cell
           [class]="['row-' + rowIndex, 'col-' + columnIndex, 'sudoku-cell']"
           [cellState]="cellState"

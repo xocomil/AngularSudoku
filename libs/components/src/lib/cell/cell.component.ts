@@ -3,11 +3,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   ElementRef,
   EventEmitter,
-  HostBinding,
   input,
-  Input,
   OnDestroy,
   OnInit,
   Output,
@@ -21,6 +20,7 @@ import {
 } from '@sud/domain';
 import { logObservable } from '@sud/rxjs-operators';
 import { filter, fromEvent, map, of, Subject, Subscription, tap } from 'rxjs';
+import { FocusStates } from '../grid/models/focus-state';
 import { PencilMarkComponent } from '../pencil-mark/pencil-mark.component';
 
 @Component({
@@ -61,6 +61,10 @@ import { PencilMarkComponent } from '../pencil-mark/pencil-mark.component';
     </div>
   `,
   styleUrls: ['./cell.component.scss'],
+  // eslint-disable-next-line @angular-eslint/no-host-metadata-property
+  host: {
+    '[attr.data-focused-state]': 'focusState()',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CellComponent implements OnInit, OnDestroy {
@@ -73,6 +77,8 @@ export class CellComponent implements OnInit, OnDestroy {
       region: -1,
     }),
   );
+
+  nextToFocus = input<readonly [number, number] | undefined>(undefined);
 
   protected readonly numbersToHide = computed(() => {
     const cellState = this.cellState();
@@ -108,41 +114,32 @@ export class CellComponent implements OnInit, OnDestroy {
   @ViewChild('cellInput', { static: true })
   cellInput?: ElementRef<HTMLInputElement>;
 
-  @HostBinding('style.--error-background')
-  @Input()
-  errorBackgroundColor = '';
-
-  @HostBinding('style.--error-color')
-  @Input()
-  errorColor = '';
-
-  @HostBinding('attr.data-focused-state')
-  @Input()
-  focusState = '';
-
-  #nextToFocus?: readonly [number, number];
-
-  @Input()
-  get nextToFocus(): readonly [number, number] | undefined {
-    return this.#nextToFocus;
-  }
-
-  set nextToFocus(value: readonly [number, number] | undefined) {
-    this.#nextToFocus = value;
-
-    if (this.#nextToFocus) {
-      const [row, column] = this.#nextToFocus;
-
-      if (row === this.cellState().row && column === this.cellState().column) {
-        this.cellInput?.nativeElement.focus();
-      }
-    }
-  }
+  focusState = input.required<FocusStates>();
 
   @Output() cellFocusReceived = new EventEmitter<void>();
   @Output() cellBlurReceived = new EventEmitter<void>();
   @Output() cellValueChanged = new EventEmitter<number | undefined>();
   @Output() cellNavigated = this.#navigationKey$;
+
+  constructor() {
+    effect(
+      () => {
+        const nextToFocus = this.nextToFocus();
+
+        if (nextToFocus) {
+          const [row, column] = nextToFocus;
+
+          if (
+            row === this.cellState().row &&
+            column === this.cellState().column
+          ) {
+            this.cellInput?.nativeElement.focus();
+          }
+        }
+      },
+      { allowSignalWrites: true },
+    );
+  }
 
   ngOnInit(): void {
     if (this.cellInput) {
