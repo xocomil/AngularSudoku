@@ -2,8 +2,8 @@ import { EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { subscribeSpyTo } from '@hirez_io/observer-spy';
 import { createComponentFactory } from '@ngneat/spectator/jest';
-import { fakeCellPosition } from '@sud/domain/testing-helpers';
 import { createCellState, directionMap } from '@sud/domain';
+import { fakeCellPosition } from '@sud/domain/testing-helpers';
 import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
 import { MockService } from 'ng-mocks';
@@ -15,8 +15,7 @@ describe('CellComponent', () => {
     imports: [FormsModule],
   });
 
-  const randomCellPosition = (): number =>
-    fakeCellPosition();
+  const randomCellPosition = (): number => fakeCellPosition();
   const randomNextToFocus = (): readonly [number, number] =>
     [randomCellPosition(), randomCellPosition()] as const;
 
@@ -41,7 +40,7 @@ describe('CellComponent', () => {
           props: { nextToFocus: randomNextToFocus() },
         });
 
-        spectator.component.nextToFocus = undefined;
+        spectator.setInput({ nextToFocus: undefined });
 
         expect(spectator.component.nextToFocus).toBeUndefined();
       });
@@ -65,7 +64,7 @@ describe('CellComponent', () => {
           props: { nextToFocus: undefined },
         });
 
-        spectator.component.nextToFocus = testValue;
+        spectator.setInput({ nextToFocus: testValue });
 
         expect(spectator.component.nextToFocus).toEqual(testValue);
       });
