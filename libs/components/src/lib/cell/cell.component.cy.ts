@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { GridDirection } from '@sud/domain';
 import { MountConfig } from 'cypress/angular';
-import { GridDirection } from '../../../../domain/src/lib/grid-direction';
 import { CellComponent } from './cell.component';
 
 describe(CellComponent.name, () => {
@@ -14,12 +14,16 @@ describe(CellComponent.name, () => {
   };
 
   it('renders', () => {
-    TestBed.overrideComponent(CellComponent, { add: { providers: config.providers } });
+    TestBed.overrideComponent(CellComponent, {
+      add: { providers: config.providers },
+    });
     cy.mount(CellComponent, config);
   });
 
   it('should enter a proper CellValue', () => {
-    TestBed.overrideComponent(CellComponent, { add: { providers: config.providers } });
+    TestBed.overrideComponent(CellComponent, {
+      add: { providers: config.providers },
+    });
     cy.mount(CellComponent, config);
 
     const input = cy.get(numberInput);
@@ -31,7 +35,9 @@ describe(CellComponent.name, () => {
 
   describe('keyboard navigation', () => {
     it('should navigate up when "w" is entered', () => {
-      TestBed.overrideComponent(CellComponent, { add: { providers: config.providers } });
+      TestBed.overrideComponent(CellComponent, {
+        add: { providers: config.providers },
+      });
       cy.mount(CellComponent, config).then((wrapper) => {
         console.log({ wrapper });
         cy.spy(wrapper.component.cellNavigated, 'next').as('cellNavigatedSpy');
@@ -45,7 +51,10 @@ describe(CellComponent.name, () => {
       input.type('w', {});
 
       cy.get('@cellValueChangedSpy').should('not.have.been.calledWith', 'w');
-      cy.get('@cellNavigatedSpy').should('have.been.calledWith', GridDirection.Up);
+      cy.get('@cellNavigatedSpy').should(
+        'have.been.calledWith',
+        GridDirection.Up,
+      );
     });
   });
 });
