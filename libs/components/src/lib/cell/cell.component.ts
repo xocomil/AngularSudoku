@@ -10,7 +10,8 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  ViewChild,
+  signal,
+  viewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -19,8 +20,7 @@ import {
   gridDirectionFromKeyboard,
 } from '@sud/domain';
 import { logObservable } from '@sud/rxjs-operators';
-import { filter, fromEvent, map, of, Subject, Subscription, tap } from 'rxjs';
-import { FocusStates } from '../grid/models/focus-state';
+import { filter, fromEvent, map, Subject, Subscription, tap } from 'rxjs';
 import { PencilMarkComponent } from '../pencil-mark/pencil-mark.component';
 
 @Component({
@@ -35,7 +35,7 @@ import { PencilMarkComponent } from '../pencil-mark/pencil-mark.component';
           [numbersToHide]="numbersToHide()"
         ></sud-pencil-mark>
       }
-      @if (debug$ | async) {
+      @if (debug()) {
         <div class="debug">
           <!--        focusState: {{ focusState }} <br />-->
           <!--        coords: ({{ cellState.column }}, row: {{ cellState.row }}<br />-->
@@ -93,7 +93,7 @@ export class CellComponent implements OnInit, OnDestroy {
     () => !this.creatingPuzzleMode() && this.cellState().isReadonly,
   );
 
-  debug$ = of(false);
+  protected readonly debug = signal(false);
 
   readonly #allowedValues = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
   readonly #navigationValues = [
@@ -111,10 +111,9 @@ export class CellComponent implements OnInit, OnDestroy {
   readonly #subs = new Subscription();
   readonly #navigationKey$ = new Subject<GridDirection>();
 
-  @ViewChild('cellInput', { static: true })
-  cellInput?: ElementRef<HTMLInputElement>;
+  cellInput = viewChild.required<ElementRef<HTMLInputElement>>('cellInput');
 
-  focusState = input.required<FocusStates>();
+  focusState = input('');
 
   @Output() cellFocusReceived = new EventEmitter<void>();
   @Output() cellBlurReceived = new EventEmitter<void>();
@@ -133,7 +132,7 @@ export class CellComponent implements OnInit, OnDestroy {
             row === this.cellState().row &&
             column === this.cellState().column
           ) {
-            this.cellInput?.nativeElement.focus();
+            this.cellInput().nativeElement.focus();
           }
         }
       },
@@ -142,26 +141,24 @@ export class CellComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (this.cellInput) {
-      const keydown$ = fromEvent<KeyboardEvent>(
-        this.cellInput.nativeElement,
-        'keydown',
-      ).pipe(
-        tap((event) => this.handleKeyEvent(event)),
-        filter((event) =>
-          this.#navigationValues.includes(event.key.toLowerCase()),
-        ),
-      );
+    const keydown$ = fromEvent<KeyboardEvent>(
+      this.cellInput().nativeElement,
+      'keydown',
+    ).pipe(
+      tap((event) => this.handleKeyEvent(event)),
+      filter((event) =>
+        this.#navigationValues.includes(event.key.toLowerCase()),
+      ),
+    );
 
-      this.#subs.add(
-        keydown$
-          .pipe(
-            map((event) => gridDirectionFromKeyboard(event.key)),
-            logObservable('gridDirection'),
-          )
-          .subscribe(this.#navigationKey$),
-      );
-    }
+    this.#subs.add(
+      keydown$
+        .pipe(
+          map((event) => gridDirectionFromKeyboard(event.key)),
+          logObservable('gridDirection'),
+        )
+        .subscribe(this.#navigationKey$),
+    );
   }
 
   ngOnDestroy(): void {
