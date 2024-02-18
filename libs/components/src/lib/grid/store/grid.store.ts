@@ -116,7 +116,7 @@ const findNextValue = (
 export class GridStore extends ComponentStore<GridState> {
   readonly grid = this.selectSignal(({ grid }) => grid);
   readonly #grid$ = this.select((state) => state.grid);
-  readonly gameWon$ = this.select((state: GridState) => state.gameWon);
+  readonly gameWon = this.selectSignal(({ gameWon }) => gameWon);
   readonly creatingPuzzleMode = this.selectSignal(
     ({ creatingPuzzleMode }) => creatingPuzzleMode,
   );
