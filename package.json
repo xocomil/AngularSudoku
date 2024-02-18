@@ -46,7 +46,7 @@
     "@cypress/webpack-dev-server": "^3.7.4",
     "@faker-js/faker": "8.4.1",
     "@hirez_io/observer-spy": "2.2.0",
-    "@ngneat/spectator": "16.0.0",
+    "@ngneat/spectator": "17.0.0",
     "@nx/cypress": "18.0.4",
     "@nx/eslint": "18.0.4",
     "@nx/eslint-plugin": "18.0.4",
@@ -95,3 +95,4 @@
     "node": "20.11.0"
   }
 }
+

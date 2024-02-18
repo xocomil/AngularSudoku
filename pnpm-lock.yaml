@@ -107,8 +107,8 @@ devDependencies:
     specifier: 2.2.0
     version: 2.2.0(rxjs@7.8.1)(typescript@5.3.3)
   '@ngneat/spectator':
-    specifier: 16.0.0
-    version: 16.0.0(@angular/animations@17.2.1)(@angular/common@17.2.1)(@angular/router@17.2.1)
+    specifier: 17.0.0
+    version: 17.0.0(@angular/animations@17.2.1)(@angular/common@17.2.1)(@angular/router@17.2.1)
   '@nx/cypress':
     specifier: 18.0.4
     version: 18.0.4(@swc/core@1.4.1)(@types/node@20.11.19)(cypress@13.6.4)(nx@18.0.4)(typescript@5.3.3)
@@ -3047,8 +3047,8 @@ packages:
       tar-fs: 2.1.1
     dev: true
 
-  /@ngneat/spectator@16.0.0(@angular/animations@17.2.1)(@angular/common@17.2.1)(@angular/router@17.2.1):
-    resolution: {integrity: sha512-AKo8WYnu0Vl2HEBciw6LUOe114oNsBRPUwqaVIvVtZTJdfecEEI2ools6vLCeEm/MSuPeZapbTmPeV06TfK3uA==}
+  /@ngneat/spectator@17.0.0(@angular/animations@17.2.1)(@angular/common@17.2.1)(@angular/router@17.2.1):
+    resolution: {integrity: sha512-MoYHFXlBs6OWog7PNA/Dc77OoXl4Bc4Ijh+AqTScYtlUFjqi2IFxxcV7yBOBwQeQymzPbtlp13wxAAshrJ+WkQ==}
     peerDependencies:
       '@angular/animations': '>= 17.0.0'
       '@angular/common': '>= 17.0.0'
