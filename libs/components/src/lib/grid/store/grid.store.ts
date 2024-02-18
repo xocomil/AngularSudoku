@@ -5,6 +5,8 @@ import {
   CellValue,
   GridDirection,
   allPencilMarks,
+  directionModifierValues,
+  isNavigationDirection,
   valueIsCellValue,
 } from '@sud/domain';
 import { errorAnalyzer } from '@sud/fast-analayzers';
@@ -608,28 +610,9 @@ export class GridStore extends ComponentStore<GridState> {
     cellState: CellState,
     grid: CellState[][],
   ) {
-    switch (direction) {
-      case GridDirection.Up:
-        if (cellState.row > 0) {
-          this.#navigateToCell(cellState.column, cellState.row - 1, grid);
-        }
-        break;
-      case GridDirection.Left:
-        if (cellState.column > 0) {
-          this.#navigateToCell(cellState.column - 1, cellState.row, grid);
-        }
-        break;
-      case GridDirection.Down:
-        if (cellState.row < 8) {
-          this.#navigateToCell(cellState.column, cellState.row + 1, grid);
-        }
-        break;
-      case GridDirection.Right:
-        if (cellState.column < 8) {
-          this.#navigateToCell(cellState.column + 1, cellState.row, grid);
-        }
-        break;
-    }
+    const nextCell = findNextCellToFocus(direction, cellState, grid);
+
+    this.#navigateToCell(nextCell.column, nextCell.row, grid);
   }
 
   #navigateToCell(column: number, row: number, grid: CellState[][]) {
@@ -723,3 +706,25 @@ const getCellValuesToHide = (
   cells$.pipe(
     map((cells) => cells.map((cell) => cell.value).filter(valueIsCellValue)),
   );
+
+function findNextCellToFocus(
+  direction: GridDirection,
+  cellState: CellState,
+  grid: CellState[][],
+): CellState {
+  if (!isNavigationDirection(direction)) {
+    return cellState;
+  }
+
+  const { row: rowModifier, col: colModifier } =
+    directionModifierValues[direction];
+
+  let nextCell =
+    grid[cellState.row + rowModifier][cellState.column + colModifier];
+
+  while (nextCell != null && nextCell.isReadonly) {
+    nextCell = grid[nextCell.row + rowModifier][nextCell.column + colModifier];
+  }
+
+  return nextCell ? nextCell : cellState;
+}
