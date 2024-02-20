@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { MountConfig } from 'cypress/angular';
+import { CellValue } from '../../../../domain/src';
 import { GridComponent } from './grid.component';
+import { FocusStates } from './models/focus-state';
 import { GridStore } from './store/grid.store';
 
 describe(GridComponent.name, () => {
@@ -84,6 +86,7 @@ describe(GridComponent.name, () => {
 
         cy.get(centerCellInputSelector).type('{upArrow}');
 
+        cy.get(centerCellInputSelector).should('not.have.focus');
         cy.get('.row-3.col-4 > div > [data-cy="cellInput"]').should(
           'have.focus',
         );
@@ -107,14 +110,10 @@ describe(GridComponent.name, () => {
         it('should skip over a single readonly cell', () => {
           cy.mount(GridComponent, config).then(() => {
             const gridStore = TestBed.inject(GridStore);
-            gridStore.toggleCreatePuzzleMode();
-            gridStore.cellValueChanged({
-              value: 1,
-              row: 3,
-              column: 4,
-            });
-            gridStore.toggleCreatePuzzleMode();
+
+            createColumnPuzzleCells(gridStore, [[3, 1]]);
           });
+
           const centerCellSelector = '.col-4.row-4';
           const centerCellInputSelector = `${centerCellSelector} > div > [data-cy="cellInput"]`;
 
@@ -124,11 +123,10 @@ describe(GridComponent.name, () => {
 
           cy.get(centerCellInputSelector).type('{upArrow}');
 
-          const skipCell = cy
-            .get('.row-3.col-4')
-            .invoke('attr', 'data-focused-state');
-          skipCell.should('not.equal', 'self');
-          skipCell.should('equal', 'col');
+          cy.get(centerCellInputSelector).should('not.have.focus');
+
+          checkSkipCells([['.row-3.col-4', 'col']]);
+
           cy.get('.row-2.col-4 > div > [data-cy="cellInput"]').should(
             'have.focus',
           );
@@ -137,18 +135,11 @@ describe(GridComponent.name, () => {
         it('should skip over multiple readonly cells', () => {
           cy.mount(GridComponent, config).then(() => {
             const gridStore = TestBed.inject(GridStore);
-            gridStore.toggleCreatePuzzleMode();
-            gridStore.cellValueChanged({
-              value: 1,
-              row: 3,
-              column: 4,
-            });
-            gridStore.cellValueChanged({
-              value: 2,
-              row: 2,
-              column: 4,
-            });
-            gridStore.toggleCreatePuzzleMode();
+
+            createColumnPuzzleCells(gridStore, [
+              [3, 1],
+              [2, 2],
+            ]);
           });
 
           const centerCellSelector = '.col-4.row-4';
@@ -160,16 +151,11 @@ describe(GridComponent.name, () => {
 
           cy.get(centerCellInputSelector).type('{upArrow}');
 
-          const skipCell = cy
-            .get('.row-3.col-4')
-            .invoke('attr', 'data-focused-state');
-          skipCell.should('not.equal', 'self');
-          skipCell.should('equal', 'col');
-          const skipCell2 = cy
-            .get('.row-2.col-4')
-            .invoke('attr', 'data-focused-state');
-          skipCell2.should('not.equal', 'self');
-          skipCell2.should('equal', 'region-col');
+          checkSkipCells([
+            ['.row-3.col-4', 'col'],
+            ['.row-2.col-4', 'region-col'],
+          ]);
+
           cy.get('.row-1.col-4 > div > [data-cy="cellInput"]').should(
             'have.focus',
           );
@@ -178,28 +164,13 @@ describe(GridComponent.name, () => {
         it('should not navigate if all readonly cells to top', () => {
           cy.mount(GridComponent, config).then(() => {
             const gridStore = TestBed.inject(GridStore);
-            gridStore.toggleCreatePuzzleMode();
-            gridStore.cellValueChanged({
-              value: 1,
-              row: 3,
-              column: 4,
-            });
-            gridStore.cellValueChanged({
-              value: 2,
-              row: 2,
-              column: 4,
-            });
-            gridStore.cellValueChanged({
-              value: 3,
-              row: 1,
-              column: 4,
-            });
-            gridStore.cellValueChanged({
-              value: 4,
-              row: 0,
-              column: 4,
-            });
-            gridStore.toggleCreatePuzzleMode();
+
+            createColumnPuzzleCells(gridStore, [
+              [3, 1],
+              [2, 2],
+              [1, 3],
+              [0, 4],
+            ]);
           });
 
           const centerCellSelector = '.col-4.row-4';
@@ -213,28 +184,44 @@ describe(GridComponent.name, () => {
 
           cy.get(centerCellInputSelector).should('have.focus');
 
-          const skipCell = cy
-            .get('.row-3.col-4')
-            .invoke('attr', 'data-focused-state');
-          skipCell.should('not.equal', 'self');
-          skipCell.should('equal', 'region-col');
-          const skipCell2 = cy
-            .get('.row-2.col-4')
-            .invoke('attr', 'data-focused-state');
-          skipCell2.should('not.equal', 'self');
-          skipCell2.should('equal', 'col');
-          const skipCell3 = cy
-            .get('.row-1.col-4')
-            .invoke('attr', 'data-focused-state');
-          skipCell3.should('not.equal', 'self');
-          skipCell3.should('equal', 'col');
-          const skipCell4 = cy
-            .get('.row-0.col-4')
-            .invoke('attr', 'data-focused-state');
-          skipCell4.should('not.equal', 'self');
-          skipCell4.should('equal', 'col');
+          checkSkipCells([
+            [`.row-3.col-4`, 'region-col'],
+            [`.row-2.col-4`, 'col'],
+            [`.row-1.col-4`, 'col'],
+            [`.row-0.col-4`, 'col'],
+          ]);
         });
       });
     });
   });
 });
+
+type ColumnPuzzleCellChanges = [row: number, value: CellValue];
+
+function createColumnPuzzleCells(
+  gridStore: GridStore,
+  changes: ColumnPuzzleCellChanges[],
+  column: CellValue = 4,
+) {
+  gridStore.toggleCreatePuzzleMode();
+
+  changes.forEach(([row, value]) => {
+    gridStore.cellValueChanged({
+      value,
+      row,
+      column,
+    });
+  });
+
+  gridStore.toggleCreatePuzzleMode();
+}
+
+type SkipCellInfo = [selector: string, focusedState: FocusStates];
+
+function checkSkipCells(skipCellInfo: SkipCellInfo[]) {
+  for (const [selector, focusedState] of skipCellInfo) {
+    const skipCell = cy.get(selector).invoke('attr', 'data-focused-state');
+    skipCell.should('not.equal', 'self');
+    skipCell.should('equal', focusedState);
+  }
+}
