@@ -5,6 +5,8 @@ import {
   CellValue,
   GridDirection,
   allPencilMarks,
+  directionModifierValues,
+  isNavigationDirection,
   valueIsCellValue,
 } from '@sud/domain';
 import { errorAnalyzer } from '@sud/fast-analayzers';
@@ -116,7 +118,7 @@ const findNextValue = (
 export class GridStore extends ComponentStore<GridState> {
   readonly grid = this.selectSignal(({ grid }) => grid);
   readonly #grid$ = this.select((state) => state.grid);
-  readonly gameWon$ = this.select((state: GridState) => state.gameWon);
+  readonly gameWon = this.selectSignal(({ gameWon }) => gameWon);
   readonly creatingPuzzleMode = this.selectSignal(
     ({ creatingPuzzleMode }) => creatingPuzzleMode,
   );
@@ -535,14 +537,23 @@ export class GridStore extends ComponentStore<GridState> {
       }>,
     ) =>
       navigation$.pipe(
-        withLatestFrom(this.#grid$),
+        withLatestFrom(this.#grid$, this.#creatingPuzzleMode$),
         tapResponse(
-          ([navigation, grid]) => {
+          ([navigation, grid, creatingPuzzleMode]) => {
             const { direction, cellState } = navigation;
 
-            this.#updateSelectedFromNavigation(direction, cellState, grid);
+            this.#updateSelectedFromNavigation(
+              direction,
+              cellState,
+              grid,
+              creatingPuzzleMode,
+            );
           },
-          (error: unknown) => of({}),
+          (error: unknown) => {
+            console.error('navigateToCell error', error);
+
+            return of({});
+          },
         ),
       ),
   );
@@ -607,29 +618,16 @@ export class GridStore extends ComponentStore<GridState> {
     direction: GridDirection,
     cellState: CellState,
     grid: CellState[][],
+    creatingPuzzleMode: boolean,
   ) {
-    switch (direction) {
-      case GridDirection.Up:
-        if (cellState.row > 0) {
-          this.#navigateToCell(cellState.column, cellState.row - 1, grid);
-        }
-        break;
-      case GridDirection.Left:
-        if (cellState.column > 0) {
-          this.#navigateToCell(cellState.column - 1, cellState.row, grid);
-        }
-        break;
-      case GridDirection.Down:
-        if (cellState.row < 8) {
-          this.#navigateToCell(cellState.column, cellState.row + 1, grid);
-        }
-        break;
-      case GridDirection.Right:
-        if (cellState.column < 8) {
-          this.#navigateToCell(cellState.column + 1, cellState.row, grid);
-        }
-        break;
-    }
+    const nextCell = findNextCellToFocus(
+      direction,
+      cellState,
+      grid,
+      creatingPuzzleMode,
+    );
+
+    this.#navigateToCell(nextCell.column, nextCell.row, grid);
   }
 
   #navigateToCell(column: number, row: number, grid: CellState[][]) {
@@ -723,3 +721,45 @@ const getCellValuesToHide = (
   cells$.pipe(
     map((cells) => cells.map((cell) => cell.value).filter(valueIsCellValue)),
   );
+
+function findNextCellToFocus(
+  direction: GridDirection,
+  cellState: CellState,
+  grid: CellState[][],
+  creatingPuzzleMode: boolean,
+): CellState {
+  if (!isNavigationDirection(direction)) {
+    return cellState;
+  }
+
+  const getNextCell = partialGetNextCellState(
+    grid,
+    directionModifierValues[direction],
+  );
+
+  let nextCell = getNextCell(cellState);
+
+  while (nextCell != null && !creatingPuzzleMode && nextCell.isReadonly) {
+    nextCell = getNextCell(nextCell);
+  }
+
+  return nextCell ? nextCell : cellState;
+}
+
+function partialGetNextCellState(
+  grid: CellState[][],
+  directionModifiers: { row: number; col: number },
+) {
+  return (cellState: CellState) =>
+    getNextCellState(grid, cellState, directionModifiers);
+}
+
+function getNextCellState(
+  grid: CellState[][],
+  cellState: CellState,
+  directionModifiers: { row: number; col: number },
+): CellState {
+  const { row: rowModifier, col: colModifier } = directionModifiers;
+
+  return grid[cellState.row + rowModifier]?.[cellState.column + colModifier];
+}

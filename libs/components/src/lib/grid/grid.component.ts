@@ -1,11 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CellState, GridDirection, valueIsCellValue } from '@sud/domain';
-import { logObservable } from '@sud/rxjs-operators';
 import { CellComponent } from '../cell/cell.component';
 import { GridCellSelectPipe } from './grid-cell-select.pipe';
 import { GridStore } from './store/grid.store';
@@ -25,6 +19,7 @@ import { GridStore } from './store/grid.store';
         track columnTrackByFunction(columnIndex, cellState);
         let columnIndex = $index
       ) {
+        <!-- TODO: change gridCellSelect from a pipe to a computed signal-->
         <sud-cell
           [class]="['row-' + rowIndex, 'col-' + columnIndex, 'sudoku-cell']"
           [cellState]="cellState"
@@ -44,10 +39,6 @@ import { GridStore } from './store/grid.store';
 })
 export class GridComponent {
   protected readonly gridStore = inject(GridStore);
-
-  @Output() gameWon = this.gridStore.gameWon$.pipe(
-    logObservable<boolean>('game won:'),
-  );
 
   cellFocused(cellState: CellState): void {
     this.gridStore.updateSelected(cellState);

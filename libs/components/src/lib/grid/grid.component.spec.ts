@@ -3,7 +3,6 @@ import { signal } from '@angular/core';
 import { createComponentFactory, mockProvider } from '@ngneat/spectator/jest';
 import { CellState, GridDirection, createCellState } from '@sud/domain';
 import { fakeCellPosition, fakeCellValue } from '@sud/domain/testing-helpers';
-import { NEVER } from 'rxjs';
 import { CellComponent } from '../cell/cell.component';
 import { GridCellSelectPipe } from './grid-cell-select.pipe';
 import { GridComponent } from './grid.component';
@@ -12,7 +11,7 @@ import { GridStore } from './store/grid.store';
 describe('GridComponent', () => {
   const gridStoreStub: Partial<GridStore> = {
     grid: signal([]),
-    gameWon$: NEVER,
+    gameWon: signal(false),
     updateSelected: jest.fn(),
     cellValueChanged: jest.fn(),
     navigateToCell: jest.fn(),
