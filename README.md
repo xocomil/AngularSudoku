@@ -19,6 +19,15 @@ This is a project to create a Sudoku game using Angular. To run the project loca
 
 ![Screenshot 2024-02-22 181914.png](screenshots%2FScreenshot%202024-02-22%20181914.png)
 
+## Features
+
+- [x] Validate the board
+- [x] Solve a Sudoku puzzle using wave-function collapse
+- [x] Full undo/redo functionality
+- [x] Puzzle mode to enter your own puzzles
+- [x] Includes full keyboard support including arrow key navigation, `w`, `a`, `s`, `d` for navigation, and `1`-`9` for entering numbers
+- [x] Includes a11y support including support for screen readers, tab key and escape key navigation
+
 ## Testing
 
 ### Unit Tests
@@ -40,12 +49,3 @@ There is a storybook for the components. To run the storybook, use the following
 ```bash
 pnpm nx storybook components
 ```
-
-## Features
-
-- [x] Validate the board
-- [x] Solve a Sudoku puzzle using wave-function collapse
-- [x] Full undo/redo functionality
-- [x] Puzzle mode to enter your own puzzles
-- [x] Includes full keyboard support including arrow key navigation, `w`, `a`, `s`, `d` for navigation, and `1`-`9` for entering numbers
-- [x] Includes a11y support including support for screen readers, tab key and escape key navigation
