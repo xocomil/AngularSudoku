@@ -18,3 +18,34 @@ This is a project to create a Sudoku game using Angular. To run the project loca
 5. Navigate to `http://localhost:4200/` in your browser to see the Sudoku game.
 
 ![Screenshot 2024-02-22 181914.png](screenshots%2FScreenshot%202024-02-22%20181914.png)
+
+## Features
+
+- [x] Validate the board
+- [x] Solve a Sudoku puzzle using wave-function collapse
+- [x] Full undo/redo functionality
+- [x] Puzzle mode to enter your own puzzles
+- [x] Includes full keyboard support including arrow key navigation, `w`, `a`, `s`, `d` for navigation, and `1`-`9` for entering numbers
+- [x] Includes a11y support including support for screen readers, tab key and escape key navigation
+
+## Testing
+
+### Unit Tests
+
+Unit tests are done with `nx` and `jest`. To run the unit tests, use the following command:
+```bash
+pnpm nx run-many --taget=test
+```
+### Component Tests
+
+Component tests are done with `nx` and `cypress`. To run the component tests, use the following command:
+```bash
+pnpm nx run-many --target=component-test
+```
+
+## Storybook
+
+There is a storybook for the components. To run the storybook, use the following command:
+```bash
+pnpm nx storybook components
+```
