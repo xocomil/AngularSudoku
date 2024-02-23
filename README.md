@@ -16,3 +16,5 @@ This is a project to create a Sudoku game using Angular. To run the project loca
   pnpm nx serve
   ```
 5. Navigate to `http://localhost:4200/` in your browser to see the Sudoku game.
+
+![Screenshot 2024-02-22 181914.png](screenshots%2FScreenshot%202024-02-22%20181914.png)
