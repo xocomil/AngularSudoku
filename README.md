@@ -21,6 +21,7 @@ This is a project to create a Sudoku game using Angular. To run the project loca
 
 ## Features
 
+- [x] Column, row, region and error highlighting
 - [x] Validate the board
 - [x] Solve a Sudoku puzzle using wave-function collapse
 - [x] Full undo/redo functionality
