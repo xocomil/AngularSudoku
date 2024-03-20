@@ -89,7 +89,7 @@
     "ts-jest": "29.1.2",
     "ts-node": "10.9.2",
     "typescript": "5.3.3",
-    "webpack": "5.90.2"
+    "webpack": "5.91.0"
   },
   "volta": {
     "node": "20.11.0"
