@@ -61,7 +61,7 @@
     "@stryker-mutator/jest-runner": "^8.2.3",
     "@stryker-mutator/typescript-checker": "^8.2.3",
     "@types/jest": "29.5.12",
-    "@types/node": "20.11.19",
+    "@types/node": "20.11.30",
     "@typescript-eslint/eslint-plugin": "7.0.1",
     "@typescript-eslint/parser": "7.0.1",
     "cypress": "^13.6.4",
@@ -92,7 +92,7 @@
     "webpack": "5.90.2"
   },
   "volta": {
-    "node": "20.11.0"
+    "node": "20.12.0"
   }
 }
 
