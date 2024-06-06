@@ -64,6 +64,7 @@
     "@types/node": "20.11.19",
     "@typescript-eslint/eslint-plugin": "7.0.1",
     "@typescript-eslint/parser": "7.0.1",
+    "@xocomil/log-observable": "^0.0.2",
     "cypress": "^13.6.4",
     "eslint": "8.56.0",
     "eslint-config-prettier": "9.1.0",
@@ -95,4 +96,3 @@
     "node": "20.11.0"
   }
 }
-

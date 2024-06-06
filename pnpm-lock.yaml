@@ -160,6 +160,9 @@ devDependencies:
   '@typescript-eslint/parser':
     specifier: 7.0.1
     version: 7.0.1(eslint@8.56.0)(typescript@5.3.3)
+  '@xocomil/log-observable':
+    specifier: ^0.0.2
+    version: 0.0.2(rxjs@7.8.1)
   cypress:
     specifier: ^13.6.4
     version: 13.6.4
@@ -6465,6 +6468,14 @@ packages:
       '@webassemblyjs/ast': 1.11.6
       '@xtuc/long': 4.2.2
 
+  /@xocomil/log-observable@0.0.2(rxjs@7.8.1):
+    resolution: {integrity: sha512-W9TXHxbyp6k/TRnn7rtn9X79ozgaeMjsU/u0R7EtXctbwRzCvqa9ZLVyl+1pwx0c7HiRCkZm82ylytFojy9LQQ==}
+    peerDependencies:
+      rxjs: ~7.8.1
+    dependencies:
+      rxjs: 7.8.1
+    dev: true
+
   /@xtuc/ieee754@1.2.0:
     resolution: {integrity: sha512-DX8nKgqcGwsc0eJSqYt5lwP4DH5FlHnmuWWBRy7X0NcaGR0ZtuyeESgMwTYVEtxmsNGY+qit4QYT/MIYTOTPeA==}
 
@@ -11216,8 +11227,6 @@ packages:
     peerDependenciesMeta:
       webpack:
         optional: true
-      webpack-sources:
-        optional: true
     dependencies:
       webpack: 5.90.1(@swc/core@1.4.1)(esbuild@0.20.0)
       webpack-sources: 3.2.3
@@ -11228,8 +11237,6 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
-        optional: true
-      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.90.2(@swc/core@1.4.1)(esbuild@0.18.20)
