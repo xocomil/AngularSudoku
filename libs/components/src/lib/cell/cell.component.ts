@@ -19,7 +19,7 @@ import {
   GridDirection,
   gridDirectionFromKeyboard,
 } from '@sud/domain';
-import { logObservable } from '@sud/rxjs-operators';
+import { logObservable } from '@xocomil/log-observable';
 import { filter, fromEvent, map, Subject, Subscription, tap } from 'rxjs';
 import { PencilMarkComponent } from '../pencil-mark/pencil-mark.component';
 

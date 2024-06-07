@@ -10,7 +10,7 @@ import {
   valueIsCellValue,
 } from '@sud/domain';
 import { errorAnalyzer } from '@sud/fast-analayzers';
-import { logObservable } from '@sud/rxjs-operators';
+import { logObservable } from '@xocomil/log-observable';
 import { create } from 'mutative';
 import { Observable, map, of, tap, withLatestFrom } from 'rxjs';
 import { solveOneCell } from '../solvers/wavefunction-collapse.solver';
