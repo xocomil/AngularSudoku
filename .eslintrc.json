@@ -1,19 +1,10 @@
 {
   "root": true,
-  "ignorePatterns": [
-    "**/*"
-  ],
-  "plugins": [
-    "@nx"
-  ],
+  "ignorePatterns": ["**/*"],
+  "plugins": ["@nx"],
   "overrides": [
     {
-      "files": [
-        "*.ts",
-        "*.tsx",
-        "*.js",
-        "*.jsx"
-      ],
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
         "@nx/enforce-module-boundaries": [
           "error",
@@ -23,9 +14,7 @@
             "depConstraints": [
               {
                 "sourceTag": "*",
-                "onlyDependOnLibsWithTags": [
-                  "*"
-                ]
+                "onlyDependOnLibsWithTags": ["*"]
               }
             ]
           }
@@ -33,36 +22,25 @@
       }
     },
     {
-      "files": [
-        "*.ts",
-        "*.tsx"
-      ],
-      "extends": [
-        "plugin:@nx/typescript"
-      ],
-      "rules": {}
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nx/typescript"],
+      "rules": {
+        "@typescript-eslint/no-extra-semi": "error",
+        "no-extra-semi": "off"
+      }
     },
     {
-      "files": [
-        "*.js",
-        "*.jsx"
-      ],
-      "extends": [
-        "plugin:@nx/javascript"
-      ],
-      "rules": {}
+      "files": ["*.js", "*.jsx"],
+      "extends": ["plugin:@nx/javascript"],
+      "rules": {
+        "@typescript-eslint/no-extra-semi": "error",
+        "no-extra-semi": "off"
+      }
     },
     {
-      "files": [
-        "*.spec.ts",
-        "*.spec.tsx"
-      ],
-      "plugins": [
-        "jest"
-      ],
-      "extends": [
-        "plugin:jest/recommended"
-      ],
+      "files": ["*.spec.ts", "*.spec.tsx"],
+      "plugins": ["jest"],
+      "extends": ["plugin:jest/recommended"],
       "rules": {
         "jest/prefer-expect-assertions": [
           "warn",
@@ -73,15 +51,9 @@
       }
     },
     {
-      "files": [
-        "*.ts"
-      ],
-      "extends": [
-        "plugin:@ngrx/recommended-requiring-type-checking"
-      ]
+      "files": ["*.ts"],
+      "extends": ["plugin:@ngrx/recommended-requiring-type-checking"]
     }
   ],
-  "extends": [
-    "plugin:storybook/recommended"
-  ]
+  "extends": ["plugin:storybook/recommended"]
 }

@@ -46,3 +46,4 @@ Thumbs.db
 storybook-migration-summary.md
 
 .nx/cache
+.nx/workspace-data
