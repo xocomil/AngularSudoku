@@ -71,6 +71,8 @@ describe('CellComponent', () => {
     });
 
     it('should focus on the input if row and column match', async () => {
+      expect.assertions(1);
+
       await render(CellComponent, {
         componentProperties: {
           cellState: createCellState({
@@ -86,6 +88,8 @@ describe('CellComponent', () => {
     });
 
     it('should ont focus on the input if row and column do not match', async () => {
+      expect.assertions(1);
+
       await render(CellComponent, {
         componentProperties: {
           cellState: createCellState({
@@ -103,6 +107,8 @@ describe('CellComponent', () => {
 
   describe('handleKeyEvent', () => {
     it('should only allow the values 1-9 to be entered', async () => {
+      expect.assertions(24);
+
       const cellValueChanged = jest.fn();
 
       await render(CellComponent, {
@@ -135,6 +141,8 @@ describe('CellComponent', () => {
 
   describe('navigationKey$', () => {
     it('send navigationEvents', async () => {
+      expect.assertions(4);
+
       const { fixture } = await render(CellComponent);
 
       const keySpy = subscribeSpyTo(fixture.componentInstance.cellNavigated);
