@@ -19,8 +19,8 @@
     "@angular/platform-browser": "18.0.2",
     "@angular/platform-browser-dynamic": "18.0.2",
     "@angular/router": "18.0.2",
-    "@ngrx/component-store": "17.1.0",
-    "@ngrx/eslint-plugin": "17.1.0",
+    "@ngrx/component-store": "17.2.0",
+    "@ngrx/eslint-plugin": "17.2.0",
     "@nx/angular": "19.2.2",
     "@testing-library/angular": "15.2.0",
     "@testing-library/dom": "9.3.4",
@@ -94,6 +94,6 @@
     "webpack": "5.90.2"
   },
   "volta": {
-    "node": "20.11.0"
+    "node": "22.2.0"
   }
 }
