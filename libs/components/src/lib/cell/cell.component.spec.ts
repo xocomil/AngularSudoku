@@ -32,7 +32,7 @@ describe('CellComponent', () => {
           props: { nextToFocus: undefined },
         });
 
-        expect(spectator.component.nextToFocus).toBeUndefined();
+        expect(spectator.component.nextToFocus()).toBeUndefined();
       });
 
       it('should change the value to undefined', () => {
@@ -42,7 +42,7 @@ describe('CellComponent', () => {
 
         spectator.setInput({ nextToFocus: undefined });
 
-        expect(spectator.component.nextToFocus).toBeUndefined();
+        expect(spectator.component.nextToFocus()).toBeUndefined();
       });
     });
 
@@ -54,7 +54,7 @@ describe('CellComponent', () => {
           props: { nextToFocus: testValue },
         });
 
-        expect(spectator.component.nextToFocus).toEqual(testValue);
+        expect(spectator.component.nextToFocus()).toEqual(testValue);
       });
 
       it('should change the value to a valid value', () => {
@@ -66,7 +66,7 @@ describe('CellComponent', () => {
 
         spectator.setInput({ nextToFocus: testValue });
 
-        expect(spectator.component.nextToFocus).toEqual(testValue);
+        expect(spectator.component.nextToFocus()).toEqual(testValue);
       });
     });
 
@@ -74,7 +74,7 @@ describe('CellComponent', () => {
       expect.assertions(1);
 
       await render(CellComponent, {
-        componentProperties: {
+        componentInputs: {
           cellState: createCellState({
             row: 1,
             column: 1,
@@ -91,7 +91,7 @@ describe('CellComponent', () => {
       expect.assertions(1);
 
       await render(CellComponent, {
-        componentProperties: {
+        componentInputs: {
           cellState: createCellState({
             row: 1,
             column: 1,
@@ -107,7 +107,7 @@ describe('CellComponent', () => {
 
   describe('handleKeyEvent', () => {
     it('should only allow the values 1-9 to be entered', async () => {
-      expect.assertions(24);
+      expect.assertions(22);
 
       const cellValueChanged = jest.fn();
 
