@@ -109,8 +109,8 @@ importers:
         specifier: 2.2.0
         version: 2.2.0(rxjs@7.8.1)(typescript@5.4.5)
       '@ngneat/spectator':
-        specifier: 17.0.0
-        version: 17.0.0(@angular/animations@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4)))(@angular/common@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/router@18.0.2(@angular/common@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4))(@angular/platform-browser@18.0.2(@angular/animations@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4)))(@angular/common@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4)))(rxjs@7.8.1))
+        specifier: 18.0.2
+        version: 18.0.2(@angular/animations@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4)))(@angular/common@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/router@18.0.2(@angular/common@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4))(@angular/platform-browser@18.0.2(@angular/animations@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4)))(@angular/common@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4)))(rxjs@7.8.1))
       '@nx/cypress':
         specifier: 19.2.3
         version: 19.2.3(@babel/traverse@7.24.7)(@swc/core@1.4.1)(@types/node@20.14.2)(@zkochan/js-yaml@0.0.7)(cypress@13.11.0)(eslint@8.57.0)(nx@19.2.3(@swc/core@1.4.1))(typescript@5.4.5)
@@ -2505,12 +2505,12 @@ packages:
   '@ndelangen/get-tarball@3.0.9':
     resolution: {integrity: sha512-9JKTEik4vq+yGosHYhZ1tiH/3WpUS0Nh0kej4Agndhox8pAdWhEx5knFVRcb/ya9knCRCs1rPxNrSXTDdfVqpA==}
 
-  '@ngneat/spectator@17.0.0':
-    resolution: {integrity: sha512-MoYHFXlBs6OWog7PNA/Dc77OoXl4Bc4Ijh+AqTScYtlUFjqi2IFxxcV7yBOBwQeQymzPbtlp13wxAAshrJ+WkQ==}
+  '@ngneat/spectator@18.0.2':
+    resolution: {integrity: sha512-DB/do7z7IPIWEukOTWR8Pvp6TLtrkbbQ6SvAvWWQhU3YbI0uqmy3eahrkEuq5OW/J6bzfvmwJPkXxEKEhYMHXw==}
     peerDependencies:
-      '@angular/animations': '>= 17.0.0'
-      '@angular/common': '>= 17.0.0'
-      '@angular/router': '>= 17.0.0'
+      '@angular/animations': '>= 17.3.0'
+      '@angular/common': '>= 17.3.0'
+      '@angular/router': '>= 17.3.0'
 
   '@ngrx/component-store@17.2.0':
     resolution: {integrity: sha512-ywhyoZpkbVIY1t5zf7xfWLGkY0A/fQdMjPehHloDI6bRLrmbllBhQRazwZ+FAGIi2myx1+mGcmAc6FbtIikedA==}
@@ -9919,7 +9919,7 @@ snapshots:
       '@babel/helper-function-name': 7.23.0
       '@babel/helper-member-expression-to-functions': 7.23.0
       '@babel/helper-optimise-call-expression': 7.22.5
-      '@babel/helper-replace-supers': 7.22.20(@babel/core@7.23.9)
+      '@babel/helper-replace-supers': 7.22.20(@babel/core@7.24.5)
       '@babel/helper-skip-transparent-expression-wrappers': 7.22.5
       '@babel/helper-split-export-declaration': 7.22.6
       semver: 6.3.1
@@ -10046,6 +10046,15 @@ snapshots:
       '@babel/helper-split-export-declaration': 7.22.6
       '@babel/helper-validator-identifier': 7.22.20
 
+  '@babel/helper-module-transforms@7.23.3(@babel/core@7.24.5)':
+    dependencies:
+      '@babel/core': 7.24.5
+      '@babel/helper-environment-visitor': 7.22.20
+      '@babel/helper-module-imports': 7.22.15
+      '@babel/helper-simple-access': 7.22.5
+      '@babel/helper-split-export-declaration': 7.22.6
+      '@babel/helper-validator-identifier': 7.22.20
+
   '@babel/helper-module-transforms@7.24.7(@babel/core@7.24.5)':
     dependencies:
       '@babel/core': 7.24.5
@@ -10086,6 +10095,13 @@ snapshots:
   '@babel/helper-replace-supers@7.22.20(@babel/core@7.23.9)':
     dependencies:
       '@babel/core': 7.23.9
+      '@babel/helper-environment-visitor': 7.22.20
+      '@babel/helper-member-expression-to-functions': 7.23.0
+      '@babel/helper-optimise-call-expression': 7.22.5
+
+  '@babel/helper-replace-supers@7.22.20(@babel/core@7.24.5)':
+    dependencies:
+      '@babel/core': 7.24.5
       '@babel/helper-environment-visitor': 7.22.20
       '@babel/helper-member-expression-to-functions': 7.23.0
       '@babel/helper-optimise-call-expression': 7.22.5
@@ -10787,7 +10803,7 @@ snapshots:
   '@babel/plugin-transform-modules-commonjs@7.23.3(@babel/core@7.24.5)':
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/helper-module-transforms': 7.23.3(@babel/core@7.23.9)
+      '@babel/helper-module-transforms': 7.23.3(@babel/core@7.24.5)
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/helper-simple-access': 7.22.5
 
@@ -12343,7 +12359,7 @@ snapshots:
       pump: 3.0.0
       tar-fs: 2.1.1
 
-  '@ngneat/spectator@17.0.0(@angular/animations@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4)))(@angular/common@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/router@18.0.2(@angular/common@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4))(@angular/platform-browser@18.0.2(@angular/animations@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4)))(@angular/common@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4)))(rxjs@7.8.1))':
+  '@ngneat/spectator@18.0.2(@angular/animations@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4)))(@angular/common@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/router@18.0.2(@angular/common@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4))(@angular/platform-browser@18.0.2(@angular/animations@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4)))(@angular/common@18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4)))(rxjs@7.8.1))':
     dependencies:
       '@angular/animations': 18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4))
       '@angular/common': 18.0.2(@angular/core@18.0.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1)
@@ -13780,7 +13796,7 @@ snapshots:
       get-port: 5.1.1
       giget: 1.2.1
       globby: 11.1.0
-      jscodeshift: 0.15.1(@babel/preset-env@7.23.9(@babel/core@7.24.5))
+      jscodeshift: 0.15.1(@babel/preset-env@7.23.9(@babel/core@7.23.9))
       leven: 3.1.0
       ora: 5.4.1
       prettier: 2.8.8
@@ -14200,8 +14216,8 @@ snapshots:
 
   '@testing-library/dom@8.20.1':
     dependencies:
-      '@babel/code-frame': 7.23.5
-      '@babel/runtime': 7.23.9
+      '@babel/code-frame': 7.24.7
+      '@babel/runtime': 7.24.5
       '@types/aria-query': 5.0.4
       aria-query: 5.1.3
       chalk: 4.1.2
@@ -17969,6 +17985,33 @@ snapshots:
   jsbn@0.1.1: {}
 
   jsbn@1.1.0: {}
+
+  jscodeshift@0.15.1(@babel/preset-env@7.23.9(@babel/core@7.23.9)):
+    dependencies:
+      '@babel/core': 7.24.5
+      '@babel/parser': 7.24.7
+      '@babel/plugin-transform-class-properties': 7.23.3(@babel/core@7.24.5)
+      '@babel/plugin-transform-modules-commonjs': 7.23.3(@babel/core@7.24.5)
+      '@babel/plugin-transform-nullish-coalescing-operator': 7.23.4(@babel/core@7.24.5)
+      '@babel/plugin-transform-optional-chaining': 7.23.4(@babel/core@7.24.5)
+      '@babel/plugin-transform-private-methods': 7.23.3(@babel/core@7.24.5)
+      '@babel/preset-flow': 7.23.3(@babel/core@7.24.5)
+      '@babel/preset-typescript': 7.23.3(@babel/core@7.24.5)
+      '@babel/register': 7.23.7(@babel/core@7.24.5)
+      babel-core: 7.0.0-bridge.0(@babel/core@7.24.5)
+      chalk: 4.1.2
+      flow-parser: 0.229.0
+      graceful-fs: 4.2.11
+      micromatch: 4.0.5
+      neo-async: 2.6.2
+      node-dir: 0.1.17
+      recast: 0.23.4
+      temp: 0.8.4
+      write-file-atomic: 2.4.3
+    optionalDependencies:
+      '@babel/preset-env': 7.23.9(@babel/core@7.23.9)
+    transitivePeerDependencies:
+      - supports-color
 
   jscodeshift@0.15.1(@babel/preset-env@7.23.9(@babel/core@7.24.5)):
     dependencies:
