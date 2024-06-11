@@ -30,10 +30,12 @@ import { PencilMarkComponent } from '../pencil-mark/pencil-mark.component';
   template: `
     <div [class.error]="!cellState().valid">
       @if (!cellState().value) {
-        <sud-pencil-mark
-          class="pencil-marks"
-          [numbersToHide]="numbersToHide()"
-        ></sud-pencil-mark>
+        @defer {
+          <sud-pencil-mark
+            class="pencil-marks"
+            [numbersToHide]="numbersToHide()"
+          ></sud-pencil-mark>
+        }
       }
       @if (debug()) {
         <div class="debug">

@@ -7,7 +7,9 @@ import { ButtonHostComponent, GridComponent, GridStore } from '@sud/components';
   imports: [GridComponent, ButtonHostComponent],
   template: ` <div class="game-ui">
       <h1>The awesomeeeest sudoku grid of all times</h1>
-      <nav title="grid actions"><sud-button-host /></nav>
+      <nav title="grid actions">
+        <sud-button-host />
+      </nav>
       <main>
         <sud-grid />
       </main>
