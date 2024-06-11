@@ -78,7 +78,7 @@
     "jest-environment-jsdom": "29.7.0",
     "jest-preset-angular": "14.1.0",
     "nx": "19.2.3",
-    "prettier": "3.3.1",
+    "prettier": "3.3.2",
     "prettier-plugin-organize-attributes": "1.0.0",
     "prettier-plugin-organize-imports": "^3.2.4",
     "storybook": "^8.1.6",
