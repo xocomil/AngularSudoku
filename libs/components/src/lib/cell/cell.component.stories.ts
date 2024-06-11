@@ -3,7 +3,7 @@ import {
   componentWrapperDecorator,
   Meta,
   moduleMetadata,
-  Story,
+  StoryObj,
 } from '@storybook/angular';
 import { createCellState } from '@sud/domain';
 import { CellComponent } from './cell.component';
@@ -22,7 +22,7 @@ export default {
     ${'Odd: ' + story}
     ${'Even: ' + story}
 </div>
-`
+`,
     ),
     moduleMetadata({
       imports: [FormsModule],
@@ -30,45 +30,41 @@ export default {
   ],
 } as Meta;
 
-const Template: Story<CellComponent> = (args: CellComponent) => ({
-  props: args,
-});
-
-export const Primary = Template.bind({});
+type Story = StoryObj<CellComponent>;
 
 const row = -1;
 const column = -1;
 const region = -1;
 
-Primary.args = {
-  cellState: createCellState({ row, column, region, value: 4 }),
+export const Primary: Story = {
+  args: {
+    cellState: createCellState({ row, column, region, value: 4 }),
+  },
 };
 
-export const HasError = Template.bind({});
-
-HasError.args = {
-  errorBackgroundColor: 'rgb(255, 0, 0, .5)',
-  errorColor: 'red',
-  cellState: createCellState({ row, column, region, valid: false, value: 5 }),
+export const HasError: Story = {
+  args: {
+    cellState: createCellState({ row, column, region, valid: false, value: 5 }),
+  },
 };
 
-export const PartOfFocusedRow = Template.bind({});
-
-PartOfFocusedRow.args = {
-  cellState: createCellState({ row, column, region, value: 4 }),
-  focusState: 'row',
+export const PartOfFocusedRow: Story = {
+  args: {
+    cellState: createCellState({ row, column, region, value: 4 }),
+    focusState: 'row',
+  },
 };
 
-export const PartOfFocusedColumn = Template.bind({});
-
-PartOfFocusedColumn.args = {
-  cellState: createCellState({ row, column, region, value: 4 }),
-  focusState: 'col',
+export const PartOfFocusedColumn: Story = {
+  args: {
+    cellState: createCellState({ row, column, region, value: 4 }),
+    focusState: 'col',
+  },
 };
 
-export const Focused = Template.bind({});
-
-Focused.args = {
-  cellState: createCellState({ row, column, region, value: 4 }),
-  focusState: 'self',
+export const Focused: Story = {
+  args: {
+    cellState: createCellState({ row, column, region, value: 4 }),
+    focusState: 'self',
+  },
 };

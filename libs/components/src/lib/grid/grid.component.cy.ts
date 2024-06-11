@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { CellValue } from '@sud/domain';
 import { MountConfig } from 'cypress/angular';
-import { CellValue } from '../../../../domain/src';
 import { GridComponent } from './grid.component';
 import { FocusStates } from './models/focus-state';
 import { GridStore } from './store/grid.store';

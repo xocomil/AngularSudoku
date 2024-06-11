@@ -19,7 +19,7 @@ import {
   GridDirection,
   gridDirectionFromKeyboard,
 } from '@sud/domain';
-import { logObservable } from '@sud/rxjs-operators';
+import { logObservable } from '@xocomil/log-observable';
 import { filter, fromEvent, map, Subject, Subscription, tap } from 'rxjs';
 import { PencilMarkComponent } from '../pencil-mark/pencil-mark.component';
 
@@ -30,10 +30,12 @@ import { PencilMarkComponent } from '../pencil-mark/pencil-mark.component';
   template: `
     <div [class.error]="!cellState().valid">
       @if (!cellState().value) {
-        <sud-pencil-mark
-          class="pencil-marks"
-          [numbersToHide]="numbersToHide()"
-        ></sud-pencil-mark>
+        @defer {
+          <sud-pencil-mark
+            class="pencil-marks"
+            [numbersToHide]="numbersToHide()"
+          ></sud-pencil-mark>
+        }
       }
       @if (debug()) {
         <div class="debug">

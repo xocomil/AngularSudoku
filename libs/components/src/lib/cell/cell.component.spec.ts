@@ -32,7 +32,7 @@ describe('CellComponent', () => {
           props: { nextToFocus: undefined },
         });
 
-        expect(spectator.component.nextToFocus).toBeUndefined();
+        expect(spectator.component.nextToFocus()).toBeUndefined();
       });
 
       it('should change the value to undefined', () => {
@@ -42,7 +42,7 @@ describe('CellComponent', () => {
 
         spectator.setInput({ nextToFocus: undefined });
 
-        expect(spectator.component.nextToFocus).toBeUndefined();
+        expect(spectator.component.nextToFocus()).toBeUndefined();
       });
     });
 
@@ -54,7 +54,7 @@ describe('CellComponent', () => {
           props: { nextToFocus: testValue },
         });
 
-        expect(spectator.component.nextToFocus).toEqual(testValue);
+        expect(spectator.component.nextToFocus()).toEqual(testValue);
       });
 
       it('should change the value to a valid value', () => {
@@ -66,13 +66,15 @@ describe('CellComponent', () => {
 
         spectator.setInput({ nextToFocus: testValue });
 
-        expect(spectator.component.nextToFocus).toEqual(testValue);
+        expect(spectator.component.nextToFocus()).toEqual(testValue);
       });
     });
 
     it('should focus on the input if row and column match', async () => {
+      expect.assertions(1);
+
       await render(CellComponent, {
-        componentProperties: {
+        componentInputs: {
           cellState: createCellState({
             row: 1,
             column: 1,
@@ -86,8 +88,10 @@ describe('CellComponent', () => {
     });
 
     it('should ont focus on the input if row and column do not match', async () => {
+      expect.assertions(1);
+
       await render(CellComponent, {
-        componentProperties: {
+        componentInputs: {
           cellState: createCellState({
             row: 1,
             column: 1,
@@ -103,6 +107,8 @@ describe('CellComponent', () => {
 
   describe('handleKeyEvent', () => {
     it('should only allow the values 1-9 to be entered', async () => {
+      expect.assertions(22);
+
       const cellValueChanged = jest.fn();
 
       await render(CellComponent, {
@@ -135,6 +141,8 @@ describe('CellComponent', () => {
 
   describe('navigationKey$', () => {
     it('send navigationEvents', async () => {
+      expect.assertions(4);
+
       const { fixture } = await render(CellComponent);
 
       const keySpy = subscribeSpyTo(fixture.componentInstance.cellNavigated);

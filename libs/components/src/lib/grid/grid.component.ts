@@ -20,17 +20,19 @@ import { GridStore } from './store/grid.store';
         let columnIndex = $index
       ) {
         <!-- TODO: change gridCellSelect from a pipe to a computed signal-->
-        <sud-cell
-          [class]="['row-' + rowIndex, 'col-' + columnIndex, 'sudoku-cell']"
-          [cellState]="cellState"
-          [focusState]="gridStore.selected() | gridCellSelect: cellState"
-          [nextToFocus]="gridStore.nextToFocus()"
-          [creatingPuzzleMode]="gridStore.creatingPuzzleMode()"
-          (cellFocusReceived)="cellFocused(cellState)"
-          (cellBlurReceived)="cellBlurred()"
-          (cellValueChanged)="cellValueChanged($event, cellState)"
-          (cellNavigated)="cellNavigated($event, cellState)"
-        />
+        @defer {
+          <sud-cell
+            [class]="['row-' + rowIndex, 'col-' + columnIndex, 'sudoku-cell']"
+            [cellState]="cellState"
+            [focusState]="gridStore.selected() | gridCellSelect: cellState"
+            [nextToFocus]="gridStore.nextToFocus()"
+            [creatingPuzzleMode]="gridStore.creatingPuzzleMode()"
+            (cellFocusReceived)="cellFocused(cellState)"
+            (cellBlurReceived)="cellBlurred()"
+            (cellValueChanged)="cellValueChanged($event, cellState)"
+            (cellNavigated)="cellNavigated($event, cellState)"
+          />
+        }
       }
     }
   `,
