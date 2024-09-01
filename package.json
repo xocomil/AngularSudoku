@@ -19,9 +19,11 @@
     "@angular/platform-browser": "18.2.2",
     "@angular/platform-browser-dynamic": "18.2.2",
     "@angular/router": "18.2.2",
-    "@ngrx/component-store": "17.2.0",
-    "@ngrx/eslint-plugin": "17.2.0",
+    "@ngrx/component-store": "18.0.2",
+    "@ngrx/eslint-plugin": "18.0.2",
+    "@ngrx/operators": "^18.0.0",
     "@nx/angular": "19.6.4",
+    "@storybook/addon-interactions": "^8.2.9",
     "@testing-library/angular": "16.0.0",
     "@testing-library/dom": "10.1.0",
     "@testing-library/user-event": "14.5.2",
@@ -30,7 +32,7 @@
     "rxjs": "7.8.1",
     "tslib": "2.6.3",
     "zone.js": "0.14.4",
-    "@storybook/addon-interactions": "^8.2.9"
+    "@ngrx/signals": "^18.0.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "18.2.2",
@@ -49,6 +51,7 @@
     "@faker-js/faker": "8.4.1",
     "@hirez_io/observer-spy": "2.2.0",
     "@ngneat/spectator": "18.0.2",
+    "@ngrx/signals": "^18.0.2",
     "@nx/cypress": "19.6.4",
     "@nx/eslint": "19.6.4",
     "@nx/eslint-plugin": "19.6.4",

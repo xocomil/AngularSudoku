@@ -33,11 +33,17 @@ importers:
         specifier: 18.2.2
         version: 18.2.2(@angular/common@18.2.2(@angular/core@18.2.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@18.2.2(rxjs@7.8.1)(zone.js@0.14.4))(@angular/platform-browser@18.2.2(@angular/animations@18.2.2(@angular/core@18.2.2(rxjs@7.8.1)(zone.js@0.14.4)))(@angular/common@18.2.2(@angular/core@18.2.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1))(@angular/core@18.2.2(rxjs@7.8.1)(zone.js@0.14.4)))(rxjs@7.8.1)
       '@ngrx/component-store':
-        specifier: 17.2.0
-        version: 17.2.0(@angular/core@18.2.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1)
+        specifier: 18.0.2
+        version: 18.0.2(@angular/core@18.2.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1)
       '@ngrx/eslint-plugin':
-        specifier: 17.2.0
-        version: 17.2.0(eslint@8.57.0)(typescript@5.5.4)
+        specifier: 18.0.2
+        version: 18.0.2(@typescript-eslint/utils@7.16.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4)
+      '@ngrx/operators':
+        specifier: ^18.0.0
+        version: 18.0.1(rxjs@7.8.1)
+      '@ngrx/signals':
+        specifier: ^18.0.2
+        version: 18.0.2(@angular/core@18.2.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1)
       '@nx/angular':
         specifier: 19.6.4
         version: 19.6.4(@angular-devkit/build-angular@18.2.2(@angular/compiler-cli@18.2.2(@angular/compiler@18.2.2(@angular/core@18.2.2(rxjs@7.8.1)(zone.js@0.14.4)))(typescript@5.5.4))(@swc/core@1.4.1)(@types/node@20.14.2)(chokidar@3.6.0)(html-webpack-plugin@5.6.0(webpack@5.91.0(@swc/core@1.4.1)(esbuild@0.21.3)))(jest-environment-jsdom@29.7.0)(jest@29.7.0(@types/node@20.14.2)(ts-node@10.9.2(@swc/core@1.4.1)(@types/node@20.14.2)(typescript@5.5.4)))(stylus@0.59.0)(typescript@5.5.4))(@angular-devkit/core@18.2.2(chokidar@3.6.0))(@angular-devkit/schematics@18.2.2(chokidar@3.6.0))(@babel/traverse@7.25.6)(@schematics/angular@18.2.2(chokidar@3.6.0))(@swc/core@1.4.1)(@types/node@20.14.2)(@zkochan/js-yaml@0.0.7)(esbuild@0.21.3)(eslint@8.57.0)(html-webpack-plugin@5.6.0(webpack@5.91.0(@swc/core@1.4.1)(esbuild@0.21.3)))(nx@19.6.4(@swc/core@1.4.1))(rxjs@7.8.1)(typescript@5.5.4)
@@ -2353,22 +2359,32 @@ packages:
       '@angular/common': '>= 17.3.0'
       '@angular/router': '>= 17.3.0'
 
-  '@ngrx/component-store@17.2.0':
-    resolution: {integrity: sha512-ywhyoZpkbVIY1t5zf7xfWLGkY0A/fQdMjPehHloDI6bRLrmbllBhQRazwZ+FAGIi2myx1+mGcmAc6FbtIikedA==}
+  '@ngrx/component-store@18.0.2':
+    resolution: {integrity: sha512-IB7ZKFqjDt4duQbfYqXxAOKf9Si9O1HFodqbNCSgi7gnovK/frf/H429a+lYOyItPcpno3ECom6/1k8pE8fWlg==}
     peerDependencies:
-      '@angular/core': ^17.0.0
+      '@angular/core': ^18.0.0
       rxjs: ^6.5.3 || ^7.5.0
 
-  '@ngrx/eslint-plugin@17.2.0':
-    resolution: {integrity: sha512-fkbv98Pch92R0AYj5pzU9YWicn5JZWVex3BqSdfV1xsuTk53QDhZZ0yIDSqjvjubv4J6GGxm5dnpEjceE4Wx/g==}
+  '@ngrx/eslint-plugin@18.0.2':
+    resolution: {integrity: sha512-4ADWIE5zv1krT74Kv9dDJjtbLMbTd9BmVVuSx1MJW5RXzd05aBLWie91Dd3agtl0PFBEgT1ErxwoEF5wOcrh6w==}
     peerDependencies:
-      eslint: '>=8.0.0'
+      '@typescript-eslint/utils': ^7.11.0 || ^8.0.0-alpha.20
+      eslint: ^8.57.0 || ^9.0.0
       typescript: '*'
 
-  '@ngrx/operators@17.0.0-beta.0':
-    resolution: {integrity: sha512-EbO8AONuQ6zo2v/mPyBOi4y0CTAp1x4Z+bx7ZF+Pd8BL5ma53BTCL1TmzaeK5zPUe0yApudLk9/ZbHXPnVox5A==}
+  '@ngrx/operators@18.0.1':
+    resolution: {integrity: sha512-M+QMrHNKgcuiLaRGZxJ4aQi5/OCRfKC4+T/63dsHyLFZ53/FFpF6a/ytSO1Q+tzOplZ5o99S+i8FVaZqNQ3LmQ==}
     peerDependencies:
       rxjs: ^6.5.3 || ^7.4.0
+
+  '@ngrx/signals@18.0.2':
+    resolution: {integrity: sha512-FXmcY2cmkbhZtg9k8Ntq69SyelGmmb6fWtdButH4T8GGFH0o3f1FZTR829j4ynphy8SzuDhD/pzrnpWcV481oQ==}
+    peerDependencies:
+      '@angular/core': ^18.0.0
+      rxjs: ^6.5.3 || ^7.4.0
+    peerDependenciesMeta:
+      rxjs:
+        optional: true
 
   '@ngtools/webpack@18.2.2':
     resolution: {integrity: sha512-YhADmc+lVjLt3kze07A+yLry2yzcghdclu+7D3EDfa6fG2Pk33HK3MY2I0Z0BO+Ivoq7cV7yxm+naR+Od0Y5ng==}
@@ -3376,12 +3392,6 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
-
-  '@typescript-eslint/experimental-utils@5.62.0':
-    resolution: {integrity: sha512-RTXpeB3eMkpoclG3ZHft6vG/Z30azNHuqY6wKPBHlVMZFuEvrtlEDe8gMqDb+SO+9hjC/pLekeSCryf9vMZlCw==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    peerDependencies:
-      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
 
   '@typescript-eslint/parser@7.16.0':
     resolution: {integrity: sha512-ar9E+k7CU8rWi2e5ErzQiC93KKEFAXA2Kky0scAlPcxYblLt8+XZuHUZwlyfXILyQa95P6lQg+eZgh/dDs3+Vw==}
@@ -4949,12 +4959,6 @@ packages:
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
-
-  eslint-etc@5.2.1:
-    resolution: {integrity: sha512-lFJBSiIURdqQKq9xJhvSJFyPA+VeTh5xvk24e8pxVL7bwLBtGF60C/KRkLTMrvCZ6DA3kbPuYhLWY0TZMlqTsg==}
-    peerDependencies:
-      eslint: ^8.0.0
-      typescript: '>=4.0.0'
 
   eslint-plugin-cypress@3.3.0:
     resolution: {integrity: sha512-HPHMPzYBIshzJM8wqgKSKHG2p/8R0Gbg4Pb3tcdC9WrmkuqxiKxSKbjunUrajhV5l7gCIFrh1P7C7GuBqH6YuQ==}
@@ -8583,13 +8587,6 @@ packages:
   tsscmp@1.0.6:
     resolution: {integrity: sha512-LxhtAkPDTkVCMQjt2h6eBVY28KCjikZqZfMcC15YBeNjkgUpdCfBu5HoiOTDu86v6smE8yOjyEktJ8hlbANHQA==}
     engines: {node: '>=0.6.x'}
-
-  tsutils-etc@1.4.2:
-    resolution: {integrity: sha512-2Dn5SxTDOu6YWDNKcx1xu2YUy6PUeKrWZB/x2cQ8vY2+iz3JRembKn/iZ0JLT1ZudGNwQQvtFX9AwvRHbXuPUg==}
-    hasBin: true
-    peerDependencies:
-      tsutils: ^3.0.0
-      typescript: '>=4.0.0'
 
   tsutils@3.21.0:
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
@@ -12670,28 +12667,32 @@ snapshots:
       replace-in-file: 6.2.0
       tslib: 2.6.3
 
-  '@ngrx/component-store@17.2.0(@angular/core@18.2.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1)':
+  '@ngrx/component-store@18.0.2(@angular/core@18.2.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1)':
     dependencies:
       '@angular/core': 18.2.2(rxjs@7.8.1)(zone.js@0.14.4)
-      '@ngrx/operators': 17.0.0-beta.0(rxjs@7.8.1)
+      '@ngrx/operators': 18.0.1(rxjs@7.8.1)
       rxjs: 7.8.1
       tslib: 2.6.3
 
-  '@ngrx/eslint-plugin@17.2.0(eslint@8.57.0)(typescript@5.5.4)':
+  '@ngrx/eslint-plugin@18.0.2(@typescript-eslint/utils@7.16.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4)':
     dependencies:
-      '@typescript-eslint/experimental-utils': 5.62.0(eslint@8.57.0)(typescript@5.5.4)
+      '@typescript-eslint/utils': 7.16.0(eslint@8.57.0)(typescript@5.5.4)
       eslint: 8.57.0
-      eslint-etc: 5.2.1(eslint@8.57.0)(typescript@5.5.4)
-      semver: 7.6.2
+      semver: 7.6.3
       strip-json-comments: 3.1.1
       typescript: 5.5.4
-    transitivePeerDependencies:
-      - supports-color
 
-  '@ngrx/operators@17.0.0-beta.0(rxjs@7.8.1)':
+  '@ngrx/operators@18.0.1(rxjs@7.8.1)':
     dependencies:
       rxjs: 7.8.1
       tslib: 2.6.3
+
+  '@ngrx/signals@18.0.2(@angular/core@18.2.2(rxjs@7.8.1)(zone.js@0.14.4))(rxjs@7.8.1)':
+    dependencies:
+      '@angular/core': 18.2.2(rxjs@7.8.1)(zone.js@0.14.4)
+      tslib: 2.6.3
+    optionalDependencies:
+      rxjs: 7.8.1
 
   '@ngtools/webpack@18.2.2(@angular/compiler-cli@18.2.2(@angular/compiler@18.2.2(@angular/core@18.2.2(rxjs@7.8.1)(zone.js@0.14.4)))(typescript@5.5.4))(typescript@5.5.4)(webpack@5.94.0(@swc/core@1.4.1)(esbuild@0.23.0))':
     dependencies:
@@ -14382,14 +14383,6 @@ snapshots:
       typescript: 5.5.4
     transitivePeerDependencies:
       - supports-color
-
-  '@typescript-eslint/experimental-utils@5.62.0(eslint@8.57.0)(typescript@5.5.4)':
-    dependencies:
-      '@typescript-eslint/utils': 5.62.0(eslint@8.57.0)(typescript@5.5.4)
-      eslint: 8.57.0
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
 
   '@typescript-eslint/parser@7.16.0(eslint@8.57.0)(typescript@5.5.4)':
     dependencies:
@@ -16287,16 +16280,6 @@ snapshots:
   eslint-config-prettier@9.1.0(eslint@8.57.0):
     dependencies:
       eslint: 8.57.0
-
-  eslint-etc@5.2.1(eslint@8.57.0)(typescript@5.5.4):
-    dependencies:
-      '@typescript-eslint/experimental-utils': 5.62.0(eslint@8.57.0)(typescript@5.5.4)
-      eslint: 8.57.0
-      tsutils: 3.21.0(typescript@5.5.4)
-      tsutils-etc: 1.4.2(tsutils@3.21.0(typescript@5.5.4))(typescript@5.5.4)
-      typescript: 5.5.4
-    transitivePeerDependencies:
-      - supports-color
 
   eslint-plugin-cypress@3.3.0(eslint@8.57.0):
     dependencies:
@@ -20678,13 +20661,6 @@ snapshots:
   tslib@2.6.3: {}
 
   tsscmp@1.0.6: {}
-
-  tsutils-etc@1.4.2(tsutils@3.21.0(typescript@5.5.4))(typescript@5.5.4):
-    dependencies:
-      '@types/yargs': 17.0.32
-      tsutils: 3.21.0(typescript@5.5.4)
-      typescript: 5.5.4
-      yargs: 17.7.2
 
   tsutils@3.21.0(typescript@5.5.4):
     dependencies:

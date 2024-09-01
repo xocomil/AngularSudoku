@@ -1,5 +1,6 @@
 import { Injectable, Signal } from '@angular/core';
-import { ComponentStore, tapResponse } from '@ngrx/component-store';
+import { ComponentStore } from '@ngrx/component-store';import { tapResponse } from '@ngrx/operators';
+
 import {
   CellState,
   CellValue,
