@@ -1,47 +1,28 @@
 import { Injectable, Signal } from '@angular/core';
-import { ComponentStore } from '@ngrx/component-store';import { tapResponse } from '@ngrx/operators';
+import { ComponentStore } from '@ngrx/component-store';
+import { tapResponse } from '@ngrx/operators';
 
 import {
+  allPencilMarks,
   CellState,
   CellValue,
-  GridDirection,
-  allPencilMarks,
   directionModifierValues,
+  GridDirection,
   isNavigationDirection,
   valueIsCellValue,
 } from '@sud/domain';
 import { errorAnalyzer } from '@sud/fast-analayzers';
 import { logObservable } from '@xocomil/log-observable';
 import { create } from 'mutative';
-import { Observable, map, of, tap, withLatestFrom } from 'rxjs';
+import { map, Observable, of, tap, withLatestFrom } from 'rxjs';
 import { solveOneCell } from '../solvers/wavefunction-collapse.solver';
+import {
+  CellValueChangedOptions,
+  GridCommand,
+  GridState,
+  initialState,
+} from './grid.state';
 import { createGridState } from './grid.store.helpers';
-
-type GridCommand = CellValueChangedOptions & {
-  previousValue?: CellValue;
-  value?: CellValue;
-  invalidValues: CellValue[];
-};
-
-export interface GridState {
-  grid: CellState[][];
-  selected?: { row: number; column: number; region: number };
-  nextToFocus?: { row: number; column: number };
-  gameWon: boolean;
-  creatingPuzzleMode: boolean;
-  hasError: boolean;
-  commandStack: GridCommand[];
-  currentCommandIndex: number;
-}
-
-const initialState: GridState = {
-  grid: createGridState(),
-  gameWon: false,
-  creatingPuzzleMode: false,
-  hasError: false,
-  commandStack: [],
-  currentCommandIndex: -1,
-};
 
 const updateSelected = (cellState: CellState) =>
   write((state: GridState) => {
@@ -89,12 +70,6 @@ function checkGridCompleted(grid: CellState[][]): boolean {
   return true;
 }
 
-interface CellValueChangedOptions {
-  value?: CellValue;
-  row: number;
-  column: number;
-}
-
 const findNextValue = (
   cellState: CellState,
   invalidValues: CellValue[] = [],
@@ -116,7 +91,7 @@ const findNextValue = (
 };
 
 @Injectable()
-export class GridStore extends ComponentStore<GridState> {
+export class GridOldStore extends ComponentStore<GridState> {
   readonly grid = this.selectSignal(({ grid }) => grid);
   readonly #grid$ = this.select((state) => state.grid);
   readonly gameWon = this.selectSignal(({ gameWon }) => gameWon);
@@ -159,7 +134,7 @@ export class GridStore extends ComponentStore<GridState> {
     );
 
   constructor() {
-    super(initialState);
+    super(initialState());
   }
 
   updateSelected = this.updater((state, cellState: CellState): GridState => {
