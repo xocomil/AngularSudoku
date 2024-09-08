@@ -21,14 +21,16 @@ import {
   GridCommand,
   GridState,
   initialState,
+  noCellSelected,
+  noCellToFocus,
 } from './grid.state';
 import { createGridState } from './grid.store.helpers';
 
 const updateSelected = (cellState: CellState) =>
   write((state: GridState) => {
-    state.nextToFocus = undefined;
+    state._nextToFocus = undefined;
 
-    state.selected = {
+    state._selected = {
       row: cellState.row,
       column: cellState.column,
       region: cellState.region,
@@ -47,16 +49,13 @@ const updateCellValue = (
   });
 
 const resetSelected = write((state: GridState) => {
-  state.selected = undefined;
+  state._selected = undefined;
 });
 
 const updateNextToFocus = (cellState: CellState) =>
   write((state: GridState) => {
-    state.nextToFocus = { row: cellState.row, column: cellState.column };
+    state._nextToFocus = { row: cellState.row, column: cellState.column };
   });
-
-export const noCellSelected = Object.freeze([-1, -1, -1] as const);
-export const noCellToFocus = Object.freeze([-1, -1] as const);
 
 function checkGridCompleted(grid: CellState[][]): boolean {
   for (const row of grid) {
@@ -103,7 +102,7 @@ export class GridOldStore extends ComponentStore<GridState> {
   );
   readonly hasError$ = this.select((state) => state.hasError);
   readonly selected: Signal<readonly [number, number, number]> =
-    this.selectSignal(({ selected }) => {
+    this.selectSignal(({ _selected: selected }) => {
       if (selected) {
         return [selected.row, selected.column, selected.region];
       }
@@ -111,7 +110,7 @@ export class GridOldStore extends ComponentStore<GridState> {
       return noCellSelected;
     });
   readonly nextToFocus: Signal<readonly [number, number]> = this.selectSignal(
-    ({ nextToFocus }) => {
+    ({ _nextToFocus: nextToFocus }) => {
       if (nextToFocus) {
         return [nextToFocus.row, nextToFocus.column];
       }

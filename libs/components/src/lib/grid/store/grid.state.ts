@@ -9,8 +9,8 @@ export type GridCommand = CellValueChangedOptions & {
 
 export interface GridState {
   grid: CellState[][];
-  selected?: { row: number; column: number; region: number };
-  nextToFocus?: { row: number; column: number };
+  _selected: { row: number; column: number; region: number } | undefined;
+  _nextToFocus: { row: number; column: number } | undefined;
   gameWon: boolean;
   creatingPuzzleMode: boolean;
   hasError: boolean;
@@ -25,6 +25,8 @@ export const initialState = (): GridState => ({
   hasError: false,
   commandStack: [],
   currentCommandIndex: -1,
+  _selected: undefined,
+  _nextToFocus: undefined,
 });
 
 export interface CellValueChangedOptions {
@@ -32,3 +34,6 @@ export interface CellValueChangedOptions {
   row: number;
   column: number;
 }
+
+export const noCellSelected = Object.freeze([-1, -1, -1] as const);
+export const noCellToFocus = Object.freeze([-1, -1] as const);
