@@ -115,14 +115,14 @@ importers:
         specifier: 3.11.0
         version: 3.11.0(webpack@5.94.0(@swc/core@1.4.1)(esbuild@0.21.3))
       '@faker-js/faker':
-        specifier: 8.4.1
-        version: 8.4.1
+        specifier: 9.0.0
+        version: 9.0.0
       '@hirez_io/observer-spy':
         specifier: 2.2.0
         version: 2.2.0(rxjs@7.8.1)(typescript@5.5.4)
       '@ngneat/spectator':
-        specifier: 18.0.2
-        version: 18.0.2(@angular/animations@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/router@18.2.3(@angular/common@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@18.2.3(@angular/animations@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1))
+        specifier: 19.0.0
+        version: 19.0.0(@angular/animations@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/router@18.2.3(@angular/common@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@18.2.3(@angular/animations@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1))
       '@nx/cypress':
         specifier: 19.6.5
         version: 19.6.5(@babel/traverse@7.25.6)(@swc/core@1.4.1)(@types/node@20.14.2)(@zkochan/js-yaml@0.0.7)(cypress@13.14.2)(eslint@8.57.0)(nx@19.6.5(@swc/core@1.4.1))(typescript@5.5.4)
@@ -1743,9 +1743,9 @@ packages:
     resolution: {integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@faker-js/faker@8.4.1':
-    resolution: {integrity: sha512-XQ3cU+Q8Uqmrbf2e0cIC/QN43sTBSC8KF12u29Mb47tWrt2hAgBXSgpZMj4Ao8Uk0iJcU99QsOCaIL8934obCg==}
-    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
+  '@faker-js/faker@9.0.0':
+    resolution: {integrity: sha512-dTDHJSmz6c1OJ6HO7jiUiIb4sB20Dlkb3pxYsKm0qTXm2Bmj97rlXIhlvaFsW2rvCi+OLlwKLVSS6ZxFUVZvjQ==}
+    engines: {node: '>=18.0.0', npm: '>=9.0.0'}
 
   '@hirez_io/observer-spy@2.2.0':
     resolution: {integrity: sha512-G9nv87vjRILgB/X1AtKBv1DZX7yXSYAOCXon/f+QULKoXVhVehYUF5Lv0SQ97ebf1sA48Z2CyQ9h2v4Pz6DgaQ==}
@@ -2096,12 +2096,12 @@ packages:
   '@napi-rs/wasm-runtime@0.2.4':
     resolution: {integrity: sha512-9zESzOO5aDByvhIAsOy9TbpZ0Ur2AJbUI7UT73kcUTS2mxAMHOBaa1st/jAymNoCtvrit99kkzT1FZuXVcgfIQ==}
 
-  '@ngneat/spectator@18.0.2':
-    resolution: {integrity: sha512-DB/do7z7IPIWEukOTWR8Pvp6TLtrkbbQ6SvAvWWQhU3YbI0uqmy3eahrkEuq5OW/J6bzfvmwJPkXxEKEhYMHXw==}
+  '@ngneat/spectator@19.0.0':
+    resolution: {integrity: sha512-u3G0rpepKuwK9alYDxyTvQ5P8XK6MXiToL36O3Lt1Q3seUT6hkpbkAAGD/pG8r+cY+Wt5zM7P8cF+1m7vWUGUA==}
     peerDependencies:
-      '@angular/animations': '>= 17.3.0'
-      '@angular/common': '>= 17.3.0'
-      '@angular/router': '>= 17.3.0'
+      '@angular/animations': '>= 18.0.0'
+      '@angular/common': '>= 18.0.0'
+      '@angular/router': '>= 18.0.0'
 
   '@ngrx/component-store@18.0.2':
     resolution: {integrity: sha512-IB7ZKFqjDt4duQbfYqXxAOKf9Si9O1HFodqbNCSgi7gnovK/frf/H429a+lYOyItPcpno3ECom6/1k8pE8fWlg==}
@@ -5592,9 +5592,6 @@ packages:
 
   is-set@2.0.2:
     resolution: {integrity: sha512-+2cnTEZeY5z/iXGbLhPrOAaK/Mau5k5eXq9j14CpRTftq0pAJu2MwVRSZhyZWBzx3o6X795Lz6Bpb6R0GKf37g==}
-
-  is-shared-array-buffer@1.0.2:
-    resolution: {integrity: sha512-sqN2UDu1/0y6uvXyStCOzyhAjCSlHceFoMKJW8W9EU9cvic/QdsZ0kEU93HEy3IUEFZIiH/3w+AH/UQbPHNdhA==}
 
   is-shared-array-buffer@1.0.3:
     resolution: {integrity: sha512-nA2hv5XIhLR3uVzDDfCIknerhx8XUKnstuOERPNNIinXG7v9u+ohXF67vxm4TPTEPU6lm61ZkwP3c9PCB97rhg==}
@@ -10741,7 +10738,7 @@ snapshots:
 
   '@eslint/js@8.57.0': {}
 
-  '@faker-js/faker@8.4.1': {}
+  '@faker-js/faker@9.0.0': {}
 
   '@hirez_io/observer-spy@2.2.0(rxjs@7.8.1)(typescript@5.5.4)':
     dependencies:
@@ -11266,7 +11263,7 @@ snapshots:
       '@emnapi/runtime': 1.2.0
       '@tybys/wasm-util': 0.9.0
 
-  '@ngneat/spectator@18.0.2(@angular/animations@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/router@18.2.3(@angular/common@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@18.2.3(@angular/animations@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1))':
+  '@ngneat/spectator@19.0.0(@angular/animations@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/router@18.2.3(@angular/common@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@18.2.3(@angular/animations@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1))':
     dependencies:
       '@angular/animations': 18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0))
       '@angular/common': 18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1)
@@ -12647,7 +12644,7 @@ snapshots:
   '@testing-library/dom@8.20.1':
     dependencies:
       '@babel/code-frame': 7.24.7
-      '@babel/runtime': 7.24.5
+      '@babel/runtime': 7.25.0
       '@types/aria-query': 5.0.4
       aria-query: 5.1.3
       chalk: 4.1.2
@@ -14352,7 +14349,7 @@ snapshots:
       is-array-buffer: 3.0.4
       is-date-object: 1.0.5
       is-regex: 1.1.4
-      is-shared-array-buffer: 1.0.2
+      is-shared-array-buffer: 1.0.3
       isarray: 2.0.5
       object-is: 1.1.5
       object-keys: 1.1.1
@@ -14361,7 +14358,7 @@ snapshots:
       side-channel: 1.0.5
       which-boxed-primitive: 1.0.2
       which-collection: 1.0.1
-      which-typed-array: 1.1.14
+      which-typed-array: 1.1.15
 
   deep-is@0.1.4: {}
 
@@ -15771,7 +15768,7 @@ snapshots:
   internal-slot@1.0.7:
     dependencies:
       es-errors: 1.3.0
-      hasown: 2.0.1
+      hasown: 2.0.2
       side-channel: 1.0.5
 
   ip-address@9.0.5:
@@ -15897,10 +15894,6 @@ snapshots:
       has-tostringtag: 1.0.2
 
   is-set@2.0.2: {}
-
-  is-shared-array-buffer@1.0.2:
-    dependencies:
-      call-bind: 1.0.7
 
   is-shared-array-buffer@1.0.3:
     dependencies:
