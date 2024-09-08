@@ -1,6 +1,9 @@
 {
   "extends": ["../../.eslintrc.json"],
   "ignorePatterns": ["!**/*"],
+  "parserOptions": {
+    "project": ["libs/components/tsconfig.*?.json", "libs/components/.storybook/tsconfig.json", "libs/components/cypress/tsconfig.json"]
+  },
   "overrides": [
     {
       "files": ["*.ts"],
