@@ -14,19 +14,25 @@ export interface GridState {
   gameWon: boolean;
   creatingPuzzleMode: boolean;
   hasError: boolean;
-  commandStack: GridCommand[];
-  currentCommandIndex: number;
 }
+
+export type GridCommandStack = {
+  _commandStack: GridCommand[];
+  _lastCommandRunIndex: number;
+};
 
 export const initialState = (): GridState => ({
   grid: createGridState(),
   gameWon: false,
   creatingPuzzleMode: false,
   hasError: false,
-  commandStack: [],
-  currentCommandIndex: -1,
   _selected: undefined,
   _nextToFocus: undefined,
+});
+
+export const initialCommandStack = (): GridCommandStack => ({
+  _commandStack: [],
+  _lastCommandRunIndex: -1,
 });
 
 export interface CellValueChangedOptions {
