@@ -2,14 +2,26 @@ import { computed } from '@angular/core';
 import {
   patchState,
   signalStoreFeature,
+  type,
   withComputed,
   withMethods,
   withState,
 } from '@ngrx/signals';
+import { CellValue } from '@sud/domain';
 import { GridCommand, initialCommandStack } from './grid.state';
 
-export function withUndoRedo() {
+export function withUndoRedo<_>() {
   return signalStoreFeature(
+    type<{
+      methods: {
+        _updateCellValue(value: {
+          value?: CellValue;
+          row: number;
+          column: number;
+          isReadonly?: boolean;
+        }): void;
+      };
+    }>(),
     withState(initialCommandStack()),
     withComputed((state) => ({
       _currentCommand: computed(
@@ -54,10 +66,9 @@ export function withUndoRedo() {
           return;
         }
 
-        // TODO: Add back when adding changeCellValue
-        // const command = _commandStack()[lastCommandRunIndex];
+        const command = _commandStack()[lastCommandRunIndex];
 
-        // this.#changeCellValue({ ...command, value: command.previousValue });
+        state._updateCellValue({ ...command, value: command.previousValue });
         state._changeCurrentCommandIndex(lastCommandRunIndex - 1);
       },
       redo() {
@@ -69,10 +80,9 @@ export function withUndoRedo() {
           return;
         }
 
-        // TODO: Add back when adding changeCellValue
-        // const command = _commandStack()[lastCommandRunIndex + 1];
-        //
-        // this.#changeCellValue(command);
+        const command = _commandStack()[lastCommandRunIndex + 1];
+
+        state._updateCellValue(command);
         state._changeCurrentCommandIndex(lastCommandRunIndex + 1);
       },
     })),
