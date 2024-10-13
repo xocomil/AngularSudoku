@@ -1,11 +1,19 @@
 {
   "migrations": [
     {
-      "description": "Add @testing-library/dom as a dev dependency",
-      "version": "17.0.0-beta.3",
-      "factory": "./dtl-as-dev-dependency/index",
-      "package": "@testing-library/angular",
-      "name": "atl-add-dtl-as-dev-dependency"
+      "version": "20.0.0-beta.7",
+      "description": "Migration for v20.0.0-beta.7",
+      "implementation": "./src/migrations/update-20-0-0/move-use-daemon-process",
+      "package": "nx",
+      "name": "move-use-daemon-process"
+    },
+    {
+      "cli": "nx",
+      "version": "20.0.0-beta.5",
+      "description": "replace getJestProjects with getJestProjectsAsync",
+      "implementation": "./src/migrations/update-20-0-0/replace-getJestProjects-with-getJestProjectsAsync",
+      "package": "@nx/jest",
+      "name": "replace-getJestProjects-with-getJestProjectsAsync"
     }
   ]
 }
