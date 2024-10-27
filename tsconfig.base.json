@@ -22,7 +22,8 @@
       ],
       "@sud/fast-analayzers": ["libs/fast-analyzers/src/index.ts"],
       "@sud/grid-analyzers": ["libs/grid-analyzers/src/index.ts"],
-      "@sud/pipes": ["libs/pipes/src/index.ts"]
+      "@sud/pipes": ["libs/pipes/src/index.ts"],
+      "@sud/tools.functional": ["libs/tools/src/lib/functional/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
