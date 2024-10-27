@@ -12,6 +12,11 @@ export function withGrid() {
   return signalStoreFeature(
     withState(initialState()),
     withGridComputed(),
+    withMethods(({ lastCellUpdated$ }) => ({
+      _cellUpdated(row: number, column: number) {
+        lastCellUpdated$().next([row, column]);
+      },
+    })),
     withMethods((state) => ({
       _updateCellValue({
         value,
@@ -27,6 +32,8 @@ export function withGrid() {
         patchState(state, {
           grid: updateGrid(state.grid(), row, column, value, isReadonly),
         });
+
+        state._cellUpdated(row, column);
       },
     })),
   );
