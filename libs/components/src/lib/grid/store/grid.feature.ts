@@ -38,6 +38,9 @@ export function withGrid() {
       _updateGridHasError(hasError: boolean) {
         patchState(state, { hasError });
       },
+      _updateGameWon(gameWon: boolean) {
+        patchState(state, { gameWon });
+      },
     })),
   );
 }
