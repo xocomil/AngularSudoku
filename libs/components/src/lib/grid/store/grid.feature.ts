@@ -35,6 +35,9 @@ export function withGrid() {
 
         state._cellUpdated(row, column);
       },
+      _updateGridHasError(hasError: boolean) {
+        patchState(state, { hasError });
+      },
     })),
   );
 }

@@ -1,4 +1,5 @@
 import { signalStore } from '@ngrx/signals';
+import { withGridErrors } from './grid-errors.feature';
 import { withManageSelected } from './grid-manage-selected.feature';
 import { withGrid } from './grid.feature';
 import { withUndoRedo } from './grid.undo-redo.feature';
@@ -7,6 +8,7 @@ import { withPuzzleMode } from './puzzle-mode.feature';
 
 export const GridStore = signalStore(
   withGrid(),
+  withGridErrors(),
   withManageSelected(),
   withPuzzleMode(),
   withUndoRedo(),
