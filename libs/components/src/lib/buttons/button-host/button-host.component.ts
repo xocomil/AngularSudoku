@@ -8,10 +8,9 @@ import { CellValue } from '@sud/domain';
 import { GridStore } from '../../grid/store/grid.store';
 
 @Component({
-  selector: 'sud-button-host',
-  standalone: true,
-  imports: [],
-  template: `
+    selector: 'sud-button-host',
+    imports: [],
+    template: `
     <ul>
       <li>
         <button
@@ -40,8 +39,8 @@ import { GridStore } from '../../grid/store/grid.store';
       <li><button (click)="redo()" type="button">Redo</button></li>
     </ul>
   `,
-  styleUrls: ['./button-host.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrls: ['./button-host.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ButtonHostComponent {
   readonly #gridStore = inject(GridStore);

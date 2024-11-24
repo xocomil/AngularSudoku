@@ -24,10 +24,9 @@ import { filter, fromEvent, map, Subject, Subscription, tap } from 'rxjs';
 import { PencilMarkComponent } from '../pencil-mark/pencil-mark.component';
 
 @Component({
-  selector: 'sud-cell',
-  standalone: true,
-  imports: [CommonModule, FormsModule, PencilMarkComponent],
-  template: `
+    selector: 'sud-cell',
+    imports: [CommonModule, FormsModule, PencilMarkComponent],
+    template: `
     <div [class.error]="!cellState().valid">
       @if (!cellState().value) {
         @defer {
@@ -62,12 +61,12 @@ import { PencilMarkComponent } from '../pencil-mark/pencil-mark.component';
       />
     </div>
   `,
-  styleUrls: ['./cell.component.scss'],
-  // eslint-disable-next-line @angular-eslint/no-host-metadata-property
-  host: {
-    '[attr.data-focused-state]': 'focusState()',
-  },
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrls: ['./cell.component.scss'],
+    // eslint-disable-next-line @angular-eslint/no-host-metadata-property
+    host: {
+        '[attr.data-focused-state]': 'focusState()',
+    },
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CellComponent implements OnInit, OnDestroy {
   creatingPuzzleMode = input(false);

@@ -5,10 +5,9 @@ import { GridCellSelectPipe } from './grid-cell-select.pipe';
 import { GridStore } from './store/grid.store';
 
 @Component({
-  selector: 'sud-grid',
-  standalone: true,
-  imports: [CellComponent, GridCellSelectPipe],
-  template: `
+    selector: 'sud-grid',
+    imports: [CellComponent, GridCellSelectPipe],
+    template: `
     @for (
       row of gridStore.grid();
       track rowTrackByFunction(rowIndex, row);
@@ -36,8 +35,8 @@ import { GridStore } from './store/grid.store';
       }
     }
   `,
-  styleUrls: ['./grid.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrls: ['./grid.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridComponent {
   protected readonly gridStore = inject(GridStore);
