@@ -6,6 +6,7 @@ import { withGrid } from './grid.feature';
 import { withUndoRedo } from './grid.undo-redo.feature';
 import { withPencilMarks } from './pencil-marks.feature';
 import { withPuzzleMode } from './puzzle-mode.feature';
+import { withReset } from './reset.feature';
 
 export const GridStore = signalStore(
   withGrid(),
@@ -15,4 +16,5 @@ export const GridStore = signalStore(
   withPuzzleMode(),
   withUndoRedo(),
   withPencilMarks(),
+  withReset(),
 );

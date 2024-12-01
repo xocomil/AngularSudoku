@@ -85,6 +85,9 @@ export function withUndoRedo<_>() {
         state._updateCellValue(command);
         state._changeCurrentCommandIndex(lastCommandRunIndex + 1);
       },
+      _resetCommandStack() {
+        state._setCommandStack([]);
+      },
     })),
   );
 }

@@ -8,7 +8,7 @@ import { CellState, CellValue } from '@sud/domain';
 import { withGridComputed } from './grid.computed.feature';
 import { initialState } from './grid.state';
 
-export function withGrid() {
+export function withGrid<_>() {
   return signalStoreFeature(
     withState(initialState()),
     withGridComputed(),
