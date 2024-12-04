@@ -214,14 +214,14 @@ importers:
         specifier: 19.6.4
         version: 19.6.4(@swc/core@1.4.1)
       prettier:
-        specifier: 3.3.1
-        version: 3.3.1
+        specifier: 3.4.2
+        version: 3.4.2
       prettier-plugin-organize-attributes:
         specifier: 1.0.0
-        version: 1.0.0(prettier@3.3.1)
+        version: 1.0.0(prettier@3.4.2)
       prettier-plugin-organize-imports:
         specifier: ^3.2.4
-        version: 3.2.4(prettier@3.3.1)(typescript@5.5.4)
+        version: 3.2.4(prettier@3.4.2)(typescript@5.5.4)
       storybook:
         specifier: ^8.2.9
         version: 8.2.9(@babel/preset-env@7.25.3(@babel/core@7.25.2))
@@ -2004,6 +2004,7 @@ packages:
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
     engines: {node: '>=10.10.0'}
+    deprecated: Use @eslint/config-array instead
 
   '@humanwhocodes/module-importer@1.0.1':
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
@@ -2011,6 +2012,7 @@ packages:
 
   '@humanwhocodes/object-schema@2.0.2':
     resolution: {integrity: sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==}
+    deprecated: Use @eslint/object-schema instead
 
   '@inquirer/checkbox@2.4.7':
     resolution: {integrity: sha512-5YwCySyV1UEgqzz34gNsC38eKxRBtlRDpJLlKcRtTjlYA/yDKuc1rfw+hjw+2WJxbAZtaDPsRl5Zk7J14SBoBw==}
@@ -3614,6 +3616,7 @@ packages:
 
   acorn-import-assertions@1.9.0:
     resolution: {integrity: sha512-cmMwop9x+8KFhxvKrKfPYmN6/pKTYYHBqLa0DfvVZcKMJWNyWLnaqND7dx/qn66R7ewM1UX5XMaDVP5wlVTaVA==}
+    deprecated: package has been renamed to acorn-import-attributes
     peerDependencies:
       acorn: ^8
 
@@ -4402,6 +4405,7 @@ packages:
 
   critters@0.0.24:
     resolution: {integrity: sha512-Oyqew0FGM0wYUSNqR0L6AteO5MpMoUU0rhKRieXeiKs+PmRTxiJMyaunYB2KF6fQ3dzChXKCpbFOEJx3OQ1v/Q==}
+    deprecated: Ownership of Critters has moved to the Nuxt team, who will be maintaining the project going forward. If you'd like to keep using Critters, please switch to the actively-maintained fork at https://github.com/danielroe/beasties
 
   cron-parser@4.9.0:
     resolution: {integrity: sha512-p0SaNjrHOnQeR8/VnfGbmg9te2kfyYSQ7Sc/j/6DtPL3JQvKxmjO9TSjNFpujqV3vEYYBvNNvXSxzyksBWAx1Q==}
@@ -5022,6 +5026,7 @@ packages:
   eslint@8.57.0:
     resolution: {integrity: sha512-dZ6+mexnaTIbSBZWgou51U6OmzIhYM2VcNdtiTtI7qPNZm35Akpr0f6vtw3w1Kmn5PYo+tZVfh13WrhpS6oLqQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   espree@9.6.1:
@@ -5454,6 +5459,7 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
+    deprecated: Glob versions prior to v9 are no longer supported
 
   global-dirs@3.0.1:
     resolution: {integrity: sha512-NBcGGFbBA9s1VzD41QXDG+3++t9Mn5t1FpLdhESY6oKY4gYTFpX4wO3sqGUa0Srjtbfj3szX0RnemmrVRUdULA==}
@@ -5766,6 +5772,7 @@ packages:
 
   inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
 
   inherits@2.0.3:
     resolution: {integrity: sha512-x00IRNXNy63jwGkJmzPigoySHbaqpNuzKbBOmzK+g2OdZpQ9w+sxCN+VSB3ja7IAge2OP2qpfxTjeNcyjmW1uw==}
@@ -7537,8 +7544,8 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
 
-  prettier@3.3.1:
-    resolution: {integrity: sha512-7CAwy5dRsxs8PHXT3twixW9/OEll8MLE0VRPCJyl7CkS6VHGPSlsVaWTiASPTyGyYRyApxlaWTzwUxVNrhcwDg==}
+  prettier@3.4.2:
+    resolution: {integrity: sha512-e9MewbtFo+Fevyuxn/4rrcDAaq0IYxPGLvObpQjiZBMAzB9IGmzlnG9RZy3FFas+eBMu2vA0CszMeduow5dIuQ==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -7845,6 +7852,7 @@ packages:
 
   rimraf@3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
+    deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
   rimraf@5.0.5:
@@ -13872,7 +13880,7 @@ snapshots:
       globby: 14.0.1
       jscodeshift: 0.15.1(@babel/preset-env@7.25.3(@babel/core@7.25.2))
       lodash: 4.17.21
-      prettier: 3.3.1
+      prettier: 3.4.2
       recast: 0.23.9
       tiny-invariant: 1.3.3
     transitivePeerDependencies:
@@ -17407,7 +17415,7 @@ snapshots:
   internal-slot@1.0.7:
     dependencies:
       es-errors: 1.3.0
-      hasown: 2.0.1
+      hasown: 2.0.2
       side-channel: 1.0.5
 
   ip-address@9.0.5:
@@ -19444,18 +19452,18 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-organize-attributes@1.0.0(prettier@3.3.1):
+  prettier-plugin-organize-attributes@1.0.0(prettier@3.4.2):
     dependencies:
-      prettier: 3.3.1
+      prettier: 3.4.2
 
-  prettier-plugin-organize-imports@3.2.4(prettier@3.3.1)(typescript@5.5.4):
+  prettier-plugin-organize-imports@3.2.4(prettier@3.4.2)(typescript@5.5.4):
     dependencies:
-      prettier: 3.3.1
+      prettier: 3.4.2
       typescript: 5.5.4
 
   prettier@2.8.8: {}
 
-  prettier@3.3.1: {}
+  prettier@3.4.2: {}
 
   pretty-bytes@5.6.0: {}
 
@@ -20216,7 +20224,7 @@ snapshots:
       jscodeshift: 0.15.1(@babel/preset-env@7.25.3(@babel/core@7.25.2))
       leven: 3.1.0
       ora: 5.4.1
-      prettier: 3.3.1
+      prettier: 3.4.2
       prompts: 2.4.2
       semver: 7.6.3
       strip-json-comments: 3.1.1
