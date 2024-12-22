@@ -8,7 +8,7 @@ export function withSolver<_>() {
   return signalStoreFeature(
     type<{
       state: GridState & GridCommandStack;
-      computed: {
+      props: {
         _currentCommand: Signal<GridCommand>;
       };
       methods: {

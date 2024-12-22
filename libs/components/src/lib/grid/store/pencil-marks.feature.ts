@@ -16,7 +16,7 @@ export function withPencilMarks<_>() {
   return signalStoreFeature(
     type<{
       state: GridState;
-      computed: {
+      props: {
         rows: Signal<CellState[][]>;
         columns: Signal<CellState[][]>;
         regions: Signal<CellState[][]>;
