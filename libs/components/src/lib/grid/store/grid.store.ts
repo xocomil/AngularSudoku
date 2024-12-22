@@ -22,3 +22,5 @@ export const GridStore = signalStore(
   withSolver(),
   withKeyboardNavigation(),
 );
+
+export type GridStore = InstanceType<typeof GridStore>;

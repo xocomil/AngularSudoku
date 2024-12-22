@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { CellState, GridDirection, valueIsCellValue } from '@sud/domain';
+import { CellState, GridDirection } from '@sud/domain';
 import { CellComponent } from '../cell/cell.component';
 import { GridCellSelectPipe } from './grid-cell-select.pipe';
 import { GridStore } from './store/grid.store';
 
 @Component({
-    selector: 'sud-grid',
-    imports: [CellComponent, GridCellSelectPipe],
-    template: `
+  selector: 'sud-grid',
+  imports: [CellComponent, GridCellSelectPipe],
+  template: `
     @for (
       row of gridStore.grid();
       track rowTrackByFunction(rowIndex, row);
@@ -35,39 +35,42 @@ import { GridStore } from './store/grid.store';
       }
     }
   `,
-    styleUrls: ['./grid.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./grid.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GridComponent {
   protected readonly gridStore = inject(GridStore);
 
-  cellFocused(cellState: CellState): void {
+  protected cellFocused(cellState: CellState): void {
     this.gridStore.updateSelected(cellState);
   }
 
-  cellValueChanged(newValue: number | undefined, cellState: CellState): void {
-    const valueToUse = valueIsCellValue(newValue) ? newValue : undefined;
-
-    this.gridStore.cellValueChanged({
-      value: valueToUse,
-      row: cellState.row,
-      column: cellState.column,
-    });
+  protected cellValueChanged(
+    newValue: number | undefined,
+    cellState: CellState,
+  ): void {
+    this.gridStore.setCellValue(newValue, cellState);
   }
 
-  cellNavigated(direction: GridDirection, cellState: CellState): void {
+  protected cellNavigated(
+    direction: GridDirection,
+    cellState: CellState,
+  ): void {
     this.gridStore.navigateToCell({ direction, cellState });
   }
 
-  rowTrackByFunction(_index: number, row: CellState[]): number {
+  protected rowTrackByFunction(_index: number, row: CellState[]): number {
     return row[0].row;
   }
 
-  columnTrackByFunction(_index: number, cellState: CellState): number {
+  protected columnTrackByFunction(
+    _index: number,
+    cellState: CellState,
+  ): number {
     return cellState.row * 10 + cellState.column;
   }
 
-  cellBlurred(): void {
+  protected cellBlurred(): void {
     this.gridStore.resetSelected();
   }
 }

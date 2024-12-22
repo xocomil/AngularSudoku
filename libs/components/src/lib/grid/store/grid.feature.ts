@@ -4,7 +4,7 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { CellState, CellValue } from '@sud/domain';
+import { CellState, CellValue, valueIsCellValue } from '@sud/domain';
 import { withGridComputed } from './grid.computed.feature';
 import { initialState } from './grid.state';
 
@@ -52,6 +52,15 @@ export function withGrid<_>() {
               column: columnIndex,
             });
           });
+        });
+      },
+      setCellValue(newValue: number | undefined, cellState: CellState) {
+        const valueToUse = valueIsCellValue(newValue) ? newValue : undefined;
+
+        state._updateCellValue({
+          value: valueToUse,
+          row: cellState.row,
+          column: cellState.column,
         });
       },
     })),
