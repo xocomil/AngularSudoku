@@ -42,6 +42,19 @@ export function withGrid<_>() {
         patchState(state, { gameWon });
       },
     })),
+    withMethods((state) => ({
+      setGridValues(values: (CellValue | undefined)[][]) {
+        values.forEach((row, rowIndex) => {
+          row.forEach((value, columnIndex) => {
+            state._updateCellValue({
+              value,
+              row: rowIndex,
+              column: columnIndex,
+            });
+          });
+        });
+      },
+    })),
   );
 }
 
