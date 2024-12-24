@@ -7,7 +7,7 @@ export function withGridComputed<_>() {
   return signalStoreFeature(
     type<{ state: GridState }>(),
     withComputed((state) => ({
-      selected: computed(() => {
+      selected: computed((): readonly [number, number, number] => {
         const selected = state._selected();
 
         if (selected) {
@@ -16,7 +16,7 @@ export function withGridComputed<_>() {
 
         return noCellSelected;
       }),
-      nextToFocus: computed(() => {
+      nextToFocus: computed((): readonly [number, number] => {
         const nextToFocus = state._nextToFocus();
 
         if (nextToFocus) {
