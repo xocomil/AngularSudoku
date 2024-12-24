@@ -28,6 +28,10 @@ export function withGridComputed<_>() {
       rotatedGrid: computed(() =>
         state.grid().reduce((rotatedGrid, row) => {
           row.forEach((cell) => {
+            if (!rotatedGrid[cell.column]) {
+              rotatedGrid[cell.column] = [];
+            }
+
             rotatedGrid[cell.column][cell.row] = cell;
           });
 

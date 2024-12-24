@@ -8,7 +8,8 @@ import {
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { CellState } from '@sud/domain';
 import { errorAnalyzer } from '@sud/fast-analayzers';
-import { pipe, tap } from 'rxjs';
+import { create } from 'mutative';
+import { pipe, Subject, tap } from 'rxjs';
 import { GridState } from './grid.state';
 
 export function withGridErrors<_>() {
@@ -17,6 +18,9 @@ export function withGridErrors<_>() {
       state: GridState;
       methods: {
         _updateGridHasError(hasError: boolean): void;
+      };
+      props: {
+        lastCellUpdated$: Subject<[number, number]>;
       };
     }>(),
 
@@ -37,23 +41,25 @@ export function withGridErrors<_>() {
         const grid = state.grid();
         let hasError = false;
 
-        for (let row = 0; row < grid.length; row++) {
-          for (let col = 0; col < grid[row].length; col++) {
-            grid[row][col].valid = !errors[row][col];
+        const changedGrid = create(grid, (draft) => {
+          for (let row = 0; row < draft.length; row++) {
+            for (let col = 0; col < draft[row].length; col++) {
+              draft[row][col].valid = !errors[row][col];
 
-            hasError = Boolean(errors[row][col]);
+              hasError = Boolean(errors[row][col]);
 
-            if (!hasError && errors[row][col]) {
-              hasError = true;
+              if (!hasError && errors[row][col]) {
+                hasError = true;
+              }
             }
           }
-        }
+        });
 
-        patchState(state, { grid, hasError });
+        patchState(state, { grid: changedGrid, hasError });
       },
     })),
     withMethods((state) => ({
-      _watchCellValueChanges: rxMethod<[row: number, column: number]>(
+      _gridErrorsWatchCellValueChanges: rxMethod<[row: number, column: number]>(
         pipe(
           tap(() => {
             state._updateGridHasError(false);
@@ -67,7 +73,7 @@ export function withGridErrors<_>() {
     })),
     withHooks((state) => ({
       onInit() {
-        state._watchCellValueChanges(state.lastCellUpdated$());
+        state._gridErrorsWatchCellValueChanges(state.lastCellUpdated$);
       },
     })),
   );

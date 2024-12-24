@@ -2,19 +2,25 @@ import {
   patchState,
   signalStoreFeature,
   withMethods,
+  withProps,
   withState,
 } from '@ngrx/signals';
 import { CellState, CellValue, valueIsCellValue } from '@sud/domain';
+import { create } from 'mutative';
+import { Subject } from 'rxjs';
 import { withGridComputed } from './grid.computed.feature';
 import { initialState } from './grid.state';
 
 export function withGrid<_>() {
   return signalStoreFeature(
     withState(initialState()),
+    withProps(() => ({
+      lastCellUpdated$: new Subject<[number, number]>(),
+    })),
     withGridComputed(),
     withMethods(({ lastCellUpdated$ }) => ({
       _cellUpdated(row: number, column: number) {
-        lastCellUpdated$().next([row, column]);
+        lastCellUpdated$.next([row, column]);
       },
     })),
     withMethods((state) => ({
@@ -74,8 +80,8 @@ function updateGrid(
   value?: CellValue,
   isReadonly = false,
 ) {
-  grid[row][column].value = value;
-  grid[row][column].isReadonly = isReadonly;
-
-  return grid;
+  return create(grid, (draft) => {
+    draft[row][column].value = value;
+    draft[row][column].isReadonly = isReadonly;
+  });
 }

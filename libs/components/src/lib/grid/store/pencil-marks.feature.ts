@@ -8,8 +8,9 @@ import {
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { CellState, CellValue } from '@sud/domain';
+import { create } from 'mutative';
 import * as R from 'ramda';
-import { pipe, tap } from 'rxjs';
+import { pipe, Subject, tap } from 'rxjs';
 import { GridState } from './grid.state';
 
 export function withPencilMarks<_>() {
@@ -20,43 +21,63 @@ export function withPencilMarks<_>() {
         rows: Signal<CellState[][]>;
         columns: Signal<CellState[][]>;
         regions: Signal<CellState[][]>;
+        lastCellUpdated$: Subject<[number, number]>;
       };
     }>(),
 
     withMethods((state) => ({
       _setRowPencilMarks(row: CellState[]) {
         const cellValuesToHide = getCellValuesToHide(row);
+        console.log('_setRowPencilMarks', cellValuesToHide);
 
         const grid = state.grid();
-        mapRowValuesToHide(row, cellValuesToHide);
+        const changedRow = mapRowValuesToHide(row, cellValuesToHide);
 
-        grid[row[0].row] = row;
+        const changedGrid = create(grid, (draft) => {
+          draft[row[0].row] = changedRow;
+        });
 
-        patchState(state, { grid });
+        patchState(state, { grid: changedGrid });
       },
       _setUpdatedColumnPencilMarks(column: CellState[]) {
         const cellValuesToHide = getCellValuesToHide(column);
 
         const grid = state.grid();
-        column.forEach((cell) => {
-          cell.columnValuesToHide = cellValuesToHide;
 
-          grid[cell.row][cell.column] = cell;
+        const changedGrid = create(grid, (draft) => {
+          column.forEach((cell) => {
+            const changedCell = create(cell, (cellDraft) => {
+              cellDraft.columnValuesToHide = cellValuesToHide;
+            });
+
+            draft[cell.row][cell.column] = changedCell;
+          });
         });
+
+        patchState(state, { grid: changedGrid });
       },
       _setUpdatedRegionPencilMarks(region: CellState[]) {
         const cellValuesToHide = getCellValuesToHide(region);
 
         const grid = state.grid();
-        region.forEach((cell) => {
-          cell.regionValuesToHide = cellValuesToHide;
 
-          grid[cell.row][cell.column] = cell;
+        const changedGrid = create(grid, (draft) => {
+          region.forEach((cell) => {
+            const changedCell = create(cell, (cellDraft) => {
+              cellDraft.regionValuesToHide = cellValuesToHide;
+            });
+
+            draft[cell.row][cell.column] = changedCell;
+          });
         });
+
+        patchState(state, { grid: changedGrid });
       },
     })),
     withMethods((state) => ({
-      _watchCellValueChanges: rxMethod<[row: number, column: number]>(
+      _pencilMarksWatchCellValueChanges: rxMethod<
+        [row: number, column: number]
+      >(
         pipe(
           tap(([row, column]) => {
             const updatedRow = state.rows()[row];
@@ -73,7 +94,7 @@ export function withPencilMarks<_>() {
     })),
     withHooks((state) => ({
       onInit() {
-        state._watchCellValueChanges(state.lastCellUpdated$());
+        state._pencilMarksWatchCellValueChanges(state.lastCellUpdated$);
       },
     })),
   );
@@ -91,8 +112,8 @@ function getCellValuesToHide(row: CellState[]): CellValue[] {
 function mapRowValuesToHide(
   row: CellState[],
   cellValuesToHide: CellValue[],
-): void {
-  row.map((cell) => ({
+): CellState[] {
+  return row.map((cell) => ({
     ...cell,
     rowValuesToHide: cellValuesToHide,
   }));

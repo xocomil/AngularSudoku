@@ -1,5 +1,4 @@
 import { CellState, CellValue } from '@sud/domain';
-import { Subject } from 'rxjs';
 import { createGridState } from './grid.store.helpers';
 
 export type GridCommand = CellValueChangedOptions & {
@@ -15,7 +14,6 @@ export interface GridState {
   gameWon: boolean;
   creatingPuzzleMode: boolean;
   hasError: boolean;
-  lastCellUpdated$: Subject<[row: number, column: number]>;
 }
 
 export type GridCommandStack = {
@@ -30,7 +28,6 @@ export const initialState = (): GridState => ({
   hasError: false,
   _selected: undefined,
   _nextToFocus: undefined,
-  lastCellUpdated$: new Subject<[row: number, column: number]>(),
 });
 
 export const initialCommandStack = (): GridCommandStack => ({
