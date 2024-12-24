@@ -34,16 +34,16 @@ export function withGridComputed<_>() {
           return rotatedGrid;
         }, [] as CellState[][]),
       ),
-      regions: computed(() => {
+      _regions: computed(() => {
         const ITEMS_TO_TAKE = 3 as const;
         const grid = state.grid();
         return computeRegions(ITEMS_TO_TAKE, grid);
       }),
     })),
     withComputed((state) => ({
-      rows: computed(() => state.grid().map((row) => row)),
-      columns: computed(() => state.rotatedGrid().map((column) => column)),
-      regions: computed(() => state.regions().map((region) => region)),
+      rows: computed(() => state.grid()),
+      columns: computed(() => state.rotatedGrid()),
+      regions: computed(() => state._regions()),
     })),
   );
 }
