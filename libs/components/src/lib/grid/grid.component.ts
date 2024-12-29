@@ -37,6 +37,7 @@ import { GridStore } from './store/grid.store';
   `,
   styleUrls: ['./grid.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class GridComponent {
   protected readonly gridStore = inject(GridStore);

@@ -2,9 +2,9 @@ import { Component, inject } from '@angular/core';
 import { ButtonHostComponent, GridComponent, GridStore } from '@sud/components';
 
 @Component({
-    selector: 'angular-sudoku-root',
-    imports: [GridComponent, ButtonHostComponent],
-    template: ` <div class="game-ui">
+  selector: 'angular-sudoku-root',
+  imports: [GridComponent, ButtonHostComponent],
+  template: ` <div class="game-ui">
       <h1>The awesomeeeest sudoku grid of all times</h1>
       <nav title="grid actions">
         <sud-button-host />
@@ -16,8 +16,9 @@ import { ButtonHostComponent, GridComponent, GridStore } from '@sud/components';
     @if (gridStore.gameWon()) {
       <div class="gameWon">Congratulations! You won!</div>
     }`,
-    styleUrls: ['./app.component.scss'],
-    providers: [GridStore]
+  styleUrls: ['./app.component.scss'],
+  providers: [GridStore],
+  standalone: true,
 })
 export class AppComponent {
   protected readonly gridStore = inject(GridStore);
