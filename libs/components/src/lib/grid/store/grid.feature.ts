@@ -56,6 +56,7 @@ export function withGrid<_>() {
               value,
               row: rowIndex,
               column: columnIndex,
+              isReadonly: state.creatingPuzzleMode(),
             });
           });
         });
@@ -67,6 +68,7 @@ export function withGrid<_>() {
           value: valueToUse,
           row: cellState.row,
           column: cellState.column,
+          isReadonly: state.creatingPuzzleMode(),
         });
       },
     })),
