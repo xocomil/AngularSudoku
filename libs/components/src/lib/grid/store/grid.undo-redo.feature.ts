@@ -4,24 +4,38 @@ import {
   signalStoreFeature,
   type,
   withComputed,
+  withHooks,
   withMethods,
   withState,
 } from '@ngrx/signals';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { CellValue } from '@sud/domain';
-import { GridCommand, initialCommandStack } from './grid.state';
+import { pipe, Subject, tap } from 'rxjs';
+import {
+  GridCommand,
+  GridState,
+  initialCommandStack,
+  LastCellUpdatedValues,
+} from './grid.state';
+
+type UndoRedoState = {
+  state: GridState;
+  methods: {
+    _updateCellValue(value: {
+      value?: CellValue;
+      row: number;
+      column: number;
+      isReadonly?: boolean;
+    }): void;
+  };
+  props: {
+    lastCellUpdated$: Subject<LastCellUpdatedValues>;
+  };
+};
 
 export function withUndoRedo<_>() {
   return signalStoreFeature(
-    type<{
-      methods: {
-        _updateCellValue(value: {
-          value?: CellValue;
-          row: number;
-          column: number;
-          isReadonly?: boolean;
-        }): void;
-      };
-    }>(),
+    type<UndoRedoState>(),
     withState(initialCommandStack()),
     withComputed((state) => ({
       _currentCommand: computed(
@@ -57,8 +71,42 @@ export function withUndoRedo<_>() {
         });
       },
     })),
+    withMethods((state) => {
+      const _updateHandler = (
+        row: number,
+        column: number,
+        previousValue: CellValue | undefined,
+      ) => {
+        const changedCell = state.grid()[row][column];
+
+        const newCommand: GridCommand = {
+          row,
+          column,
+          value: changedCell.value,
+          previousValue: previousValue,
+          invalidValues: [],
+        };
+
+        state._clearOldCommands();
+
+        state._setCommandStack([...state._commandStack(), newCommand]);
+      };
+
+      return {
+        _noOpHandler() {
+          console.log('no op handler');
+
+          patchState(state, { _undoRedoHandleUpdate: _updateHandler });
+        },
+        _updateHandler,
+      };
+    }),
     withMethods((state) => ({
       undo() {
+        console.log('undo');
+
+        patchState(state, { _undoRedoHandleUpdate: state._noOpHandler });
+
         const { _lastCommandRunIndex, _commandStack } = state;
         const lastCommandRunIndex = _lastCommandRunIndex();
 
@@ -68,10 +116,14 @@ export function withUndoRedo<_>() {
 
         const command = _commandStack()[lastCommandRunIndex];
 
+        console.log('undo update', command);
+
         state._updateCellValue({ ...command, value: command.previousValue });
         state._changeCurrentCommandIndex(lastCommandRunIndex - 1);
       },
       redo() {
+        patchState(state, { _undoRedoHandleUpdate: state._noOpHandler });
+
         const { _lastCommandRunIndex, _commandStack, _commandStackLength } =
           state;
         const lastCommandRunIndex = _lastCommandRunIndex();
@@ -87,6 +139,20 @@ export function withUndoRedo<_>() {
       },
       _resetCommandStack() {
         state._setCommandStack([]);
+      },
+      _undoRedoWatchCellValueChanges: rxMethod<LastCellUpdatedValues>(
+        pipe(
+          tap(([row, column, previousValue]) => {
+            state._undoRedoHandleUpdate()(row, column, previousValue);
+          }),
+        ),
+      ),
+    })),
+    withHooks((state) => ({
+      onInit() {
+        patchState(state, { _undoRedoHandleUpdate: state._updateHandler });
+
+        state._undoRedoWatchCellValueChanges(state.lastCellUpdated$);
       },
     })),
   );

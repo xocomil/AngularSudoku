@@ -6,7 +6,7 @@ import {
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, Subject, tap } from 'rxjs';
-import { GridState } from './grid.state';
+import { GridState, LastCellUpdatedValues } from './grid.state';
 
 export function withGameWon<_>() {
   return signalStoreFeature(
@@ -16,7 +16,7 @@ export function withGameWon<_>() {
         _updateGameWon(gameWon: boolean): void;
       };
       props: {
-        lastCellUpdated$: Subject<[number, number]>;
+        lastCellUpdated$: Subject<LastCellUpdatedValues>;
       };
     }>(),
     withMethods((state) => ({
@@ -35,7 +35,7 @@ export function withGameWon<_>() {
       },
     })),
     withMethods((state) => ({
-      _gameWonWatchCellValueChanges: rxMethod<[row: number, column: number]>(
+      _gameWonWatchCellValueChanges: rxMethod<LastCellUpdatedValues>(
         pipe(
           tap({
             next: () => {

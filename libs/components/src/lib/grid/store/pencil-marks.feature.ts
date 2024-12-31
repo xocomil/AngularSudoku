@@ -11,7 +11,7 @@ import { CellState, CellValue } from '@sud/domain';
 import { create } from 'mutative';
 import * as R from 'ramda';
 import { pipe, Subject, tap } from 'rxjs';
-import { GridState } from './grid.state';
+import { GridState, LastCellUpdatedValues } from './grid.state';
 
 export function withPencilMarks<_>() {
   return signalStoreFeature(
@@ -21,7 +21,7 @@ export function withPencilMarks<_>() {
         rows: Signal<CellState[][]>;
         columns: Signal<CellState[][]>;
         regions: Signal<CellState[][]>;
-        lastCellUpdated$: Subject<[number, number]>;
+        lastCellUpdated$: Subject<LastCellUpdatedValues>;
       };
     }>(),
 
@@ -75,9 +75,7 @@ export function withPencilMarks<_>() {
       },
     })),
     withMethods((state) => ({
-      _pencilMarksWatchCellValueChanges: rxMethod<
-        [row: number, column: number]
-      >(
+      _pencilMarksWatchCellValueChanges: rxMethod<LastCellUpdatedValues>(
         pipe(
           tap(([row, column]) => {
             const updatedRow = state.rows()[row];

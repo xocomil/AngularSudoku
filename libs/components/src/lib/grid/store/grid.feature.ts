@@ -9,18 +9,24 @@ import { CellState, CellValue, valueIsCellValue } from '@sud/domain';
 import { create } from 'mutative';
 import { Subject } from 'rxjs';
 import { withGridComputed } from './grid.computed.feature';
-import { initialState } from './grid.state';
+import { initialState, LastCellUpdatedValues } from './grid.state';
 
 export function withGrid<_>() {
   return signalStoreFeature(
     withState(initialState()),
     withProps(() => ({
-      lastCellUpdated$: new Subject<[number, number]>(),
+      lastCellUpdated$: new Subject<
+        LastCellUpdatedValues
+      >(),
     })),
     withGridComputed(),
     withMethods(({ lastCellUpdated$ }) => ({
-      _cellUpdated(row: number, column: number) {
-        lastCellUpdated$.next([row, column]);
+      _cellUpdated(
+        row: number,
+        column: number,
+        previousValue: CellValue | undefined,
+      ) {
+        lastCellUpdated$.next([row, column, previousValue]);
       },
     })),
     withMethods((state) => ({
@@ -35,11 +41,13 @@ export function withGrid<_>() {
         column: number;
         isReadonly?: boolean;
       }) {
+        const previousValue = state.grid()[row][column].value;
+
         patchState(state, {
           grid: updateGrid(state.grid(), row, column, value, isReadonly),
         });
 
-        state._cellUpdated(row, column);
+        state._cellUpdated(row, column, previousValue);
       },
       _updateGridHasError(hasError: boolean) {
         patchState(state, { hasError });

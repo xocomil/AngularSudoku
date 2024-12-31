@@ -10,7 +10,7 @@ import { CellState } from '@sud/domain';
 import { errorAnalyzer } from '@sud/fast-analayzers';
 import { create } from 'mutative';
 import { pipe, Subject, tap } from 'rxjs';
-import { GridState } from './grid.state';
+import { GridState, LastCellUpdatedValues } from './grid.state';
 
 export function withGridErrors<_>() {
   return signalStoreFeature(
@@ -20,7 +20,7 @@ export function withGridErrors<_>() {
         _updateGridHasError(hasError: boolean): void;
       };
       props: {
-        lastCellUpdated$: Subject<[number, number]>;
+        lastCellUpdated$: Subject<LastCellUpdatedValues>;
       };
     }>(),
 
@@ -59,7 +59,7 @@ export function withGridErrors<_>() {
       },
     })),
     withMethods((state) => ({
-      _gridErrorsWatchCellValueChanges: rxMethod<[row: number, column: number]>(
+      _gridErrorsWatchCellValueChanges: rxMethod<LastCellUpdatedValues>(
         pipe(
           tap(() => {
             state._updateGridHasError(false);

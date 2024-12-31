@@ -14,12 +14,7 @@ export function withSolver<_>() {
       methods: {
         _setCommandStack(commandStack: GridCommand[]): void;
         undo(): void;
-        _updateCellValue(value: {
-          value?: CellValue;
-          row: number;
-          column: number;
-          isReadonly?: boolean;
-        }): void;
+        setCellValue(newValue: number | undefined, cellState: CellState): void;
       };
     }>(),
     withMethods((state) => ({
@@ -60,11 +55,7 @@ export function withSolver<_>() {
 
         console.log('after recursive call', cellState, lastCommand);
 
-        state._updateCellValue({
-          row: cellState.row,
-          column: cellState.column,
-          value: nextValue,
-        });
+        state.setCellValue(nextValue, cellState);
 
         state._setInvalidValuesForNewCommand(invalidValues);
       }
@@ -86,11 +77,7 @@ export function withSolver<_>() {
             return;
           }
 
-          state._updateCellValue({
-            row: nextCellToSolve.row,
-            column: nextCellToSolve.column,
-            value,
-          });
+          state.setCellValue(value, nextCellToSolve);
         }
       },
     })),

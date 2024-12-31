@@ -16,9 +16,16 @@ export interface GridState {
   hasError: boolean;
 }
 
+type HandleUpdateProp = (
+  row: number,
+  column: number,
+  previousValue: CellValue | undefined,
+) => void;
+
 export type GridCommandStack = {
   _commandStack: GridCommand[];
   _lastCommandRunIndex: number;
+  _undoRedoHandleUpdate: HandleUpdateProp;
 };
 
 export const initialState = (): GridState => ({
@@ -33,13 +40,21 @@ export const initialState = (): GridState => ({
 export const initialCommandStack = (): GridCommandStack => ({
   _commandStack: [],
   _lastCommandRunIndex: -1,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  _undoRedoHandleUpdate: () => {},
 });
 
-export interface CellValueChangedOptions {
+export type CellValueChangedOptions = {
   value?: CellValue;
   row: number;
   column: number;
-}
+};
+
+export type LastCellUpdatedValues = [
+  row: number,
+  column: number,
+  previousValue: CellValue | undefined,
+];
 
 export const noCellSelected = Object.freeze([-1, -1, -1] as const);
 export const noCellToFocus = Object.freeze([-1, -1] as const);
