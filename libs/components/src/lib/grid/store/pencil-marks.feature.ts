@@ -26,26 +26,28 @@ export function withPencilMarks<_>() {
     }>(),
 
     withMethods((state) => ({
-      _setRowPencilMarks(row: CellState[]) {
-        const cellValuesToHide = getCellValuesToHide(row);
+      _setRowPencilMarks(row: number) {
+        const updatedRow = state.rows()[row];
+        const cellValuesToHide = getCellValuesToHide(updatedRow);
         console.log('_setRowPencilMarks', cellValuesToHide);
 
         const grid = state.grid();
-        const changedRow = mapRowValuesToHide(row, cellValuesToHide);
+        const changedRow = mapRowValuesToHide(updatedRow, cellValuesToHide);
 
         const changedGrid = create(grid, (draft) => {
-          draft[row[0].row] = changedRow;
+          draft[updatedRow[0].row] = changedRow;
         });
 
         patchState(state, { grid: changedGrid });
       },
-      _setUpdatedColumnPencilMarks(column: CellState[]) {
-        const cellValuesToHide = getCellValuesToHide(column);
+      _setUpdatedColumnPencilMarks(column: number) {
+        const updatedColumn = state.columns()[column];
+        const cellValuesToHide = getCellValuesToHide(updatedColumn);
 
         const grid = state.grid();
 
         const changedGrid = create(grid, (draft) => {
-          column.forEach((cell) => {
+          updatedColumn.forEach((cell) => {
             const changedCell = create(cell, (cellDraft) => {
               cellDraft.columnValuesToHide = cellValuesToHide;
             });
@@ -56,13 +58,15 @@ export function withPencilMarks<_>() {
 
         patchState(state, { grid: changedGrid });
       },
-      _setUpdatedRegionPencilMarks(region: CellState[]) {
-        const cellValuesToHide = getCellValuesToHide(region);
+      _setUpdatedRegionPencilMarks(row: number, column: number) {
+        const updatedRegion = state.regions()[state.grid()[row][column].region];
+
+        const cellValuesToHide = getCellValuesToHide(updatedRegion);
 
         const grid = state.grid();
 
         const changedGrid = create(grid, (draft) => {
-          region.forEach((cell) => {
+          updatedRegion.forEach((cell) => {
             const changedCell = create(cell, (cellDraft) => {
               cellDraft.regionValuesToHide = cellValuesToHide;
             });
@@ -78,14 +82,9 @@ export function withPencilMarks<_>() {
       _pencilMarksWatchCellValueChanges: rxMethod<LastCellUpdatedValues>(
         pipe(
           tap(([row, column]) => {
-            const updatedRow = state.rows()[row];
-            const updatedColumn = state.columns()[column];
-            const updatedRegion =
-              state.regions()[state.grid()[row][column].region];
-
-            state._setRowPencilMarks(updatedRow);
-            state._setUpdatedColumnPencilMarks(updatedColumn);
-            state._setUpdatedRegionPencilMarks(updatedRegion);
+            state._setRowPencilMarks(row);
+            state._setUpdatedColumnPencilMarks(column);
+            state._setUpdatedRegionPencilMarks(row, column);
           }),
         ),
       ),
