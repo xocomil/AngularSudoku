@@ -94,19 +94,24 @@ export function withUndoRedo<_>() {
 
       return {
         _noOpHandler() {
-          console.log('no op handler');
-
           patchState(state, { _undoRedoHandleUpdate: _updateHandler });
         },
         _updateHandler,
       };
     }),
     withMethods((state) => ({
-      undo() {
-        console.log('undo');
-
+      _noopUpdate(updates: {
+        cellUpdate: { value?: CellValue; row: number; column: number };
+        nextCommandIndex: number;
+      }) {
         patchState(state, { _undoRedoHandleUpdate: state._noOpHandler });
 
+        state._updateCellValue(updates.cellUpdate);
+        state._changeCurrentCommandIndex(updates.nextCommandIndex);
+      },
+    })),
+    withMethods((state) => ({
+      undo() {
         const { _lastCommandRunIndex, _commandStack } = state;
         const lastCommandRunIndex = _lastCommandRunIndex();
 
@@ -116,14 +121,12 @@ export function withUndoRedo<_>() {
 
         const command = _commandStack()[lastCommandRunIndex];
 
-        console.log('undo update', command);
-
-        state._updateCellValue({ ...command, value: command.previousValue });
-        state._changeCurrentCommandIndex(lastCommandRunIndex - 1);
+        state._noopUpdate({
+          cellUpdate: { ...command, value: command.previousValue },
+          nextCommandIndex: lastCommandRunIndex - 1,
+        });
       },
       redo() {
-        patchState(state, { _undoRedoHandleUpdate: state._noOpHandler });
-
         const { _lastCommandRunIndex, _commandStack, _commandStackLength } =
           state;
         const lastCommandRunIndex = _lastCommandRunIndex();
@@ -134,8 +137,10 @@ export function withUndoRedo<_>() {
 
         const command = _commandStack()[lastCommandRunIndex + 1];
 
-        state._updateCellValue(command);
-        state._changeCurrentCommandIndex(lastCommandRunIndex + 1);
+        state._noopUpdate({
+          cellUpdate: command,
+          nextCommandIndex: lastCommandRunIndex + 1,
+        });
       },
       _resetCommandStack() {
         state._setCommandStack([]);
