@@ -25,7 +25,6 @@ import { PencilMarkComponent } from '../pencil-mark/pencil-mark.component';
 
 @Component({
   selector: 'sud-cell',
-  standalone: true,
   imports: [CommonModule, FormsModule, PencilMarkComponent],
   template: `
     <div [class.error]="!cellState().valid">
@@ -123,23 +122,20 @@ export class CellComponent implements OnInit, OnDestroy {
   @Output() cellNavigated = this.#navigationKey$;
 
   constructor() {
-    effect(
-      () => {
-        const nextToFocus = this.nextToFocus();
+    effect(() => {
+      const nextToFocus = this.nextToFocus();
 
-        if (nextToFocus) {
-          const [row, column] = nextToFocus;
+      if (nextToFocus) {
+        const [row, column] = nextToFocus;
 
-          if (
-            row === this.cellState().row &&
-            column === this.cellState().column
-          ) {
-            this.cellInput().nativeElement.focus();
-          }
+        if (
+          row === this.cellState().row &&
+          column === this.cellState().column
+        ) {
+          this.cellInput().nativeElement.focus();
         }
-      },
-      { allowSignalWrites: true },
-    );
+      }
+    });
   }
 
   ngOnInit(): void {

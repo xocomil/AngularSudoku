@@ -13,7 +13,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "angularSudoku",
+            "prefix": "lib",
             "style": "camelCase"
           }
         ],
@@ -21,11 +21,10 @@
           "error",
           {
             "type": "element",
-            "prefix": "angular-sudoku",
+            "prefix": "lib",
             "style": "kebab-case"
           }
-        ],
-        "@angular-eslint/prefer-standalone": "off"
+        ]
       }
     },
     {

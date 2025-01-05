@@ -50,3 +50,7 @@ storybook-migration-summary.md
 migration-storybook.log
 
 debug.log
+
+migrations.cli.json
+
+migrations.core.json

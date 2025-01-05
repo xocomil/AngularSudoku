@@ -1,11 +1,11 @@
 {
   "migrations": [
     {
-      "description": "As of NgRx v18, the `tapResponse` import has been removed from `@ngrx/component-store` in favor of the `@ngrx/operators` package.",
-      "version": "18-beta",
-      "factory": "./18_0_0-beta/index",
-      "package": "@ngrx/component-store",
-      "name": "ngrx-component-store-migration-18-beta"
+      "description": "Replace several properties with a single props object",
+      "version": "19.0.0-rc.0",
+      "factory": "./19_0_0-rc_0-props/index",
+      "package": "@ngrx/signals",
+      "name": "19_0_0-rc_0-props"
     }
   ]
 }

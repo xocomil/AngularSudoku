@@ -3,7 +3,6 @@ import { ButtonHostComponent, GridComponent, GridStore } from '@sud/components';
 
 @Component({
   selector: 'angular-sudoku-root',
-  standalone: true,
   imports: [GridComponent, ButtonHostComponent],
   template: ` <div class="game-ui">
       <h1>The awesomeeeest sudoku grid of all times</h1>
@@ -19,6 +18,7 @@ import { ButtonHostComponent, GridComponent, GridStore } from '@sud/components';
     }`,
   styleUrls: ['./app.component.scss'],
   providers: [GridStore],
+  standalone: true,
 })
 export class AppComponent {
   protected readonly gridStore = inject(GridStore);

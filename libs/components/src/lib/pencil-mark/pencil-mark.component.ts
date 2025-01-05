@@ -9,10 +9,9 @@ import { CellValue } from '@sud/domain';
 import { SvgPencilMarkPipe } from '@sud/pipes';
 
 @Component({
-  selector: 'sud-pencil-mark',
-  standalone: true,
-  imports: [SvgPencilMarkPipe],
-  template: ` <svg viewBox="0 0 60 60" preserveAspectRatio="xMidYMid meet">
+    selector: 'sud-pencil-mark',
+    imports: [SvgPencilMarkPipe],
+    template: ` <svg viewBox="0 0 60 60" preserveAspectRatio="xMidYMid meet">
       <style>
         text {
         font-size: 16px;
@@ -47,9 +46,9 @@ import { SvgPencilMarkPipe } from '@sud/pipes';
       <text x="46" y="56">9</text>
     }
     </svg>`,
-  styleUrls: ['./pencil-mark.component.scss'],
-  encapsulation: ViewEncapsulation.Emulated,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrls: ['./pencil-mark.component.scss'],
+    encapsulation: ViewEncapsulation.Emulated,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PencilMarkComponent {
   @Input() numbersToHide: CellValue[] = [];

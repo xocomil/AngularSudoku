@@ -7,12 +7,11 @@
 
   display: block;
   position: relative;
+  background-color: var(--cell-highlight-color);
 
   * {
     box-sizing: border-box;
   }
-
-  background-color: var(--cell-highlight-color);
 
   &[data-focused-state='row'] {
     --cell-highlight-color: rgb(0 255 0 / 30%);

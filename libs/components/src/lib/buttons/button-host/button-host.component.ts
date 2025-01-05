@@ -4,12 +4,10 @@ import {
   computed,
   inject,
 } from '@angular/core';
-import { CellValue } from '@sud/domain';
 import { GridStore } from '../../grid/store/grid.store';
 
 @Component({
   selector: 'sud-button-host',
-  standalone: true,
   imports: [],
   template: `
     <ul>
@@ -55,7 +53,7 @@ export class ButtonHostComponent {
   }
 
   protected generateWinningGrid(): void {
-    this.#setGridValues([
+    this.#gridStore.setGridValues([
       [1, 2, 3, 4, 5, 6, 7, 8, 9],
       [7, 8, 9, 1, 2, 3, 4, 5, 6],
       [4, 5, 6, 7, 8, 9, 1, 2, 3],
@@ -69,7 +67,7 @@ export class ButtonHostComponent {
   }
 
   protected generateGridWithErrors(): void {
-    this.#setGridValues([
+    this.#gridStore.setGridValues([
       [2, 2, 3, 4, 5, 6, 7, 8, 9],
       [7, 8, 9, 1, 2, 3, 4, 5, 6],
       [4, 5, 6, 7, 8, 9, 1, 2, 3],
@@ -84,7 +82,7 @@ export class ButtonHostComponent {
 
   protected generateProblemGrid(): void {
     // eslint-disable-next-line no-sparse-arrays
-    this.#setGridValues([
+    this.#gridStore.setGridValues([
       [],
       [],
       [],
@@ -113,17 +111,5 @@ export class ButtonHostComponent {
 
   protected redo(): void {
     this.#gridStore.redo();
-  }
-
-  #setGridValues(values: (CellValue | undefined)[][]) {
-    values.forEach((row, rowIndex) => {
-      row.forEach((value, columnIndex) => {
-        this.#gridStore.cellValueChanged({
-          value,
-          row: rowIndex,
-          column: columnIndex,
-        });
-      });
-    });
   }
 }

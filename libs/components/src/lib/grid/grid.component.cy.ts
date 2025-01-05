@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { CellValue } from '@sud/domain';
+import { CellState, CellValue, createCellState } from '@sud/domain';
 import { MountConfig } from 'cypress/angular';
 import { GridComponent } from './grid.component';
 import { FocusStates } from './models/focus-state';
@@ -106,12 +106,15 @@ describe(GridComponent.name, () => {
         cy.get(centerCellInputSelector).should('have.focus');
       });
 
-      describe('should skip over readonly cells in puzzle mode', () => {
+      describe('should skip over readonly cells when not in puzzle mode', () => {
         it('should skip over a single readonly cell', () => {
           cy.mount(GridComponent, config).then(() => {
             const gridStore = TestBed.inject(GridStore);
 
-            createColumnPuzzleCells(gridStore, [[3, 1]]);
+            createColumnPuzzleCells(
+              gridStore,
+              createCellStatesFromRowsAndValues([[3, 1]]),
+            );
           });
 
           const centerCellSelector = '.col-4.row-4';
@@ -136,10 +139,13 @@ describe(GridComponent.name, () => {
           cy.mount(GridComponent, config).then(() => {
             const gridStore = TestBed.inject(GridStore);
 
-            createColumnPuzzleCells(gridStore, [
-              [3, 1],
-              [2, 2],
-            ]);
+            createColumnPuzzleCells(
+              gridStore,
+              createCellStatesFromRowsAndValues([
+                [3, 1],
+                [2, 2],
+              ]),
+            );
           });
 
           const centerCellSelector = '.col-4.row-4';
@@ -165,12 +171,15 @@ describe(GridComponent.name, () => {
           cy.mount(GridComponent, config).then(() => {
             const gridStore = TestBed.inject(GridStore);
 
-            createColumnPuzzleCells(gridStore, [
-              [3, 1],
-              [2, 2],
-              [1, 3],
-              [0, 4],
-            ]);
+            createColumnPuzzleCells(
+              gridStore,
+              createCellStatesFromRowsAndValues([
+                [3, 1],
+                [2, 2],
+                [1, 3],
+                [0, 4],
+              ]),
+            );
           });
 
           const centerCellSelector = '.col-4.row-4';
@@ -196,24 +205,43 @@ describe(GridComponent.name, () => {
   });
 });
 
-type ColumnPuzzleCellChanges = [row: number, value: CellValue];
-
-function createColumnPuzzleCells(
-  gridStore: GridStore,
-  changes: ColumnPuzzleCellChanges[],
-  column: CellValue = 4,
-) {
+function createColumnPuzzleCells(gridStore: GridStore, changes: CellState[]) {
   gridStore.toggleCreatePuzzleMode();
 
-  changes.forEach(([row, value]) => {
-    gridStore.cellValueChanged({
-      value,
-      row,
-      column,
-    });
+  changes.forEach((change) => {
+    gridStore.setCellValue(change.value, change);
   });
 
   gridStore.toggleCreatePuzzleMode();
+}
+
+type RowAndValue = [row: number, value: CellValue];
+
+function createCellStatesFromRowsAndValues(
+  rowsAndValues: RowAndValue[],
+): CellState[] {
+  return createCellStates({ rowsAndValues });
+}
+
+type CellStatesParams = {
+  rowsAndValues: RowAndValue[];
+  column?: number;
+  region?: number;
+};
+
+const DEFAULT_COLUMN = 4 as const;
+const DEFAULT_REGION = 0;
+
+function createCellStates(changes: CellStatesParams): CellState[] {
+  const {
+    rowsAndValues,
+    region = DEFAULT_REGION,
+    column = DEFAULT_COLUMN,
+  } = changes;
+
+  return rowsAndValues.map(([row, value]) =>
+    createCellState({ row, value, column, region }),
+  );
 }
 
 type SkipCellInfo = [selector: string, focusedState: FocusStates];
