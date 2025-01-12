@@ -62,7 +62,6 @@ import { PencilMarkComponent } from '../pencil-mark/pencil-mark.component';
     </div>
   `,
   styleUrls: ['./cell.component.scss'],
-  // eslint-disable-next-line @angular-eslint/no-host-metadata-property
   host: {
     '[attr.data-focused-state]': 'focusState()',
   },
