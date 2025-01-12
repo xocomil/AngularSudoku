@@ -81,7 +81,6 @@ export class ButtonHostComponent {
   }
 
   protected generateProblemGrid(): void {
-    // eslint-disable-next-line no-sparse-arrays
     this.#gridStore.setGridValues([
       [],
       [],

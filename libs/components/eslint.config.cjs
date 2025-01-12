@@ -34,7 +34,6 @@ module.exports = [
     .map((config) => ({
       ...config,
       files: ['**/*.ts'],
-      excludedFiles: ['.storybook/*', 'cypress/support/*'],
       rules: {
         ...config.rules,
         '@angular-eslint/directive-selector': [

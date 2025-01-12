@@ -10,7 +10,12 @@ const compat = new FlatCompat({
 
 module.exports = [
   {
-    ignores: ['**/dist'],
+    ignores: ['**/dist', '**/.storybook/**/*', 'cypress/support/*', 'eslint.config.cjs'],
+    languageOptions: {
+      parserOptions: {
+        projectService: true
+      }
+    },
   },
   ...compat.extends('plugin:storybook/recommended'),
   {
@@ -45,7 +50,6 @@ module.exports = [
     .map((config) => ({
       ...config,
       files: ['**/*.ts', '**/*.tsx', '**/*.cts', '**/*.mts'],
-      excludedFiles: ['.storybook/*', 'cypress/support/*'],
       rules: {
         ...config.rules,
         '@stylistic/semi': 'error',
@@ -58,7 +62,6 @@ module.exports = [
     .map((config) => ({
       ...config,
       files: ['**/*.js', '**/*.jsx', '**/*.cjs', '**/*.mjs'],
-      excludedFiles: ['**/.storybook/**/*', 'cypress/support/*'],
       rules: {
         ...config.rules,
         '@stylistic/semi': 'error',
@@ -72,7 +75,6 @@ module.exports = [
     .map((config) => ({
       ...config,
       files: ['**/*.spec.ts', '**/*.spec.tsx'],
-      excludedFiles: ['.storybook/*', 'cypress/support/*'],
       rules: {
         ...config.rules,
         'jest/prefer-expect-assertions': [
@@ -90,7 +92,6 @@ module.exports = [
     .map((config) => ({
       ...config,
       files: ['**/*.ts'],
-      excludedFiles: ['.storybook/*', 'cypress/support/*'],
       rules: {
         ...config.rules,
       },
