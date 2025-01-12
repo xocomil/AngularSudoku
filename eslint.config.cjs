@@ -2,6 +2,7 @@ const { FlatCompat } = require('@eslint/eslintrc');
 const js = require('@eslint/js');
 const nxEslintPlugin = require('@nx/eslint-plugin');
 const stylisticEslintPlugin = require('@stylistic/eslint-plugin');
+const tseslint = require('typescript-eslint');
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
@@ -10,11 +11,16 @@ const compat = new FlatCompat({
 
 module.exports = [
   {
-    ignores: ['**/dist', '**/.storybook/**/*', 'cypress/support/*', 'eslint.config.cjs'],
+    ignores: [
+      '**/dist',
+      '**/.storybook/**/*',
+      'cypress/support/*',
+      'eslint.config.cjs',
+    ],
     languageOptions: {
       parserOptions: {
-        projectService: true
-      }
+        projectService: true,
+      },
     },
   },
   ...compat.extends('plugin:storybook/recommended'),
@@ -22,6 +28,7 @@ module.exports = [
     plugins: {
       '@nx': nxEslintPlugin,
       '@stylistic': stylisticEslintPlugin,
+      '@typescript-eslint': tseslint.plugin,
     },
   },
   {
@@ -54,6 +61,7 @@ module.exports = [
         ...config.rules,
         '@stylistic/semi': 'error',
       },
+      ignores: ['**/.storybook/**/*', '**/cypress/support/*'],
     })),
   ...compat
     .config({
@@ -61,10 +69,10 @@ module.exports = [
     })
     .map((config) => ({
       ...config,
-      files: ['**/*.js', '**/*.jsx', '**/*.cjs', '**/*.mjs'],
+      files: ['**/*.js', '**/*.jsx'],
       rules: {
         ...config.rules,
-        '@stylistic/semi': 'error',
+        '@stylistic/semi': 'warn',
       },
     })),
   ...compat

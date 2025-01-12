@@ -1,6 +1,7 @@
 const { FlatCompat } = require('@eslint/eslintrc');
 const js = require('@eslint/js');
 const baseConfig = require('../../eslint.config.cjs');
+const overrides = require('../../.eslint.nx.overrides.cjs');
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
@@ -28,7 +29,6 @@ module.exports = [
       extends: [
         'plugin:@nx/angular',
         'plugin:@angular-eslint/template/process-inline-templates',
-        '../../.eslint.nx.overrides.json',
       ],
     })
     .map((config) => ({
@@ -66,4 +66,5 @@ module.exports = [
         ...config.rules,
       },
     })),
+  overrides,
 ];
