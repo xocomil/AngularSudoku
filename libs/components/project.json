@@ -4,6 +4,7 @@
   "projectType": "library",
   "sourceRoot": "libs/components/src",
   "prefix": "sud",
+  "tags": [],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
@@ -55,6 +56,5 @@
         "devServerTarget": "angular-sudoku:build"
       }
     }
-  },
-  "tags": []
+  }
 }

@@ -43,7 +43,11 @@
       "cache": true
     },
     "@nx/eslint:lint": {
-      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"],
+      "inputs": [
+        "default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/eslint.config.cjs"
+      ],
       "cache": true
     },
     "@nx/jest:jest": {
@@ -75,7 +79,8 @@
       "!{projectRoot}/**/*.cy.[jt]s?(x)",
       "!{projectRoot}/cypress.config.[jt]s",
       "!{projectRoot}/src/test-setup.[jt]s",
-      "!{projectRoot}/tsconfig.storybook.json"
+      "!{projectRoot}/tsconfig.storybook.json",
+      "!{projectRoot}/eslint.config.cjs"
     ]
   },
   "nxCloudAccessToken": "MTllMTMyYTctMjNjNi00ZWM5LWIzZWYtZGRkMjhhYmU1NzJifHJlYWQtd3JpdGU=",

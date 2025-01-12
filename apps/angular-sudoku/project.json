@@ -4,6 +4,7 @@
   "projectType": "application",
   "sourceRoot": "apps/angular-sudoku/src",
   "prefix": "angular-sudoku",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:application",
@@ -15,7 +16,10 @@
         "polyfills": ["apps/angular-sudoku/src/polyfills.ts"],
         "tsConfig": "apps/angular-sudoku/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["apps/angular-sudoku/src/favicon.ico", "apps/angular-sudoku/src/assets"],
+        "assets": [
+          "apps/angular-sudoku/src/favicon.ico",
+          "apps/angular-sudoku/src/assets"
+        ],
         "styles": ["apps/angular-sudoku/src/styles.scss"],
         "scripts": []
       },
@@ -78,6 +82,5 @@
         "jestConfig": "apps/angular-sudoku/jest.config.ts"
       }
     }
-  },
-  "tags": []
+  }
 }
