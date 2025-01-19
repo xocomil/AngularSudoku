@@ -1,6 +1,7 @@
 import { Signal } from '@angular/core';
 import { signalStoreFeature, type, withMethods } from '@ngrx/signals';
 import { allPencilMarks, CellState, CellValue } from '@sud/domain';
+import { create } from 'mutative';
 import { solveOneCell } from '../solvers/wavefunction-collapse.solver';
 import { GridCommand, GridCommandStack, GridState } from './grid.state';
 
@@ -23,10 +24,12 @@ export function withSolver<_>() {
 
         const commandStack = state._commandStack();
 
-        commandStack[state._lastCommandRunIndex()].invalidValues =
-          invalidValues ?? [];
+        const nextCommandStack = create(commandStack, (draft) => {
+          draft[state._lastCommandRunIndex()].invalidValues =
+            invalidValues ?? [];
+        });
 
-        state._setCommandStack(commandStack);
+        state._setCommandStack(nextCommandStack);
       },
     })),
     withMethods((state) => {
