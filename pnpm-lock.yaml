@@ -132,7 +132,7 @@ devDependencies:
     version: 19.3.0(@angular/animations@19.1.2)(@angular/common@19.1.2)(@angular/router@19.1.2)
   '@nx/cypress':
     specifier: 20.3.2
-    version: 20.3.2(@swc-node/register@1.10.9)(@swc/core@1.10.9)(@types/node@22.10.7)(cypress@13.17.0)(eslint@9.18.0)(nx@20.3.2)(typescript@5.7.3)
+    version: 20.3.2(@swc-node/register@1.10.9)(@swc/core@1.10.9)(@types/node@22.10.7)(cypress@14.0.0)(eslint@9.18.0)(nx@20.3.2)(typescript@5.7.3)
   '@nx/eslint':
     specifier: 20.3.2
     version: 20.3.2(@swc-node/register@1.10.9)(@swc/core@1.10.9)(@types/node@22.10.7)(eslint@9.18.0)(nx@20.3.2)
@@ -147,7 +147,7 @@ devDependencies:
     version: 20.3.2(@swc-node/register@1.10.9)(@swc/core@1.10.9)(@types/node@22.10.7)(nx@20.3.2)(typescript@5.7.3)
   '@nx/storybook':
     specifier: 20.3.2
-    version: 20.3.2(@swc-node/register@1.10.9)(@swc/core@1.10.9)(@types/node@22.10.7)(cypress@13.17.0)(eslint@9.18.0)(nx@20.3.2)(typescript@5.7.3)
+    version: 20.3.2(@swc-node/register@1.10.9)(@swc/core@1.10.9)(@types/node@22.10.7)(cypress@14.0.0)(eslint@9.18.0)(nx@20.3.2)(typescript@5.7.3)
   '@nx/workspace':
     specifier: 20.3.2
     version: 20.3.2(@swc-node/register@1.10.9)(@swc/core@1.10.9)
@@ -200,8 +200,8 @@ devDependencies:
     specifier: ^0.5.0
     version: 0.5.0(rxjs@7.8.1)
   cypress:
-    specifier: 13.17.0
-    version: 13.17.0
+    specifier: 14.0.0
+    version: 14.0.0
   eslint:
     specifier: ^9.18.0
     version: 9.18.0
@@ -4138,7 +4138,7 @@ packages:
       - webpack-cli
     dev: false
 
-  /@nx/cypress@20.3.2(@swc-node/register@1.10.9)(@swc/core@1.10.9)(@types/node@22.10.7)(cypress@13.17.0)(eslint@9.18.0)(nx@20.3.2)(typescript@5.7.3):
+  /@nx/cypress@20.3.2(@swc-node/register@1.10.9)(@swc/core@1.10.9)(@types/node@22.10.7)(cypress@14.0.0)(eslint@9.18.0)(nx@20.3.2)(typescript@5.7.3):
     resolution: {integrity: sha512-rUPUGdZkt2XrlqEUJmbQkzXB741l+DD4foB8q/CDNaA99beE/TSalbiPdMe7dGvwfJWCQ7N7eoR7liHwvgwAIA==}
     peerDependencies:
       cypress: '>= 3 < 14'
@@ -4150,7 +4150,7 @@ packages:
       '@nx/eslint': 20.3.2(@swc-node/register@1.10.9)(@swc/core@1.10.9)(@types/node@22.10.7)(eslint@9.18.0)(nx@20.3.2)
       '@nx/js': 20.3.2(@swc-node/register@1.10.9)(@swc/core@1.10.9)(@types/node@22.10.7)(nx@20.3.2)(typescript@5.7.3)
       '@phenomnomnominal/tsquery': 5.0.1(typescript@5.7.3)
-      cypress: 13.17.0
+      cypress: 14.0.0
       detect-port: 1.6.1
       tslib: 2.8.1
     transitivePeerDependencies:
@@ -4495,10 +4495,10 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@nx/storybook@20.3.2(@swc-node/register@1.10.9)(@swc/core@1.10.9)(@types/node@22.10.7)(cypress@13.17.0)(eslint@9.18.0)(nx@20.3.2)(typescript@5.7.3):
+  /@nx/storybook@20.3.2(@swc-node/register@1.10.9)(@swc/core@1.10.9)(@types/node@22.10.7)(cypress@14.0.0)(eslint@9.18.0)(nx@20.3.2)(typescript@5.7.3):
     resolution: {integrity: sha512-gminOP6SssVZsHSBfpnmk9MDn1miMPF0zTO2KUx6V4pzQAC9yrV5MNv9ai6wNxTOfTzAAzr6uQCftjBs3kXaRQ==}
     dependencies:
-      '@nx/cypress': 20.3.2(@swc-node/register@1.10.9)(@swc/core@1.10.9)(@types/node@22.10.7)(cypress@13.17.0)(eslint@9.18.0)(nx@20.3.2)(typescript@5.7.3)
+      '@nx/cypress': 20.3.2(@swc-node/register@1.10.9)(@swc/core@1.10.9)(@types/node@22.10.7)(cypress@14.0.0)(eslint@9.18.0)(nx@20.3.2)(typescript@5.7.3)
       '@nx/devkit': 20.3.2(nx@20.3.2)
       '@nx/eslint': 20.3.2(@swc-node/register@1.10.9)(@swc/core@1.10.9)(@types/node@22.10.7)(eslint@9.18.0)(nx@20.3.2)
       '@nx/js': 20.3.2(@swc-node/register@1.10.9)(@swc/core@1.10.9)(@types/node@22.10.7)(nx@20.3.2)(typescript@5.7.3)
@@ -8216,9 +8216,9 @@ packages:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
     dev: true
 
-  /cypress@13.17.0:
-    resolution: {integrity: sha512-5xWkaPurwkIljojFidhw8lFScyxhtiFHl/i/3zov+1Z5CmY4t9tjIdvSXfu82Y3w7wt0uR9KkucbhkVvJZLQSA==}
-    engines: {node: ^16.0.0 || ^18.0.0 || >=20.0.0}
+  /cypress@14.0.0:
+    resolution: {integrity: sha512-kEGqQr23so5IpKeg/dp6GVi7RlHx1NmW66o2a2Q4wk9gRaAblLZQSiZJuDI8UMC4LlG5OJ7Q6joAiqTrfRNbTw==}
+    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
     requiresBuild: true
     dependencies:
