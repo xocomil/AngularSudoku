@@ -72,9 +72,6 @@
         "buildTarget": "angular-sudoku:build"
       }
     },
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    },
     "test": {
       "inputs": [
         "default",
