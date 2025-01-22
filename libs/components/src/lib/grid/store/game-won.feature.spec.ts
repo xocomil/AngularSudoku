@@ -65,7 +65,26 @@ describe('GameWon Feature', () => {
       expect(spectator.service.gameWon()).toBe(true);
     });
 
-    it('should not be won if error', () => {
+    it('should not be won if error before filling grid', () => {
+      const spectator = createService();
+
+      spectator.service.updateError(true);
+
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          spectator.service.setCellValue(
+            5,
+            createCellState({ row: i, column: j, region: 0 }),
+          );
+        }
+      }
+
+      console.log('spectator.service.gameWon()', spectator.service.gameWon());
+
+      expect(spectator.service.gameWon()).toBe(false);
+    });
+
+    it('should not be won if error after filling grid', () => {
       const spectator = createService();
 
       for (let i = 0; i < 9; i++) {
