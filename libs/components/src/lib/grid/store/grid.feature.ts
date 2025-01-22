@@ -15,9 +15,7 @@ export function withGrid<_>() {
   return signalStoreFeature(
     withState(initialState()),
     withProps(() => ({
-      lastCellUpdated$: new Subject<
-        LastCellUpdatedValues
-      >(),
+      lastCellUpdated$: new Subject<LastCellUpdatedValues>(),
     })),
     withGridComputed(),
     withMethods(({ lastCellUpdated$ }) => ({
@@ -51,9 +49,6 @@ export function withGrid<_>() {
       },
       _updateGridHasError(hasError: boolean) {
         patchState(state, { hasError });
-      },
-      _updateGameWon(gameWon: boolean) {
-        patchState(state, { gameWon });
       },
     })),
     withMethods((state) => ({

@@ -11,7 +11,6 @@ export interface GridState {
   grid: CellState[][];
   _selected: { row: number; column: number; region: number } | undefined;
   _nextToFocus: { row: number; column: number } | undefined;
-  gameWon: boolean;
   creatingPuzzleMode: boolean;
   hasError: boolean;
 }
@@ -30,7 +29,6 @@ export type GridCommandStack = {
 
 export const initialState = (): GridState => ({
   grid: createGridState(),
-  gameWon: false,
   creatingPuzzleMode: false,
   hasError: false,
   _selected: undefined,
