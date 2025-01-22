@@ -85,5 +85,18 @@
   },
   "nxCloudAccessToken": "MTllMTMyYTctMjNjNi00ZWM5LWIzZWYtZGRkMjhhYmU1NzJifHJlYWQtd3JpdGU=",
   "defaultBase": "main",
-  "useLegacyCache": true
+  "plugins": [
+    {
+      "plugin": "@nx/jest/plugin",
+      "options": {
+        "targetName": "test"
+      }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    }
+  ]
 }

@@ -1,8 +1,12 @@
+import { computed } from '@angular/core';
 import {
+  patchState,
   signalStoreFeature,
   type,
   withHooks,
   withMethods,
+  withProps,
+  withState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, Subject, tap } from 'rxjs';
@@ -12,13 +16,11 @@ export function withGameWon<_>() {
   return signalStoreFeature(
     type<{
       state: GridState;
-      methods: {
-        _updateGameWon(gameWon: boolean): void;
-      };
       props: {
         lastCellUpdated$: Subject<LastCellUpdatedValues>;
       };
     }>(),
+    withState({ _gridCompleted: false }),
     withMethods((state) => ({
       _checkGridCompleted(): boolean {
         const grid = state.grid();
@@ -33,19 +35,23 @@ export function withGameWon<_>() {
 
         return true;
       },
+      _updateGameCompleted(gridCompleted: boolean) {
+        patchState(state, { _gridCompleted: gridCompleted });
+      },
     })),
     withMethods((state) => ({
       _gameWonWatchCellValueChanges: rxMethod<LastCellUpdatedValues>(
         pipe(
           tap({
             next: () => {
-              state._updateGameWon(
-                !state.hasError() && state._checkGridCompleted(),
-              );
+              state._updateGameCompleted(state._checkGridCompleted());
             },
           }),
         ),
       ),
+    })),
+    withProps((state) => ({
+      gameWon: computed(() => !state.hasError() && state._gridCompleted()),
     })),
 
     withHooks((state) => ({

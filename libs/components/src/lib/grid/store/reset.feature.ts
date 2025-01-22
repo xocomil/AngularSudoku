@@ -12,7 +12,6 @@ export function withReset<_>() {
     type<{
       state: GridState;
       methods: {
-        _updateGameWon(gameWon: boolean): void;
         _resetCommandStack(): void;
       };
     }>(),
@@ -22,7 +21,6 @@ export function withReset<_>() {
           grid: createGridState(),
         });
 
-        state._updateGameWon(false);
         state._resetCommandStack();
       },
     })),
