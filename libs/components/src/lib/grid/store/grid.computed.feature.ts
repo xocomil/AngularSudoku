@@ -25,7 +25,7 @@ export function withGridComputed<_>() {
 
         return noCellToFocus;
       }),
-      rotatedGrid: computed(() =>
+      _rotatedGrid: computed(() =>
         state.grid().reduce((rotatedGrid, row) => {
           row.forEach((cell) => {
             if (!rotatedGrid[cell.column]) {
@@ -46,11 +46,12 @@ export function withGridComputed<_>() {
     })),
     withComputed((state) => ({
       rows: computed(() => state.grid()),
-      columns: computed(() => state.rotatedGrid()),
+      columns: computed(() => state._rotatedGrid()),
       regions: computed(() => state._regions()),
     })),
   );
 }
+
 function computeRegions(ITEMS_TO_TAKE: 3, grid: CellState[][]): CellState[][] {
   return Array.from({ length: 9 }).map((_, region) => {
     const column = (region % ITEMS_TO_TAKE) * ITEMS_TO_TAKE;
