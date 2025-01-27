@@ -92,7 +92,7 @@
     "prettier-plugin-organize-attributes": "1.0.0",
     "prettier-plugin-organize-imports": "^4.1.0",
     "storybook": "^8.4.7",
-    "stylelint": "16.13.2",
+    "stylelint": "16.14.1",
     "stylelint-config-prettier": "9.0.5",
     "stylelint-config-prettier-scss": "1.0.0",
     "stylelint-config-standard": "37.0.0",
