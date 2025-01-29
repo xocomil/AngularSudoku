@@ -52,7 +52,7 @@ export function withGrid<_>() {
       },
     })),
     withMethods((state) => ({
-      setGridValues(values: (CellValue | undefined)[][]) {
+      setGridValues(values: Readonly<Readonly<(CellValue | undefined)[]>[]>) {
         values.forEach((row, rowIndex) => {
           row.forEach((value, columnIndex) => {
             state._updateCellValue({
