@@ -23,7 +23,6 @@ export function withGridErrors<_>() {
         lastCellUpdated$: Subject<LastCellUpdatedValues>;
       };
     }>(),
-
     withMethods((state) => ({
       _analyzeErrors(): boolean[][] {
         const errors = Array.from({ length: 9 }, () => [] as boolean[]);
@@ -46,10 +45,8 @@ export function withGridErrors<_>() {
             for (let col = 0; col < draft[row].length; col++) {
               draft[row][col].valid = !errors[row][col];
 
-              hasError = Boolean(errors[row][col]);
-
-              if (!hasError && errors[row][col]) {
-                hasError = true;
+              if (!hasError) {
+                hasError = Boolean(errors[row][col]);
               }
             }
           }
