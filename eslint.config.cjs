@@ -9,14 +9,16 @@ const compat = new FlatCompat({
   recommendedConfig: js.configs.recommended,
 });
 
+const ignores = [
+  '**/dist',
+  '**/.storybook/*',
+  'cypress/support/**/*',
+  'eslint.config.cjs',
+];
+
 module.exports = [
   {
-    ignores: [
-      '**/dist',
-      '**/.storybook/**/*',
-      'cypress/support/*',
-      'eslint.config.cjs',
-    ],
+    ignores,
     languageOptions: {
       parserOptions: {
         projectService: true,
@@ -48,7 +50,7 @@ module.exports = [
         },
       ],
     },
-    ignores: ['**/.storybook/**/*', 'cypress/support/*'],
+    ignores,
   },
   ...compat
     .config({
@@ -61,7 +63,7 @@ module.exports = [
         ...config.rules,
         '@stylistic/semi': 'error',
       },
-      ignores: ['**/.storybook/**/*', '**/cypress/support/*'],
+      ignores,
     })),
   ...compat
     .config({
@@ -74,6 +76,7 @@ module.exports = [
         ...config.rules,
         '@stylistic/semi': 'warn',
       },
+      ignores,
     })),
   ...compat
     .config({
