@@ -50,7 +50,7 @@
     "@chromatic-com/storybook": "^3.2.4",
     "@cypress/webpack-dev-server": "3.11.0",
     "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "~9.19.0",
+    "@eslint/js": "~9.22.0",
     "@faker-js/faker": "9.4.0",
     "@hirez_io/observer-spy": "2.2.0",
     "@ngneat/spectator": "19.4.1",
