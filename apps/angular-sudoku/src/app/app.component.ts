@@ -1,5 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { ButtonHostComponent, GridComponent, GridStore } from '@sud/components';
+import { ButtonHostComponent } from '@sud/components/buttons';
+import { GridComponent } from '@sud/components/grid';
+import { GridStore } from '@sud/components/grid/store';
 
 @Component({
   selector: 'angular-sudoku-root',
@@ -7,10 +9,14 @@ import { ButtonHostComponent, GridComponent, GridStore } from '@sud/components';
   template: ` <div class="game-ui">
       <h1>The awesomeeeest sudoku grid of all times</h1>
       <nav title="grid actions">
-        <sud-button-host />
+        @defer {
+          <sud-button-host />
+        }
       </nav>
       <main>
-        <sud-grid />
+        @defer {
+          <sud-grid />
+        }
       </main>
     </div>
     @if (gridStore.gameWon()) {

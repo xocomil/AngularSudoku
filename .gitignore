@@ -54,3 +54,5 @@ debug.log
 migrations.cli.json
 
 migrations.core.json
+
+node_modules.old

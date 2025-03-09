@@ -9,7 +9,6 @@ import {
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { CellState, CellValue } from '@sud/domain';
 import { create } from 'mutative';
-import * as R from 'ramda';
 import { pipe, Subject, tap } from 'rxjs';
 import { GridState, LastCellUpdatedValues } from './grid.state';
 
@@ -98,12 +97,14 @@ export function withPencilMarks<_>() {
 }
 
 function getCellValuesToHide(row: CellState[]): CellValue[] {
-  // TODO: convert to for loop and remove ramda
-  return R.pipe(
-    R.filter((x: CellState) => R.isNotNil(x.value)),
-    R.map((x: { value: CellValue }) => x.value),
-    R.uniq,
-  )(row);
+  return row.reduce((uniqueValues, cell) => {
+    if (cell.value != undefined) {
+      if (!uniqueValues.includes(cell.value)) {
+        uniqueValues.push(cell.value);
+      }
+    }
+    return uniqueValues;
+  }, [] as CellValue[]);
 }
 
 function mapRowValuesToHide(

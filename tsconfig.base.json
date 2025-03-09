@@ -16,6 +16,11 @@
     "baseUrl": ".",
     "paths": {
       "@sud/components": ["libs/components/src/index.ts"],
+      "@sud/components/buttons": ["libs/components/src/lib/buttons/index.ts"],
+      "@sud/components/grid": ["libs/components/src/lib/grid/index.ts"],
+      "@sud/components/grid/store": [
+        "libs/components/src/lib/grid/store/index.ts"
+      ],
       "@sud/domain": ["libs/domain/src/index.ts"],
       "@sud/domain/testing-helpers": [
         "libs/domain/src/lib/testing-helpers/public-api.ts"
