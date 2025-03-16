@@ -25,6 +25,7 @@ type UpdateCell = {
     column: number;
     isReadonly: boolean;
     value?: CellValue;
+    hasError: boolean;
   };
 };
 
@@ -107,6 +108,7 @@ export function updateGridCellCommand(
   column: number,
   value?: CellValue,
   isReadonly = false,
+  hasError = false,
 ): UpdateCell {
   return {
     type: GridCommandTypes.updateCell,
@@ -115,6 +117,7 @@ export function updateGridCellCommand(
       column,
       isReadonly,
       value,
+      hasError,
     },
   };
 }

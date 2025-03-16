@@ -12,12 +12,16 @@ import { Subject } from 'rxjs';
 import {
   createGridResource,
   GridCommands,
-  noGridCommand, setGridValuesCommand,
-  updateGridCellCommand
+  noGridCommand,
+  setGridValuesCommand,
+  updateGridCellCommand,
 } from '../resources/grid.resource.ng';
+import { withGridComputed } from './grid.computed.feature';
 import { GridState, LastCellUpdatedValues } from './grid.state';
 
-export const initialState = (): Omit<GridState, 'grid'> => ({
+export type GridResourceState = Omit<GridState, 'grid'>;
+
+export const initialState = (): GridResourceState => ({
   creatingPuzzleMode: false,
   hasError: false,
   _selected: undefined,
@@ -39,7 +43,7 @@ export function withGridResource<_>() {
     withComputed((state) => ({
       grid: computed(() => state._gridResource.value()),
     })),
-    // withGridComputed(),
+    withGridComputed(),
     withMethods(({ lastCellUpdated$ }) => ({
       _cellUpdated(
         row: number,
@@ -86,6 +90,15 @@ export function withGridResource<_>() {
           column: cellState.column,
           isReadonly: state.creatingPuzzleMode(),
         });
+      },
+      _setCellError(hasError: boolean, cellState: CellState) {
+        const { row, column, value, isReadonly } = cellState;
+
+        state._gridCommands.set(
+          updateGridCellCommand(row, column, value, isReadonly, hasError),
+        );
+
+        state._updateGridHasError(hasError);
       },
     })),
   );

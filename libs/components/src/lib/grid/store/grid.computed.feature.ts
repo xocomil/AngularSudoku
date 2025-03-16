@@ -1,11 +1,15 @@
-import { computed } from '@angular/core';
+import { computed, Signal } from '@angular/core';
 import { signalStoreFeature, type, withComputed } from '@ngrx/signals';
 import { CellState } from '@sud/domain';
-import { GridState, noCellSelected, noCellToFocus } from './grid.state';
+import { GridResourceState } from './grid-resource.feature.ng';
+import { noCellSelected, noCellToFocus } from './grid.state';
 
 export function withGridComputed<_>() {
   return signalStoreFeature(
-    type<{ state: GridState }>(),
+    type<{
+      state: GridResourceState;
+      props: { grid: Signal<CellState[][]> };
+    }>(),
     withComputed((state) => ({
       selected: computed((): readonly [number, number, number] => {
         const selected = state._selected();

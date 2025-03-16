@@ -1,5 +1,5 @@
+import { Signal } from '@angular/core';
 import {
-  patchState,
   signalStoreFeature,
   type,
   withHooks,
@@ -8,19 +8,21 @@ import {
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { CellState } from '@sud/domain';
 import { errorAnalyzer } from '@sud/fast-analayzers';
-import { create } from 'mutative';
 import { pipe, Subject, tap } from 'rxjs';
-import { GridState, LastCellUpdatedValues } from './grid.state';
+import { GridResourceState } from './grid-resource.feature.ng';
+import { LastCellUpdatedValues } from './grid.state';
 
 export function withGridErrors<_>() {
   return signalStoreFeature(
     type<{
-      state: GridState;
+      state: GridResourceState;
       methods: {
+        _setCellError(hasError: boolean, cellState: CellState): void;
         _updateGridHasError(hasError: boolean): void;
       };
       props: {
         lastCellUpdated$: Subject<LastCellUpdatedValues>;
+        grid: Signal<CellState[][]>;
       };
     }>(),
     withMethods((state) => ({
@@ -40,19 +42,11 @@ export function withGridErrors<_>() {
         const grid = state.grid();
         let hasError = false;
 
-        const changedGrid = create(grid, (draft) => {
-          for (let row = 0; row < draft.length; row++) {
-            for (let col = 0; col < draft[row].length; col++) {
-              draft[row][col].valid = !errors[row][col];
-
-              if (!hasError) {
-                hasError = Boolean(errors[row][col]);
-              }
-            }
+        for (let row = 0; row < grid.length; row++) {
+          for (let col = 0; col < grid[row].length; col++) {
+            state._setCellError(!!errors[row][col], grid[row][col]);
           }
-        });
-
-        patchState(state, { grid: changedGrid, hasError });
+        }
       },
     })),
     withMethods((state) => ({
