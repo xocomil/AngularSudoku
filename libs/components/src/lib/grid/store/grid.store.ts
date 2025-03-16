@@ -2,6 +2,7 @@ import { signalStore } from '@ngrx/signals';
 import { withGameWon } from './game-won.feature';
 import { withGridErrors } from './grid-errors.feature';
 import { withManageSelected } from './grid-manage-selected.feature';
+import { withGridResource } from './grid-resource.feature.ng';
 import { withGrid } from './grid.feature';
 import { withUndoRedo } from './grid.undo-redo.feature';
 import { withKeyboardNavigation } from './keyboard-navigation.feature';
@@ -11,7 +12,7 @@ import { withReset } from './reset.feature';
 import { withSolver } from './solver.feature';
 
 export const GridStore = signalStore(
-  withGrid(),
+  withGridResource(),
   withGridErrors(),
   withGameWon(),
   withManageSelected(),
