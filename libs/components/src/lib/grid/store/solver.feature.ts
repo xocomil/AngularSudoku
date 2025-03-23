@@ -3,14 +3,16 @@ import { signalStoreFeature, type, withMethods } from '@ngrx/signals';
 import { allPencilMarks, CellState, CellValue } from '@sud/domain';
 import { create } from 'mutative';
 import { solveOneCell } from '../solvers/wavefunction-collapse.solver';
-import { GridCommand, GridCommandStack, GridState } from './grid.state';
+import { GridResourceState } from './grid-resource.feature.ng';
+import { GridCommand, GridCommandStack } from './grid.state';
 
 export function withSolver<_>() {
   return signalStoreFeature(
     type<{
-      state: GridState & GridCommandStack;
+      state: GridResourceState & GridCommandStack;
       props: {
         _currentCommand: Signal<GridCommand>;
+        grid: Signal<CellState[][]>;
       };
       methods: {
         _setCommandStack(commandStack: GridCommand[]): void;

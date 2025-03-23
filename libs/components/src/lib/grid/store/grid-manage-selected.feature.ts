@@ -7,11 +7,11 @@ import {
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { CellState } from '@sud/domain';
 import { pipe, tap } from 'rxjs';
-import { GridState } from './grid.state';
+import { GridResourceState } from './grid-resource.feature.ng';
 
 export function withManageSelected<_>() {
   return signalStoreFeature(
-    type<{ state: GridState }>(),
+    type<{ state: GridResourceState }>(),
     withMethods((state) => ({
       updateSelected: rxMethod<CellState>(
         pipe(

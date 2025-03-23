@@ -13,8 +13,12 @@ import {
   createGridResource,
   GridCommands,
   noGridCommand,
+  resetGridCommand,
   setGridValuesCommand,
   updateGridCellCommand,
+  updateGridColumnCommand,
+  updateGridRegionCommand,
+  updateGridRowCommand,
 } from '../resources/grid.resource.ng';
 import { withGridComputed } from './grid.computed.feature';
 import { GridState, LastCellUpdatedValues } from './grid.state';
@@ -78,6 +82,9 @@ export function withGridResource<_>() {
       },
     })),
     withMethods((state) => ({
+      _resetGrid() {
+        state._gridCommands.set(resetGridCommand());
+      },
       setGridValues(values: Readonly<Readonly<(CellValue | undefined)[]>[]>) {
         state._gridCommands.set(setGridValuesCommand(values));
       },
@@ -90,6 +97,15 @@ export function withGridResource<_>() {
           column: cellState.column,
           isReadonly: state.creatingPuzzleMode(),
         });
+      },
+      _updateRow(row: number, values: CellState[]) {
+        state._gridCommands.set(updateGridRowCommand(row, values));
+      },
+      _updateColumn(updatedColumn: CellState[]) {
+        state._gridCommands.set(updateGridColumnCommand(updatedColumn));
+      },
+      _updateRegion(updatedRegion: CellState[]) {
+        state._gridCommands.set(updateGridRegionCommand(updatedRegion));
       },
       _setCellError(hasError: boolean, cellState: CellState) {
         const { row, column, value, isReadonly } = cellState;

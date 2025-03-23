@@ -1,4 +1,4 @@
-import { computed } from '@angular/core';
+import { computed, Signal } from '@angular/core';
 import {
   patchState,
   signalStoreFeature,
@@ -9,33 +9,32 @@ import {
   withState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { CellValue } from '@sud/domain';
+import { CellState, CellValue } from '@sud/domain';
 import { pipe, Subject, tap } from 'rxjs';
+import { GridResourceState } from './grid-resource.feature.ng';
 import {
   GridCommand,
-  GridState,
   initialCommandStack,
   LastCellUpdatedValues,
 } from './grid.state';
 
-type UndoRedoState = {
-  state: GridState;
-  methods: {
-    _updateCellValue(value: {
-      value?: CellValue;
-      row: number;
-      column: number;
-      isReadonly?: boolean;
-    }): void;
-  };
-  props: {
-    lastCellUpdated$: Subject<LastCellUpdatedValues>;
-  };
-};
-
 export function withUndoRedo<_>() {
   return signalStoreFeature(
-    type<UndoRedoState>(),
+    type<{
+      state: GridResourceState;
+      methods: {
+        _updateCellValue(value: {
+          value?: CellValue;
+          row: number;
+          column: number;
+          isReadonly?: boolean;
+        }): void;
+      };
+      props: {
+        grid: Signal<CellState[][]>;
+        lastCellUpdated$: Subject<LastCellUpdatedValues>;
+      };
+    }>(),
     withState(initialCommandStack()),
     withComputed((state) => ({
       _currentCommand: computed(

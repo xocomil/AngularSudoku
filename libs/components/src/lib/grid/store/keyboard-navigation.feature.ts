@@ -1,3 +1,4 @@
+import { Signal } from '@angular/core';
 import {
   patchState,
   signalStoreFeature,
@@ -10,7 +11,7 @@ import {
   GridDirection,
   isNavigationDirection,
 } from '@sud/domain';
-import { GridState } from './grid.state';
+import { GridResourceState } from './grid-resource.feature.ng';
 
 type NavigateToCellEvent = {
   direction: GridDirection;
@@ -20,9 +21,12 @@ type NavigateToCellEvent = {
 export function withKeyboardNavigation<_>() {
   return signalStoreFeature(
     type<{
-      state: GridState;
+      state: GridResourceState;
       methods: {
         updateSelected(cellState: CellState): void;
+      };
+      props: {
+        grid: Signal<CellState[][]>;
       };
     }>(),
     withMethods((state) => ({

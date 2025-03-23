@@ -1,25 +1,18 @@
-import {
-  patchState,
-  signalStoreFeature,
-  type,
-  withMethods,
-} from '@ngrx/signals';
-import { GridState } from './grid.state';
-import { createGridState } from './grid.store.helpers';
+import { signalStoreFeature, type, withMethods } from '@ngrx/signals';
+import { GridResourceState } from './grid-resource.feature.ng';
 
 export function withReset<_>() {
   return signalStoreFeature(
     type<{
-      state: GridState;
+      state: GridResourceState;
       methods: {
         _resetCommandStack(): void;
+        _resetGrid(): void;
       };
     }>(),
     withMethods((state) => ({
       resetGrid() {
-        patchState(state, {
-          grid: createGridState(),
-        });
+        state._resetGrid();
 
         state._resetCommandStack();
       },

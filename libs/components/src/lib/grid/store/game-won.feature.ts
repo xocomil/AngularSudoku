@@ -1,4 +1,4 @@
-import { computed } from '@angular/core';
+import { computed, Signal } from '@angular/core';
 import {
   patchState,
   signalStoreFeature,
@@ -9,15 +9,18 @@ import {
   withState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { CellState } from '@sud/domain';
 import { pipe, Subject, tap } from 'rxjs';
-import { GridState, LastCellUpdatedValues } from './grid.state';
+import { GridResourceState } from './grid-resource.feature.ng';
+import { LastCellUpdatedValues } from './grid.state';
 
 export function withGameWon<_>() {
   return signalStoreFeature(
     type<{
-      state: GridState;
+      state: GridResourceState;
       props: {
         lastCellUpdated$: Subject<LastCellUpdatedValues>;
+        grid: Signal<CellState[][]>;
       };
     }>(),
     withState({ _gridCompleted: false }),

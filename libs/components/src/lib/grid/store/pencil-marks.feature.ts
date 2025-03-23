@@ -1,6 +1,5 @@
 import { Signal } from '@angular/core';
 import {
-  patchState,
   signalStoreFeature,
   type,
   withHooks,
@@ -10,17 +9,24 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { CellState, CellValue } from '@sud/domain';
 import { create } from 'mutative';
 import { pipe, Subject, tap } from 'rxjs';
-import { GridState, LastCellUpdatedValues } from './grid.state';
+import { GridResourceState } from './grid-resource.feature.ng';
+import { LastCellUpdatedValues } from './grid.state';
 
 export function withPencilMarks<_>() {
   return signalStoreFeature(
     type<{
-      state: GridState;
+      state: GridResourceState;
       props: {
         rows: Signal<CellState[][]>;
         columns: Signal<CellState[][]>;
         regions: Signal<CellState[][]>;
         lastCellUpdated$: Subject<LastCellUpdatedValues>;
+        grid: Signal<CellState[][]>;
+      };
+      methods: {
+        _updateRow(row: number, values: CellState[]): void;
+        _updateColumn(updatedColumn: CellState[]): void;
+        _updateRegion(updatedRegion: CellState[]): void;
       };
     }>(),
 
@@ -30,51 +36,34 @@ export function withPencilMarks<_>() {
         const cellValuesToHide = getCellValuesToHide(updatedRow);
         console.log('_setRowPencilMarks', cellValuesToHide);
 
-        const grid = state.grid();
         const changedRow = mapRowValuesToHide(updatedRow, cellValuesToHide);
 
-        const changedGrid = create(grid, (draft) => {
-          draft[updatedRow[0].row] = changedRow;
-        });
-
-        patchState(state, { grid: changedGrid });
+        state._updateRow(row, changedRow);
       },
       _setUpdatedColumnPencilMarks(column: number) {
-        const updatedColumn = state.columns()[column];
-        const cellValuesToHide = getCellValuesToHide(updatedColumn);
+        const curColumn = state.columns()[column];
+        const cellValuesToHide = getCellValuesToHide(curColumn);
 
-        const grid = state.grid();
-
-        const changedGrid = create(grid, (draft) => {
-          updatedColumn.forEach((cell) => {
-            const changedCell = create(cell, (cellDraft) => {
-              cellDraft.columnValuesToHide = cellValuesToHide;
-            });
-
-            draft[cell.row][cell.column] = changedCell;
+        const changedColumn = create(curColumn, (draft) => {
+          draft.forEach((cell) => {
+            cell.columnValuesToHide = cellValuesToHide;
           });
         });
 
-        patchState(state, { grid: changedGrid });
+        state._updateColumn(changedColumn);
       },
       _setUpdatedRegionPencilMarks(row: number, column: number) {
-        const updatedRegion = state.regions()[state.grid()[row][column].region];
+        const region = state.regions()[state.grid()[row][column].region];
 
-        const cellValuesToHide = getCellValuesToHide(updatedRegion);
+        const cellValuesToHide = getCellValuesToHide(region);
 
-        const grid = state.grid();
-
-        const changedGrid = create(grid, (draft) => {
-          updatedRegion.forEach((cell) => {
-            const changedCell = create(cell, (cellDraft) => {
-              cellDraft.regionValuesToHide = cellValuesToHide;
-            });
-
-            draft[cell.row][cell.column] = changedCell;
+        const updatedRegion = create(region, (draft) => {
+          draft.forEach((cell) => {
+            cell.regionValuesToHide = cellValuesToHide;
           });
         });
 
-        patchState(state, { grid: changedGrid });
+        state._updateRegion(updatedRegion);
       },
     })),
     withMethods((state) => ({

@@ -6,11 +6,11 @@ import {
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, tap } from 'rxjs';
-import { GridState } from './grid.state';
+import { GridResourceState } from './grid-resource.feature.ng';
 
 export function withPuzzleMode<_>() {
   return signalStoreFeature(
-    type<{ state: GridState }>(),
+    type<{ state: GridResourceState }>(),
     withMethods((state) => ({
       toggleCreatePuzzleMode: rxMethod<void>(
         pipe(
