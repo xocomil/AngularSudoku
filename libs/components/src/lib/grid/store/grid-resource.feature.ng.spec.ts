@@ -2,10 +2,10 @@ import { subscribeSpyTo } from '@hirez_io/observer-spy';
 import { createServiceFactory } from '@ngneat/spectator';
 import { signalStore } from '@ngrx/signals';
 import { CellState, CellValue, createCellState } from '@sud/domain';
-import { withGrid } from './grid.feature';
+import { withGridResource } from './grid-resource.feature.ng';
 
 describe('withGrid() feature', () => {
-  const TestStore = signalStore(withGrid());
+  const TestStore = signalStore(withGridResource());
 
   const createService = createServiceFactory({ service: TestStore });
 
