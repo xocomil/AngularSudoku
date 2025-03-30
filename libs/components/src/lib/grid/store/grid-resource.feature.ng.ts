@@ -1,8 +1,10 @@
-import { computed, signal } from '@angular/core';
+import { computed, effect } from '@angular/core';
 import {
   patchState,
   signalStoreFeature,
+  watchState,
   withComputed,
+  withHooks,
   withMethods,
   withProps,
   withState,
@@ -11,7 +13,6 @@ import { CellState, CellValue, valueIsCellValue } from '@sud/domain';
 import { Subject } from 'rxjs';
 import {
   createGridResource,
-  GridCommands,
   noGridCommand,
   resetGridCommand,
   setGridValuesCommand,
@@ -30,14 +31,12 @@ export const initialState = (): GridResourceState => ({
   hasError: false,
   _selected: undefined,
   _nextToFocus: undefined,
+  _gridCommands: noGridCommand(),
 });
 
 export function withGridResource<_>() {
   return signalStoreFeature(
     withState(initialState()),
-    withProps(() => ({
-      _gridCommands: signal<GridCommands>(noGridCommand()),
-    })),
     withProps((state) => ({
       lastCellUpdated$: new Subject<LastCellUpdatedValues>(),
       _gridResource: createGridResource({
@@ -45,7 +44,11 @@ export function withGridResource<_>() {
       }),
     })),
     withComputed((state) => ({
-      grid: computed(() => state._gridResource.value()),
+      grid: computed(() => {
+        const grid = state._gridResource.value();
+
+        return grid;
+      }),
     })),
     withGridComputed(),
     withMethods(({ lastCellUpdated$ }) => ({
@@ -71,9 +74,13 @@ export function withGridResource<_>() {
       }) {
         const previousValue = state.grid()[row][column].value;
 
-        state._gridCommands.set(
-          updateGridCellCommand(row, column, value, isReadonly),
-        );
+        // state._gridCommands.set(
+        //   updateGridCellCommand(row, column, value, isReadonly),
+        // );
+
+        patchState(state, {
+          _gridCommands: updateGridCellCommand(row, column, value, isReadonly),
+        });
 
         state._cellUpdated(row, column, previousValue);
       },
@@ -83,10 +90,14 @@ export function withGridResource<_>() {
     })),
     withMethods((state) => ({
       _resetGrid() {
-        state._gridCommands.set(resetGridCommand());
+        // state._gridCommands.set(resetGridCommand());
+
+        patchState(state, { _gridCommands: resetGridCommand() });
       },
       setGridValues(values: Readonly<Readonly<(CellValue | undefined)[]>[]>) {
-        state._gridCommands.set(setGridValuesCommand(values));
+        // state._gridCommands.set(setGridValuesCommand(values));
+
+        patchState(state, { _gridCommands: setGridValuesCommand(values) });
       },
       setCellValue(newValue: number | undefined, cellState: CellState) {
         const valueToUse = valueIsCellValue(newValue) ? newValue : undefined;
@@ -99,22 +110,56 @@ export function withGridResource<_>() {
         });
       },
       _updateRow(row: number, values: CellState[]) {
-        state._gridCommands.set(updateGridRowCommand(row, values));
+        // state._gridCommands.set(updateGridRowCommand(row, values));
+
+        patchState(state, { _gridCommands: updateGridRowCommand(row, values) });
       },
       _updateColumn(updatedColumn: CellState[]) {
-        state._gridCommands.set(updateGridColumnCommand(updatedColumn));
+        // state._gridCommands.set(updateGridColumnCommand(updatedColumn));
+
+        patchState(state, {
+          _gridCommands: updateGridColumnCommand(updatedColumn),
+        });
       },
       _updateRegion(updatedRegion: CellState[]) {
-        state._gridCommands.set(updateGridRegionCommand(updatedRegion));
+        // state._gridCommands.set(updateGridRegionCommand(updatedRegion));
+
+        patchState(state, {
+          _gridCommands: updateGridRegionCommand(updatedRegion),
+        });
       },
       _setCellError(hasError: boolean, cellState: CellState) {
         const { row, column, value, isReadonly } = cellState;
 
-        state._gridCommands.set(
-          updateGridCellCommand(row, column, value, isReadonly, hasError),
-        );
+        // state._gridCommands.set(
+        //   updateGridCellCommand(row, column, value, isReadonly, hasError),
+        // );
+
+        patchState(state, {
+          _gridCommands: updateGridCellCommand(
+            row,
+            column,
+            value,
+            isReadonly,
+            hasError,
+          ),
+        });
 
         state._updateGridHasError(hasError);
+      },
+    })),
+    withHooks((state) => ({
+      onInit() {
+        watchState(state, (newState) => {
+          console.log('newState', newState._gridCommands);
+        });
+
+        effect(() => {
+          const isLoading = state._gridResource.isLoading();
+          const status = state._gridResource.status();
+
+          console.log('gridResource status', status, isLoading);
+        });
       },
     })),
   );

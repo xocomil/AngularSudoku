@@ -1,4 +1,4 @@
-import { resource, Signal } from '@angular/core';
+import { effect, resource, Signal } from '@angular/core';
 import { CellState, CellValue } from '@sud/domain';
 import { create } from 'mutative';
 import { createGridState } from '../store/grid.store.helpers';
@@ -79,10 +79,16 @@ export function createGridResource({
 }: GridResourceProps) {
   let grid = currentGrid ?? createGridState();
 
+  effect(() => {
+    console.log('Grid Resource Effect', gridCommandsMap());
+  });
+
   return resource({
-    request: () => ({ command: gridCommandsMap }),
-    loader: ({ request: { command } }) => {
-      const currentCommand = command();
+    request: () => ({ command: gridCommandsMap() }),
+    loader: (request) => {
+      console.log('Grid Resource Command', request);
+
+      const currentCommand = request.request.command;
 
       switch (currentCommand.type) {
         case GridCommandTypes.updateCell:

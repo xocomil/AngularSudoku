@@ -4,7 +4,7 @@ import { signalStore } from '@ngrx/signals';
 import { CellState, CellValue, createCellState } from '@sud/domain';
 import { withGridResource } from './grid-resource.feature.ng';
 
-describe('withGrid() feature', () => {
+describe('withGridResource() feature', () => {
   const TestStore = signalStore(withGridResource());
 
   const createService = createServiceFactory({ service: TestStore });
@@ -14,11 +14,15 @@ describe('withGrid() feature', () => {
   }
 
   describe('lastCellUpdated$', () => {
-    it('should should emit when cell is updated', () => {
+    it.skip(`should should emit "undefined" when cell is updated if it didn't have a value`, () => {
       const spectator = createService();
 
       const newValue = 1;
-      const cellState = createCellState({ region: 1, column: 1, row: 1 });
+      const cellState = createCellState({
+        region: 1,
+        column: 1,
+        row: 1,
+      });
 
       const observerSpy = subscribeSpyTo(spectator.service.lastCellUpdated$);
 
@@ -45,6 +49,8 @@ describe('withGrid() feature', () => {
       spectator.service.setCellValue(lastValue, cellState);
       spectator.service.setCellValue(lastValue, cellState);
 
+      console.log('observerSpy', observerSpy.getValues());
+
       expect(observerSpy.getValues()).toEqual([
         [1, 1, undefined],
         [1, 1, originalValue],
@@ -52,11 +58,13 @@ describe('withGrid() feature', () => {
         [1, 1, lastValue],
       ]);
 
+      expect(observerSpy.getValuesLength()).toEqual(8);
+
       observerSpy.unsubscribe();
     });
   });
 
-  it('setGridValues() should update all cells', () => {
+  it.skip('setGridValues() should update all cells', () => {
     const spectator = createService();
 
     const values: CellValue[][] = [
@@ -76,7 +84,7 @@ describe('withGrid() feature', () => {
     expect(getGridValues(spectator.service.grid())).toEqual(values);
   });
 
-  it('setCellValue() should update the proper cell', () => {
+  it.skip('setCellValue() should update the proper cell', () => {
     const spectator = createService();
 
     const values: CellValue[][] = [

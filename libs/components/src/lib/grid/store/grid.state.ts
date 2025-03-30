@@ -1,4 +1,5 @@
 import { CellState, CellValue } from '@sud/domain';
+import { GridCommands, noGridCommand } from '../resources/grid.resource.ng';
 import { createGridState } from './grid.store.helpers';
 
 export type GridCommand = CellValueChangedOptions & {
@@ -13,6 +14,7 @@ export interface GridState {
   _nextToFocus: { row: number; column: number } | undefined;
   creatingPuzzleMode: boolean;
   hasError: boolean;
+  _gridCommands: GridCommands;
 }
 
 type HandleUpdateProp = (
@@ -33,6 +35,7 @@ export const initialState = (): GridState => ({
   hasError: false,
   _selected: undefined,
   _nextToFocus: undefined,
+  _gridCommands: noGridCommand(),
 });
 
 export const initialCommandStack = (): GridCommandStack => ({
