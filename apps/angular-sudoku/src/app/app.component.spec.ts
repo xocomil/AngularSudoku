@@ -1,6 +1,7 @@
 import { signal } from '@angular/core';
 import { createComponentFactory } from '@ngneat/spectator/jest';
-import { GridComponent, GridStore } from '@sud/components';
+import { GridComponent } from '@sud/components/grid';
+import { GridStore } from '@sud/components/grid/store';
 import { MockComponent, MockProvider } from 'ng-mocks';
 import { AppComponent } from './app.component';
 
