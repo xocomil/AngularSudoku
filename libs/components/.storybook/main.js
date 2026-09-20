@@ -1,6 +1,6 @@
-const rootMain = require('../../../.storybook/main');
+import rootMain from '../../../.storybook/main';
 
-module.exports = {
+export default {
   ...rootMain,
 
   core: { ...rootMain.core, builder: 'webpack5' },

@@ -1,8 +1,14 @@
-module.exports = {
+import { fileURLToPath } from "node:url";
+import { dirname } from "node:path";
+export default {
   framework: {
-    name: '@storybook/angular',
+    name: getAbsolutePath("@storybook/angular"),
     options: {},
   },
   stories: [],
-  addons: ['@chromatic-com/storybook'],
+  addons: [getAbsolutePath("@chromatic-com/storybook")],
 };
+
+function getAbsolutePath(value) {
+  return dirname(fileURLToPath(import.meta.resolve(`${value}/package.json`)));
+}
