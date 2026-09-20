@@ -56,3 +56,5 @@ migrations.cli.json
 migrations.core.json
 
 node_modules.old
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md
