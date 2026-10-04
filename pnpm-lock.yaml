@@ -33,17 +33,17 @@ importers:
         specifier: 22.2.1
         version: 22.2.1(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(@angular/platform-browser@22.2.1(@angular/animations@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(@angular/common@22.2.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2))(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)))(rxjs@7.8.2)
       '@ngrx/component-store':
-        specifier: 20.1.0
-        version: 20.1.0(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2)
+        specifier: 21.1.1
+        version: 21.1.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2)
       '@ngrx/eslint-plugin':
-        specifier: 20.1.0
-        version: 20.1.0(@typescript-eslint/utils@8.58.0(eslint@9.22.0(jiti@2.7.0)(supports-color@8.1.1))(typescript@6.0.3))(eslint@9.22.0(jiti@2.7.0)(supports-color@8.1.1))(typescript-eslint@8.58.0(eslint@9.22.0(jiti@2.7.0)(supports-color@8.1.1))(typescript@6.0.3))(typescript@6.0.3)
+        specifier: 21.1.1
+        version: 21.1.1(@typescript-eslint/utils@8.58.0(eslint@9.22.0(jiti@2.7.0)(supports-color@8.1.1))(typescript@6.0.3))(eslint@9.22.0(jiti@2.7.0)(supports-color@8.1.1))(typescript-eslint@8.58.0(eslint@9.22.0(jiti@2.7.0)(supports-color@8.1.1))(typescript@6.0.3))(typescript@6.0.3)
       '@ngrx/operators':
-        specifier: 20.1.0
-        version: 20.1.0(rxjs@7.8.2)
+        specifier: 21.1.1
+        version: 21.1.1(rxjs@7.8.2)
       '@ngrx/signals':
-        specifier: 20.1.0
-        version: 20.1.0(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2)
+        specifier: 21.1.1
+        version: 21.1.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2)
       '@nx/angular':
         specifier: 23.2.1
         version: 23.2.1(8208832271755e98bc4b611e0ca2e2d1)
@@ -3064,29 +3064,29 @@ packages:
       '@angular/common': '>= 18.0.0'
       '@angular/router': '>= 18.0.0'
 
-  '@ngrx/component-store@20.1.0':
-    resolution: {integrity: sha512-hInHO7bwyxlUfJTSgdZ+8i0aiE3Ll0D5Y5qGy1heebrNG1Y3nrmLaGh1Yeq/dXeXJiN4Z9owEro+BaCfGOEn+Q==}
+  '@ngrx/component-store@21.1.1':
+    resolution: {integrity: sha512-P0FgzOtCv8ULa4VuNnmYr9y5JfZT4T2fxb7Ozp306J0yjIv9xamMjehVmra5iA2U22TMS5L+WXmLWQ5O2I4Piw==}
     peerDependencies:
-      '@angular/core': ^20.0.0
+      '@angular/core': ^21.0.0
       rxjs: ^6.5.3 || ^7.5.0
 
-  '@ngrx/eslint-plugin@20.1.0':
-    resolution: {integrity: sha512-0R7nRx2xPkXzPgwbQrHPC3KX1trNsEfoBTVILXcNwJfnEg20kaVl3epWn377cSun0F82IkhxSLCgupXhJlsoCA==}
+  '@ngrx/eslint-plugin@21.1.1':
+    resolution: {integrity: sha512-I2RzaBmEPuSDOE/TCwG8m0mMi7ETKo1j+1GRZ8JuhNDj+sEpzj5hQMnbLoVcRjcz2ctGJF6rFI9qADztzvg5wg==}
     peerDependencies:
       '@typescript-eslint/utils': ^8.0.0
-      eslint: ^8.57.0 || ^9.0.0
+      eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
       typescript: '*'
       typescript-eslint: ^8.0.0
 
-  '@ngrx/operators@20.1.0':
-    resolution: {integrity: sha512-soNrLfWaAjV3BJnZ2gYOQ2jLniGMQB444Jeiu5Vs1RCHQ9KEB40OrznJkynUOMUIie4I19cHXb/O/FVaDIPIRQ==}
+  '@ngrx/operators@21.1.1':
+    resolution: {integrity: sha512-2ChT1rVi6w8xHrmIAqRFuvY7YLAJiH7idfmbimjOYHzJ7pgaz0+4WVqyCp9pv2UiDEXuvpUOvs3afgS5m1LDNQ==}
     peerDependencies:
       rxjs: ^6.5.3 || ^7.4.0
 
-  '@ngrx/signals@20.1.0':
-    resolution: {integrity: sha512-ARAHp5yA131Sw6FEtY8XtYcdGcwW5lgpZaJoDIRxc6i12VO3ZDZYp3M/FQhpIDMDXkXHR+pDqoitrqvzI69aQA==}
+  '@ngrx/signals@21.1.1':
+    resolution: {integrity: sha512-AXxsvO39cJ4gu2GMvLyUHwx+3qHi35Bn7OUqyIfJW0fffi/Af7ML6h0MPMWDHVROo55FBgxzJrYRswwzdew9VA==}
     peerDependencies:
-      '@angular/core': ^20.0.0
+      '@angular/core': ^21.0.0
       rxjs: ^6.5.3 || ^7.4.0
     peerDependenciesMeta:
       rxjs:
@@ -13736,13 +13736,13 @@ snapshots:
       replace-in-file: 6.2.0
       tslib: 2.8.1
 
-  '@ngrx/component-store@20.1.0(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2)':
+  '@ngrx/component-store@21.1.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2)':
     dependencies:
       '@angular/core': 22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)
       rxjs: 7.8.2
       tslib: 2.8.1
 
-  '@ngrx/eslint-plugin@20.1.0(@typescript-eslint/utils@8.58.0(eslint@9.22.0(jiti@2.7.0)(supports-color@8.1.1))(typescript@6.0.3))(eslint@9.22.0(jiti@2.7.0)(supports-color@8.1.1))(typescript-eslint@8.58.0(eslint@9.22.0(jiti@2.7.0)(supports-color@8.1.1))(typescript@6.0.3))(typescript@6.0.3)':
+  '@ngrx/eslint-plugin@21.1.1(@typescript-eslint/utils@8.58.0(eslint@9.22.0(jiti@2.7.0)(supports-color@8.1.1))(typescript@6.0.3))(eslint@9.22.0(jiti@2.7.0)(supports-color@8.1.1))(typescript-eslint@8.58.0(eslint@9.22.0(jiti@2.7.0)(supports-color@8.1.1))(typescript@6.0.3))(typescript@6.0.3)':
     dependencies:
       '@typescript-eslint/utils': 8.58.0(eslint@9.22.0(jiti@2.7.0)(supports-color@8.1.1))(typescript@6.0.3)
       eslint: 9.22.0(jiti@2.7.0)(supports-color@8.1.1)
@@ -13750,12 +13750,12 @@ snapshots:
       typescript: 6.0.3
       typescript-eslint: 8.58.0(eslint@9.22.0(jiti@2.7.0)(supports-color@8.1.1))(typescript@6.0.3)
 
-  '@ngrx/operators@20.1.0(rxjs@7.8.2)':
+  '@ngrx/operators@21.1.1(rxjs@7.8.2)':
     dependencies:
       rxjs: 7.8.2
       tslib: 2.8.1
 
-  '@ngrx/signals@20.1.0(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2)':
+  '@ngrx/signals@21.1.1(@angular/core@22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3))(rxjs@7.8.2)':
     dependencies:
       '@angular/core': 22.2.1(@angular/compiler@22.2.1)(rxjs@7.8.2)(zone.js@0.16.3)
       tslib: 2.8.1
