@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ButtonHostComponent } from '@sud/components/buttons';
 import { GridComponent } from '@sud/components/grid';
 import { GridStore } from '@sud/components/grid/store';
@@ -24,6 +24,7 @@ import { GridStore } from '@sud/components/grid/store';
     }`,
   styleUrls: ['./app.component.scss'],
   providers: [GridStore],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class AppComponent {

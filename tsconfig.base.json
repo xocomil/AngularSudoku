@@ -29,7 +29,12 @@
       "@sud/grid-analyzers": ["libs/grid-analyzers/src/index.ts"],
       "@sud/pipes": ["libs/pipes/src/index.ts"],
       "@sud/tools.functional": ["libs/tools/src/lib/functional/index.ts"]
-    }
+    },
+    "strict": false,
+    "noUncheckedSideEffectImports": false,
+    "types": ["*"],
+    "esModuleInterop": false,
+    "ignoreDeprecations": "6.0"
   },
   "exclude": ["node_modules", "tmp"]
 }
