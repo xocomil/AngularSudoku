@@ -1,11 +1,11 @@
 {
   "migrations": [
     {
-      "description": "Rename withEffects to withEventHandlers",
-      "version": "21.0.0-beta.0",
-      "factory": "./21_0_0-beta_0-rename-withEffects-to-withEventHandlers/index",
-      "package": "@ngrx/signals",
-      "name": "21_0_0-beta_0-rename-withEffects-to-withEventHandlers"
+      "description": "Rename @ngrx/eslint-plugin/v9 imports to @ngrx/eslint-plugin.",
+      "version": "22.0.0-beta.0",
+      "factory": "./22_0_0-beta_0-rename-eslint-plugin-v9-imports/index",
+      "package": "@ngrx/eslint-plugin",
+      "name": "22_0_0-beta_0-rename-eslint-plugin-v9-imports"
     }
   ]
 }

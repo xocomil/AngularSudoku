@@ -1,6 +1,7 @@
 const { FlatCompat } = require('@eslint/eslintrc');
 const js = require('@eslint/js');
 const nxEslintPlugin = require('@nx/eslint-plugin');
+const ngrxEslintPlugin = require('@ngrx/eslint-plugin');
 const stylisticEslintPlugin = require('@stylistic/eslint-plugin');
 const tseslint = require('typescript-eslint');
 
@@ -96,17 +97,13 @@ module.exports = [
         ],
       },
     })),
-  ...compat
-    .config({
-      extends: ['plugin:@ngrx/all'],
-    })
-    .map((config) => ({
-      ...config,
-      files: ['**/*.ts'],
-      rules: {
-        ...config.rules,
-      },
-    })),
+  ...ngrxEslintPlugin.configs.all.map((config) => ({
+    ...config,
+    files: ['**/*.ts'],
+    rules: {
+      ...config.rules,
+    },
+  })),
   {
     ignores: ['node_modules\r'],
   },
