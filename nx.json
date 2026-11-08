@@ -33,12 +33,6 @@
     "@schematics/angular:service": {
       "type": "service"
     },
-    "@nx/angular:scam": {
-      "type": "component"
-    },
-    "@nx/angular:scam-directive": {
-      "type": "directive"
-    },
     "@nx/angular:guard": {
       "typeSeparator": "."
     },
@@ -93,29 +87,6 @@
     "component-test": {
       "inputs": ["default", "^production"],
       "cache": true
-    },
-    "@nx/eslint:lint": {
-      "inputs": [
-        "default",
-        "^default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/eslint.config.cjs",
-        "{workspaceRoot}/tools/eslint-rules/**/*"
-      ],
-      "cache": true
-    },
-    "@nx/jest:jest": {
-      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
-      "cache": true,
-      "options": {
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
-      }
     }
   },
   "namedInputs": {
@@ -151,7 +122,19 @@
       "options": {
         "targetName": "lint"
       }
+    },
+    {
+      "plugin": "@nx/cypress/plugin",
+      "options": {
+        "targetName": "component-test",
+        "ciTargetName": "e2e-ci",
+        "componentTestingTargetName": "component-test",
+        "openTargetName": "open-cypress"
+      }
     }
   ],
-  "analytics": true
+  "analytics": true,
+  "affected": {
+    "legacy": true
+  }
 }

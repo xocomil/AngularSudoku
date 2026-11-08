@@ -1,11 +1,122 @@
 {
   "migrations": [
     {
-      "description": "Rename @ngrx/eslint-plugin/v9 imports to @ngrx/eslint-plugin.",
-      "version": "22.0.0-beta.0",
-      "factory": "./22_0_0-beta_0-rename-eslint-plugin-v9-imports/index",
-      "package": "@ngrx/eslint-plugin",
-      "name": "22_0_0-beta_0-rename-eslint-plugin-v9-imports"
+      "version": "24.0.0-beta.0",
+      "description": "Finds local executors that declare a custom hasher, which is deprecated and will be removed in Nx 25. Rewriting a hasher as target inputs means reading what its code hashes, so the rewrite is driven by an AI prompt; the generator only reports each hasher.",
+      "implementation": "./dist/src/migrations/update-24-0-0/find-custom-hashers",
+      "prompt": "tools/ai-migrations/nx/24.0.5/move-custom-hashers-to-inputs.md",
+      "documentation": "./dist/src/migrations/update-24-0-0/find-custom-hashers.md",
+      "package": "nx",
+      "name": "24-0-0-move-custom-hashers-to-inputs"
+    },
+    {
+      "version": "24.0.0-beta.3",
+      "description": "Sets affected.legacy to true in nx.json so nx affected keeps selecting whole projects. Nx 24 selects individual affected tasks by default.",
+      "implementation": "./dist/src/migrations/update-24-0-0/enable-legacy-affected",
+      "documentation": "./dist/src/migrations/update-24-0-0/enable-legacy-affected.md",
+      "package": "nx",
+      "name": "24-0-0-enable-legacy-affected"
+    },
+    {
+      "version": "24.0.0-beta.3",
+      "description": "Renames the ultracache target options \"ignoredReads\" and \"ignoredWrites\" to \"ignoreReads\" and \"ignoreWrites\", and renames .nx/workflows/sandboxing-config.yaml to ultracache-config.yaml with its \"exclude-reads\" and \"exclude-writes\" keys renamed to \"ignore-reads\" and \"ignore-writes\".",
+      "implementation": "./dist/src/migrations/update-24-0-0/rename-ultracache-ignore-options",
+      "documentation": "./dist/src/migrations/update-24-0-0/rename-ultracache-ignore-options.md",
+      "package": "nx",
+      "name": "24-0-0-rename-ultracache-ignore-options"
+    },
+    {
+      "version": "24.0.0-beta.3",
+      "description": "Converts targets using the removed `@nx/eslint` executors to inferred tasks; an AI prompt finishes the targets the converter cannot convert safely and validates the project graph.",
+      "implementation": "./dist/src/migrations/update-24-0-0/remove-deprecated-executors",
+      "prompt": "tools/ai-migrations/@nx/eslint/24.0.5/finish-inferred-conversion.md",
+      "documentation": "./dist/src/migrations/update-24-0-0/remove-deprecated-executors.md",
+      "package": "@nx/eslint",
+      "name": "remove-deprecated-executors"
+    },
+    {
+      "version": "24.0.0-beta.5",
+      "description": "Replaces the removed `setParserOptionsProject` generator option with `enableTypedLinting` in the generator defaults of `nx.json` and project configuration, so generators resolve typed linting as before.",
+      "implementation": "./dist/src/migrations/update-24-0-0/replace-set-parser-options-project",
+      "documentation": "./dist/src/migrations/update-24-0-0/replace-set-parser-options-project.md",
+      "package": "@nx/eslint",
+      "name": "update-24-0-0-replace-set-parser-options-project"
+    },
+    {
+      "version": "24.0.0-beta.3",
+      "description": "Converts targets using the removed `@nx/jest` executors to inferred tasks; an AI prompt finishes the targets the converter cannot convert safely and validates the project graph.",
+      "implementation": "./dist/src/migrations/update-24-0-0/remove-deprecated-executors",
+      "prompt": "tools/ai-migrations/@nx/jest/24.0.5/finish-inferred-conversion.md",
+      "documentation": "./dist/src/migrations/update-24-0-0/remove-deprecated-executors.md",
+      "package": "@nx/jest",
+      "name": "remove-deprecated-executors"
+    },
+    {
+      "version": "24.0.0-beta.3",
+      "description": "Converts targets using the removed `@nx/storybook` executors to inferred tasks; an AI prompt finishes the targets the converter cannot convert safely and validates the project graph.",
+      "implementation": "./dist/src/migrations/update-24-0-0/remove-deprecated-executors",
+      "prompt": "tools/ai-migrations/@nx/storybook/24.0.5/finish-inferred-conversion.md",
+      "documentation": "./dist/src/migrations/update-24-0-0/remove-deprecated-executors.md",
+      "package": "@nx/storybook",
+      "name": "remove-deprecated-executors"
+    },
+    {
+      "version": "24.0.0-beta.5",
+      "description": "Sets a `readyWhen` that waits for the Storybook port on `@storybook/angular:start-storybook` targets that get no `readyWhen` from their own configuration or `targetDefaults`, so tasks that depend on them with `waitFor: 'ready'` start once Storybook is listening. Also sets `continuous: true` on those targets when neither they nor `targetDefaults` set `continuous` and they don't set `smokeTest`.",
+      "implementation": "./dist/src/migrations/update-24-0-0/add-start-storybook-ready-when",
+      "documentation": "./dist/src/migrations/update-24-0-0/add-start-storybook-ready-when.md",
+      "package": "@nx/storybook",
+      "name": "update-24-0-0-add-start-storybook-ready-when"
+    },
+    {
+      "version": "24.0.1-beta.0",
+      "requires": {
+        "storybook": ">=9.1.21 <10.0.0 || >=10.6.2"
+      },
+      "description": "Adds an `id` to Storybook `HIGHLIGHT` payloads emitted through `useChannel`, which Storybook 9.1.21 and 10.6.2 ignore without one. An AI prompt then finishes the Highlight changes in every file that uses `storybook/highlight` or `clickEvent`, including menu items that must replace `clickEvent` with `clickable` and a `HIGHLIGHT_MENU_CLICK` listener.",
+      "implementation": "./dist/src/migrations/update-24-0-1/add-highlight-ids",
+      "prompt": "tools/ai-migrations/@nx/storybook/24.0.5/adapt-highlight-usage.md",
+      "documentation": "./dist/src/migrations/update-24-0-1/add-highlight-ids.md",
+      "package": "@nx/storybook",
+      "name": "update-24-0-1-add-highlight-ids"
+    },
+    {
+      "version": "23.3.0-beta.8",
+      "requires": {
+        "cypress": ">=15.0.0 <16.0.0"
+      },
+      "optionalUpdate": true,
+      "description": "Moves a Cypress 15 workspace to Cypress 16: bumps `cypress` and the declared `@cypress/*-dev-server` packages unless a Vite component testing config, or a config whose bundler cannot be determined statically, resolves a Vite below 8, applies the Cypress 16 config option, `overwriteQuery` and `cypress/angular` rewrites, and hands the remaining source changes to an AI prompt.",
+      "implementation": "./dist/src/migrations/update-23-3-0/upgrade-to-cypress-16",
+      "prompt": "tools/ai-migrations/@nx/cypress/24.0.5/ai-instructions-for-cypress-16.md",
+      "documentation": "./dist/src/migrations/update-23-3-0/upgrade-to-cypress-16.md",
+      "package": "@nx/cypress",
+      "name": "upgrade-to-cypress-16"
+    },
+    {
+      "version": "24.0.0-beta.3",
+      "description": "Converts targets using the removed `@nx/cypress` executors to inferred tasks; an AI prompt finishes the targets the converter cannot convert safely and validates the project graph.",
+      "implementation": "./dist/src/migrations/update-24-0-0/remove-deprecated-executors",
+      "prompt": "tools/ai-migrations/@nx/cypress/24.0.5/finish-inferred-conversion.md",
+      "documentation": "./dist/src/migrations/update-24-0-0/remove-deprecated-executors.md",
+      "package": "@nx/cypress",
+      "name": "remove-deprecated-executors"
+    },
+    {
+      "version": "24.0.0-beta.5",
+      "description": "Sets `readyWhen: { signal: true }` on `@angular/build:dev-server`, `@angular-devkit/build-angular:dev-server`, `@angular-devkit/build-angular:ssr-dev-server` and `@nx/angular:dev-server` targets that get no `readyWhen` from their own configuration or `targetDefaults`, so tasks that depend on them with `waitFor: 'ready'` start once the server is listening.",
+      "implementation": "./dist/src/migrations/update-24-0-0/add-ready-when-signal",
+      "documentation": "./dist/src/migrations/update-24-0-0/add-ready-when-signal.md",
+      "package": "@nx/angular",
+      "name": "update-24-0-0-add-ready-when-signal"
+    },
+    {
+      "version": "24.0.0-beta.5",
+      "description": "Removes generator defaults for the removed `@nx/angular:scam`, `@nx/angular:scam-directive`, `@nx/angular:scam-pipe`, and `@nx/angular:scam-to-standalone` generators from `nx.json` and project configurations.",
+      "implementation": "./dist/src/migrations/update-24-0-0/remove-scam-generator-defaults",
+      "documentation": "./dist/src/migrations/update-24-0-0/remove-scam-generator-defaults.md",
+      "package": "@nx/angular",
+      "name": "update-24-0-0-remove-scam-generator-defaults"
     }
   ]
 }

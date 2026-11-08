@@ -9,6 +9,7 @@
     "build": {
       "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/angular-sudoku",
         "index": "apps/angular-sudoku/src/index.html",
@@ -51,11 +52,12 @@
           "sourceMap": true,
           "namedChunks": true
         }
-      },
-      "defaultConfiguration": "production"
+      }
     },
     "serve": {
       "executor": "@angular/build:dev-server",
+      "defaultConfiguration": "development",
+      "continuous": true,
       "configurations": {
         "production": {
           "buildTarget": "angular-sudoku:build:production"
@@ -64,8 +66,9 @@
           "buildTarget": "angular-sudoku:build:development"
         }
       },
-      "defaultConfiguration": "development",
-      "continuous": true
+      "readyWhen": {
+        "signal": true
+      }
     },
     "extract-i18n": {
       "executor": "@angular/build:extract-i18n",
