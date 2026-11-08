@@ -7,3 +7,6 @@ allowBuilds:
   msgpackr-extract: true
   nx: true
   unrs-resolver: true
+minimumReleaseAgeExclude:
+  - eslint-plugin-cypress@7.0.4
+  - ng-mocks@14.18.6
